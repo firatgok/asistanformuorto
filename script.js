@@ -19,6 +19,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize checkbox event listeners
     initializeCheckboxListeners();
+    
+    // Initialize number inputs
+    numberInputs = {
+        'onceki-seans': '',
+        'mevcut-plak': '',
+        'verilecek-plak': ''
+    };
 });
 
 function initializeCheckboxListeners() {
@@ -710,10 +717,14 @@ function handleUnifiedNumberButtonClick(event) {
     const question = button.dataset.question;
     const value = button.dataset.value;
     
+    console.log('Button clicked:', question, value); // Debug log
+    
     // Append digit to current input
     if (numberInputs[question].length < 2) { // Limit to 2 digits
         numberInputs[question] += value;
     }
+    
+    console.log('Updated input:', question, numberInputs[question]); // Debug log
     
     // Update display
     updateUnifiedNumberDisplay(question);
@@ -740,8 +751,12 @@ function handleClearButtonClick(event) {
 // Update unified number displays
 function updateUnifiedNumberDisplay(question) {
     const displayElement = document.getElementById(question + '-display');
+    console.log('Updating display:', question, displayElement, numberInputs[question]); // Debug log
     if (displayElement) {
         const value = numberInputs[question];
         displayElement.textContent = value || '--';
+        console.log('Display updated to:', displayElement.textContent); // Debug log
+    } else {
+        console.log('Display element not found for:', question); // Debug log
     }
 }
