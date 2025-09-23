@@ -179,12 +179,20 @@ function updateSeffafOutput() {
             oncekiSonPlak = parseInt(oncekiOnlar.dataset.value + oncekiBirler.dataset.value);
         }
         
-        // Verilecek plak numaralarını oluştur (önceki seansın devamından)
+        // Mevcut plak sayısını al
+        let mevcutPlakSayisi = 0;
+        if (mevcutOnlar && mevcutBirler) {
+            mevcutPlakSayisi = parseInt(mevcutOnlar.dataset.value + mevcutBirler.dataset.value);
+        }
+        
+        // Hedef plak sayısını hesapla (mevcut + verilecek)
+        const hedefPlakSayisi = mevcutPlakSayisi + verilecekSayisi;
+        
+        // Verilecek plak numaralarını oluştur (sadece henüz verilmeyenler)
         const verilecekPlaklar = [];
         const baslangicPlak = oncekiSonPlak + 1;
-        const bitisPlak = oncekiSonPlak + verilecekSayisi;
         
-        for (let i = baslangicPlak; i <= bitisPlak; i++) {
+        for (let i = baslangicPlak; i <= hedefPlakSayisi; i++) {
             verilecekPlaklar.push(i);
         }
         
@@ -240,6 +248,12 @@ function generateSeffafReport(answers) {
         
         if (answers['mevcut-plak']) {
             report += `• Hasta şu an ${answers['mevcut-plak']}\n`;
+        }
+        
+        // Seçilen dişleri ekle
+        const selectedTeethText = getSelectedTeethText();
+        if (selectedTeethText) {
+            report += `• Kontrol edilen dişler: ${selectedTeethText}\n`;
         }
         
         if (answers['verilecek-plak']) {
@@ -613,3 +627,75 @@ function loadSavedFontSizes() {
 
 // Load font sizes on page load
 document.addEventListener('DOMContentLoaded', loadSavedFontSizes);
+
+// FDI Dental Chart Functionality
+let selectedTeeth = new Set();
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeToothSelection();
+});
+
+function initializeToothSelection() {
+    const toothButtons = document.querySelectorAll('.tooth-btn');
+    const clearButton = document.querySelector('.clear-teeth-btn');
+    
+    toothButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const toothNumber = this.dataset.tooth;
+            
+            if (this.classList.contains('selected')) {
+                // Remove from selection
+                this.classList.remove('selected');
+                selectedTeeth.delete(toothNumber);
+            } else {
+                // Add to selection
+                this.classList.add('selected');
+                selectedTeeth.add(toothNumber);
+            }
+            
+            updateSelectedTeethDisplay();
+            updateSeffafOutput(); // Güncelle çıktıyı
+        });
+    });
+    
+    if (clearButton) {
+        clearButton.addEventListener('click', function() {
+            // Clear all selections
+            toothButtons.forEach(button => {
+                button.classList.remove('selected');
+            });
+            selectedTeeth.clear();
+            updateSelectedTeethDisplay();
+            updateSeffafOutput(); // Güncelle çıktıyı
+        });
+    }
+}
+
+function updateSelectedTeethDisplay() {
+    const display = document.getElementById('selected-teeth-display');
+    
+    if (selectedTeeth.size === 0) {
+        display.textContent = 'Henüz diş seçilmedi';
+    } else {
+        // Sort teeth numbers for better display
+        const sortedTeeth = Array.from(selectedTeeth).sort((a, b) => parseInt(a) - parseInt(b));
+        display.textContent = sortedTeeth.join(', ');
+    }
+}
+
+function getSelectedTeethText() {
+    if (selectedTeeth.size === 0) {
+        return '';
+    }
+    
+    const sortedTeeth = Array.from(selectedTeeth).sort((a, b) => parseInt(a) - parseInt(b));
+    
+    if (sortedTeeth.length === 1) {
+        return `${sortedTeeth[0]} numaralı diş`;
+    } else if (sortedTeeth.length === 2) {
+        return `${sortedTeeth[0]} ve ${sortedTeeth[1]} numaralı dişler`;
+    } else {
+        const lastTooth = sortedTeeth.pop();
+        return `${sortedTeeth.join(', ')} ve ${lastTooth} numaralı dişler`;
+    }
+}

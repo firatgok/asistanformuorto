@@ -629,3 +629,178 @@ header h1 {
         padding: 0;
     }
 }
+
+/* FDI Dental Chart Styles */
+.fdi-dental-chart {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 15px 0;
+    border: 2px solid #e9ecef;
+}
+
+.upper-jaw, .lower-jaw {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.quadrant {
+    display: flex;
+    gap: 2px;
+}
+
+.upper-right {
+    margin-right: 10px;
+}
+
+.upper-left {
+    margin-left: 10px;
+}
+
+.lower-left {
+    margin-right: 10px;
+}
+
+.lower-right {
+    margin-left: 10px;
+}
+
+.tooth-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+}
+
+.tooth-btn:hover {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.tooth-btn.selected {
+    background-color: #2196f3;
+    color: white;
+    border-color: #1976d2;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+.tooth-btn:active {
+    transform: scale(0.95);
+}
+
+.midline {
+    width: 2px;
+    height: 20px;
+    background-color: #dc3545;
+    margin: 10px 15px;
+    align-self: center;
+}
+
+.selected-teeth-display {
+    background-color: #e8f5e8;
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 4px solid #28a745;
+    margin: 10px 0;
+}
+
+.teeth-display {
+    font-weight: bold;
+    color: #155724;
+}
+
+.dental-chart-controls {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.clear-teeth-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.clear-teeth-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* iPad optimizations for dental chart */
+@media (max-width: 1024px) {
+    .tooth-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 13px;
+        margin: 2px;
+    }
+    
+    .fdi-dental-chart {
+        padding: 15px;
+    }
+    
+    .upper-right, .lower-left {
+        margin-right: 15px;
+    }
+    
+    .upper-left, .lower-right {
+        margin-left: 15px;
+    }
+    
+    .midline {
+        margin: 10px 20px;
+        height: 25px;
+    }
+}
+
+/* Mobile optimizations for dental chart */
+@media (max-width: 768px) {
+    .tooth-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+        margin: 1px;
+    }
+    
+    .fdi-dental-chart {
+        padding: 10px;
+        overflow-x: auto;
+    }
+    
+    .upper-jaw, .lower-jaw {
+        min-width: 600px;
+    }
+    
+    .upper-right, .lower-left {
+        margin-right: 8px;
+    }
+    
+    .upper-left, .lower-right {
+        margin-left: 8px;
+    }
+    
+    .midline {
+        margin: 8px 12px;
+        height: 20px;
+    }
+}
