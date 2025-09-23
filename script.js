@@ -250,10 +250,10 @@ function generateSeffafReport(answers) {
             report += `• Hasta şu an ${answers['mevcut-plak']}\n`;
         }
         
-        // Seçilen dişleri ekle
+        // Seçilen bölgeleri ekle
         const selectedTeethText = getSelectedTeethText();
         if (selectedTeethText) {
-            report += `• Kontrol edilen dişler: ${selectedTeethText}\n`;
+            report += `• Kontrol edilen bölge: ${selectedTeethText}\n`;
         }
         
         if (answers['verilecek-plak']) {
@@ -629,28 +629,29 @@ function loadSavedFontSizes() {
 document.addEventListener('DOMContentLoaded', loadSavedFontSizes);
 
 // FDI Dental Chart Functionality
-let selectedTeeth = new Set();
+let selectedInterdentalSpaces = new Set();
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeToothSelection();
 });
 
 function initializeToothSelection() {
-    const toothButtons = document.querySelectorAll('.tooth-btn');
+    const interdentalButtons = document.querySelectorAll('.interdental-btn');
     const clearButton = document.querySelector('.clear-teeth-btn');
     
-    toothButtons.forEach(button => {
+    // Interdental butonları
+    interdentalButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const toothNumber = this.dataset.tooth;
+            const position = this.dataset.position;
             
             if (this.classList.contains('selected')) {
                 // Remove from selection
                 this.classList.remove('selected');
-                selectedTeeth.delete(toothNumber);
+                selectedInterdentalSpaces.delete(position);
             } else {
                 // Add to selection
                 this.classList.add('selected');
-                selectedTeeth.add(toothNumber);
+                selectedInterdentalSpaces.add(position);
             }
             
             updateSelectedTeethDisplay();
@@ -661,10 +662,10 @@ function initializeToothSelection() {
     if (clearButton) {
         clearButton.addEventListener('click', function() {
             // Clear all selections
-            toothButtons.forEach(button => {
+            interdentalButtons.forEach(button => {
                 button.classList.remove('selected');
             });
-            selectedTeeth.clear();
+            selectedInterdentalSpaces.clear();
             updateSelectedTeethDisplay();
             updateSeffafOutput(); // Güncelle çıktıyı
         });
@@ -674,28 +675,25 @@ function initializeToothSelection() {
 function updateSelectedTeethDisplay() {
     const display = document.getElementById('selected-teeth-display');
     
-    if (selectedTeeth.size === 0) {
-        display.textContent = 'Henüz diş seçilmedi';
+    if (selectedInterdentalSpaces.size === 0) {
+        display.textContent = 'Henüz bölge seçilmedi';
     } else {
-        // Sort teeth numbers for better display
-        const sortedTeeth = Array.from(selectedTeeth).sort((a, b) => parseInt(a) - parseInt(b));
-        display.textContent = sortedTeeth.join(', ');
+        const sortedSpaces = Array.from(selectedInterdentalSpaces).sort();
+        display.textContent = `Dişarası: ${sortedSpaces.join(', ')}`;
     }
 }
 
 function getSelectedTeethText() {
-    if (selectedTeeth.size === 0) {
+    if (selectedInterdentalSpaces.size === 0) {
         return '';
     }
     
-    const sortedTeeth = Array.from(selectedTeeth).sort((a, b) => parseInt(a) - parseInt(b));
+    const sortedSpaces = Array.from(selectedInterdentalSpaces).sort();
     
-    if (sortedTeeth.length === 1) {
-        return `${sortedTeeth[0]} numaralı diş`;
-    } else if (sortedTeeth.length === 2) {
-        return `${sortedTeeth[0]} ve ${sortedTeeth[1]} numaralı dişler`;
+    if (sortedSpaces.length === 1) {
+        return `${sortedSpaces[0]} dişarası bölgesi`;
     } else {
-        const lastTooth = sortedTeeth.pop();
-        return `${sortedTeeth.join(', ')} ve ${lastTooth} numaralı dişler`;
+        const lastSpace = sortedSpaces.pop();
+        return `${sortedSpaces.join(', ')} ve ${lastSpace} dişarası bölgeleri`;
     }
 }

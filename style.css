@@ -702,6 +702,58 @@ header h1 {
     transform: scale(0.95);
 }
 
+.tooth-number {
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #495057;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+}
+
+.interdental-btn {
+    width: 25px;
+    height: 25px;
+    background-color: #ffc107;
+    border: 2px solid #ffb300;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1px;
+    align-self: center;
+}
+
+.interdental-btn:hover {
+    background-color: #ffca28;
+    border-color: #ff8f00;
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+}
+
+.interdental-btn.selected {
+    background-color: #ff5722;
+    color: white;
+    border-color: #e64a19;
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
+}
+
+.interdental-btn:active {
+    transform: scale(0.9);
+}
+
 .midline {
     width: 2px;
     height: 20px;
@@ -755,6 +807,20 @@ header h1 {
         margin: 2px;
     }
     
+    .interdental-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+        margin: 2px;
+    }
+    
+    .tooth-number {
+        width: 45px;
+        height: 45px;
+        font-size: 13px;
+        margin: 2px;
+    }
+    
     .fdi-dental-chart {
         padding: 15px;
     }
@@ -776,6 +842,20 @@ header h1 {
 /* Mobile optimizations for dental chart */
 @media (max-width: 768px) {
     .tooth-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+        margin: 1px;
+    }
+    
+    .interdental-btn {
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        margin: 1px;
+    }
+    
+    .tooth-number {
         width: 35px;
         height: 35px;
         font-size: 11px;
