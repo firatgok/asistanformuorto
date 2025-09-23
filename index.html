@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ortodonti Hasta Formu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ortodonti Hasta Formu</h1>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tab-container">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="seffaf-plak">Şeffaf Plak</button>
+                <button class="tab-btn" data-tab="tel-tedavisi">Tel Tedavisi</button>
+            </div>
+
+            <!-- Şeffaf Plak Tab -->
+            <div id="seffaf-plak" class="tab-content active">
+                <div class="form-container">
+                    <div class="form-left">
+                        <h3>RUTİN KONTROLLER</h3>
+                        
+                        <!-- Önceki seans kaçıncı plağa kadar vermişiz -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Önceki seans kaçıncı plağa kadar vermişiz?</h4>
+                                <div class="selected-number-display">
+                                    <span>Seçilen: </span>
+                                    <span id="onceki-seans-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="number-selector-container">
+                                <div class="number-selector-section">
+                                    <h5>Onlar Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="onceki-seans-onlar" data-value="0">0</button>
+                                    </div>
+                                </div>
+                                <div class="number-selector-section">
+                                    <h5>Birler Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="onceki-seans-birler" data-value="0">0</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mevcut kaçıncı plakta hastamız -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Mevcut kaçıncı plakta hastamız?</h4>
+                                <div class="selected-number-display">
+                                    <span>Seçilen: </span>
+                                    <span id="mevcut-plak-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="number-selector-container">
+                                <div class="number-selector-section">
+                                    <h5>Onlar Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="mevcut-plak-onlar" data-value="0">0</button>
+                                    </div>
+                                </div>
+                                <div class="number-selector-section">
+                                    <h5>Birler Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="mevcut-plak-birler" data-value="0">0</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kaç plak vereceğiz -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Kaç plak vereceğiz?</h4>
+                                <div class="selected-number-display">
+                                    <span>Seçilen: </span>
+                                    <span id="verilecek-plak-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="number-selector-container">
+                                <div class="number-selector-section">
+                                    <h5>Onlar Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="verilecek-plak-onlar" data-value="0">0</button>
+                                    </div>
+                                </div>
+                                <div class="number-selector-section">
+                                    <h5>Birler Basamağı</h5>
+                                    <div class="number-keypad">
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="1">1</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="2">2</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="3">3</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="4">4</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="5">5</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="6">6</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="7">7</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="8">8</button>
+                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="9">9</button>
+                                        <button type="button" class="number-btn zero-btn" data-question="verilecek-plak-birler" data-value="0">0</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IPR durumu -->
+                        <div class="question-group">
+                            <h4>Verdiğimiz plaklarda IPR var mı?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="ipr-durum" data-value="IPR mevcut">Evet</button>
+                                <button type="button" class="option-btn" data-question="ipr-durum" data-value="IPR yok">Hayır</button>
+                            </div>
+                        </div>
+
+                        <!-- Plak adaptasyonu -->
+                        <div class="question-group">
+                            <h4>Plak adaptasyonu hangi dişlerde eksik?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Adaptasyon iyi">İyi</button>
+                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Üst çenede adaptasyon eksik">Üst Çene</button>
+                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Alt çenede adaptasyon eksik">Alt Çene</button>
+                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Her iki çenede adaptasyon eksik">Her İkisi</button>
+                            </div>
+                        </div>
+
+                        <!-- Eksik ataşmanlar -->
+                        <div class="question-group">
+                            <h4>Eksik ataşmanlar neler?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Ataşmanlar tam">Eksiksiz</button>
+                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Üst çenede eksik ataşman">Üst Eksik</button>
+                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Alt çenede eksik ataşman">Alt Eksik</button>
+                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Çoklu eksik ataşman">Çoklu Eksik</button>
+                            </div>
+                        </div>
+
+                        <!-- Lastik türü -->
+                        <div class="question-group">
+                            <h4>Hangi lastikleri takıyor?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Sınıf II lastikleri">Sınıf II</button>
+                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Sınıf III lastikleri">Sınıf III</button>
+                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Çapraz lastikler">Çapraz</button>
+                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Lastik kullanmıyor">Yok</button>
+                            </div>
+                        </div>
+
+                        <!-- Lastik kullanım süresi -->
+                        <div class="question-group">
+                            <h4>Lastikleri kaç saat takması söylenmiş?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="12 saat lastik kullanımı">12 saat</button>
+                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="16 saat lastik kullanımı">16 saat</button>
+                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="20 saat lastik kullanımı">20 saat</button>
+                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="Gece lastik kullanımı">Sadece Gece</button>
+                            </div>
+                        </div>
+
+                        <h3 class="section-title">MOTİVASYON</h3>
+
+                        <!-- Lastik aksama -->
+                        <div class="question-group">
+                            <h4>Lastik kullanımında aksama var mı? Ortalama kaç saat takıyor?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımı düzenli">Düzenli</button>
+                                <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımında hafif aksama">Hafif Aksama</button>
+                                <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımında ciddi aksama">Ciddi Aksama</button>
+                                <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanmıyor">Kullanmıyor</button>
+                            </div>
+                        </div>
+
+                        <!-- Plak aksama -->
+                        <div class="question-group">
+                            <h4>Plak kullanımında aksama var mı? Ortalama kaç saat takıyor?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 20+ saat">Çok İyi (20+)</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 15-20 saat">İyi (15-20)</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 10-15 saat">Orta (10-15)</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 10 saatten az">Yetersiz (<10)</button>
+                            </div>
+                        </div>
+
+                        <!-- Plak temizliği -->
+                        <div class="question-group">
+                            <h4>Plakların temizliği (1-10 arası skor)</h4>
+                            <div class="button-group number-grid">
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 1/10">1</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 2/10">2</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 3/10">3</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 4/10">4</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 5/10">5</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 6/10">6</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 7/10">7</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 8/10">8</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 9/10">9</button>
+                                <button type="button" class="option-btn score-btn" data-question="plak-temizlik" data-value="Plak temizliği: 10/10">10</button>
+                            </div>
+                        </div>
+
+                        <!-- Ağız hijyeni -->
+                        <div class="question-group">
+                            <h4>Ağız Hijyeni (1-10 arası skor)</h4>
+                            <div class="button-group number-grid">
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 1/10">1</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 2/10">2</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 3/10">3</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 4/10">4</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 5/10">5</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 6/10">6</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 7/10">7</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 8/10">8</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 9/10">9</button>
+                                <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 10/10">10</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-right">
+                        <h3>Değerlendirme Raporu</h3>
+                        <div class="output-container">
+                            <textarea id="seffaf-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
+                            <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tel Tedavisi Tab -->
+            <div id="tel-tedavisi" class="tab-content">
+                <div class="form-container">
+                    <div class="form-left">
+                        <h3>Değerlendirme Kriterleri</h3>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" name="tel" value="Metal braket tedavisi uygun">
+                                Metal braket tedavisi uygun
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Seramik braket tedavisi uygun">
+                                Seramik braket tedavisi uygun
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Şiddetli çapraşıklık mevcut">
+                                Şiddetli çapraşıklık
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Çekim endikasyonu var">
+                                Çekim endikasyonu
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Çekim endikasyonu yok">
+                                Çekim endikasyonu yok
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Ankraj ihtiyacı var">
+                                Ankraj ihtiyacı
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Elastik kullanımı gerekli">
+                                Elastik kullanımı
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Tedavi süresi 18-24 ay">
+                                Tedavi süresi 18-24 ay
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Ağız hijyeni eğitimi verildi">
+                                Ağız hijyeni eğitimi
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Beslenme önerileri verildi">
+                                Beslenme önerileri
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="Retainer kullanımı gerekli">
+                                Retainer kullanımı
+                            </label>
+                            <label>
+                                <input type="checkbox" name="tel" value="4-6 haftalık kontroller">
+                                Kontrol sıklığı açıklandı
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-right">
+                        <h3>Değerlendirme Raporu</h3>
+                        <div class="output-container">
+                            <textarea id="tel-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
+                            <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
