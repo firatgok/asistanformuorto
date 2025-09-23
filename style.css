@@ -669,10 +669,10 @@ header h1 {
 /* FDI Dental Chart Styles */
 .fdi-dental-chart {
     background-color: #f8f9fa;
-    border-radius: 12px;
-    padding: 20px;
-    margin: 15px 0;
-    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #e9ecef;
 }
 
 .upper-jaw, .lower-jaw {
@@ -687,19 +687,19 @@ header h1 {
 }
 
 .upper-right {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .upper-left {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .lower-left {
-    margin-right: 10px;
+    margin-right: 5px;
 }
 
 .lower-right {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
 .tooth-btn {
@@ -739,12 +739,12 @@ header h1 {
 }
 
 .tooth-number {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     background-color: #f8f9fa;
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    font-size: 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 10px;
     font-weight: bold;
     color: #495057;
     display: flex;
@@ -754,12 +754,12 @@ header h1 {
 }
 
 .interdental-btn {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     background-color: #ffc107;
-    border: 2px solid #ffb300;
+    border: 1px solid #ffb300;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: bold;
     color: #333;
     cursor: pointer;
@@ -792,18 +792,19 @@ header h1 {
 
 .midline {
     width: 2px;
-    height: 20px;
+    height: 15px;
     background-color: #dc3545;
-    margin: 10px 15px;
+    margin: 5px 8px;
     align-self: center;
 }
 
 .selected-teeth-display {
     background-color: #e8f5e8;
-    padding: 10px;
-    border-radius: 6px;
-    border-left: 4px solid #28a745;
-    margin: 10px 0;
+    padding: 6px;
+    border-radius: 4px;
+    border-left: 3px solid #28a745;
+    margin: 6px 0;
+    font-size: 12px;
 }
 
 .teeth-display {
@@ -813,17 +814,17 @@ header h1 {
 
 .dental-chart-controls {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 8px;
 }
 
 .clear-teeth-btn {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     transition: all 0.3s ease;
 }
@@ -837,74 +838,28 @@ header h1 {
 /* iPad optimizations for dental chart */
 @media (max-width: 1024px) {
     .tooth-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 13px;
-        margin: 2px;
-    }
-    
-    .interdental-btn {
-        width: 28px;
-        height: 28px;
-        font-size: 16px;
-        margin: 2px;
-    }
-    
-    .tooth-number {
-        width: 45px;
-        height: 45px;
-        font-size: 13px;
-        margin: 2px;
-    }
-    
-    .fdi-dental-chart {
-        padding: 15px;
-    }
-    
-    .upper-right, .lower-left {
-        margin-right: 15px;
-    }
-    
-    .upper-left, .lower-right {
-        margin-left: 15px;
-    }
-    
-    .midline {
-        margin: 10px 20px;
-        height: 25px;
-    }
-}
-
-/* Mobile optimizations for dental chart */
-@media (max-width: 768px) {
-    .tooth-btn {
         width: 35px;
         height: 35px;
-        font-size: 11px;
-        margin: 1px;
+        font-size: 12px;
+        margin: 2px;
     }
     
     .interdental-btn {
         width: 22px;
         height: 22px;
         font-size: 12px;
-        margin: 1px;
+        margin: 2px;
     }
     
     .tooth-number {
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
         font-size: 11px;
-        margin: 1px;
+        margin: 2px;
     }
     
     .fdi-dental-chart {
-        padding: 10px;
-        overflow-x: auto;
-    }
-    
-    .upper-jaw, .lower-jaw {
-        min-width: 600px;
+        padding: 8px;
     }
     
     .upper-right, .lower-left {
@@ -916,7 +871,53 @@ header h1 {
     }
     
     .midline {
-        margin: 8px 12px;
-        height: 20px;
+        margin: 6px 10px;
+        height: 18px;
+    }
+}
+
+/* Mobile optimizations for dental chart */
+@media (max-width: 768px) {
+    .tooth-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 10px;
+        margin: 1px;
+    }
+    
+    .interdental-btn {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        margin: 1px;
+    }
+    
+    .tooth-number {
+        width: 25px;
+        height: 25px;
+        font-size: 9px;
+        margin: 1px;
+    }
+    
+    .fdi-dental-chart {
+        padding: 6px;
+        overflow-x: auto;
+    }
+    
+    .upper-jaw, .lower-jaw {
+        min-width: 450px;
+    }
+    
+    .upper-right, .lower-left {
+        margin-right: 4px;
+    }
+    
+    .upper-left, .lower-right {
+        margin-left: 4px;
+    }
+    
+    .midline {
+        margin: 4px 6px;
+        height: 12px;
     }
 }
