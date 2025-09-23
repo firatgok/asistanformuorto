@@ -181,8 +181,11 @@ function updateSeffafOutput() {
         
         // Verilecek plak numaralarını oluştur (önceki seansın devamından)
         const verilecekPlaklar = [];
-        for (let i = 1; i <= verilecekSayisi; i++) {
-            verilecekPlaklar.push(oncekiSonPlak + i);
+        const baslangicPlak = oncekiSonPlak + 1;
+        const bitisPlak = oncekiSonPlak + verilecekSayisi;
+        
+        for (let i = baslangicPlak; i <= bitisPlak; i++) {
+            verilecekPlaklar.push(i);
         }
         
         if (verilecekSayisi === 1) {
