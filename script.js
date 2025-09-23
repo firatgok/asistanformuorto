@@ -171,8 +171,26 @@ function updateSeffafOutput() {
     const verilecekBirler = document.querySelector('.number-btn[data-question="verilecek-plak-birler"].selected');
     
     if (verilecekOnlar && verilecekBirler) {
-        const combinedNumber = verilecekOnlar.dataset.value + verilecekBirler.dataset.value;
-        answers['verilecek-plak'] = `${combinedNumber} adet plak verildi`;
+        const verilecekSayisi = parseInt(verilecekOnlar.dataset.value + verilecekBirler.dataset.value);
+        
+        // Mevcut plak sayısını al
+        let mevcutPlakSayisi = 0;
+        if (mevcutOnlar && mevcutBirler) {
+            mevcutPlakSayisi = parseInt(mevcutOnlar.dataset.value + mevcutBirler.dataset.value);
+        }
+        
+        // Verilecek plak numaralarını oluştur
+        const verilecekPlaklar = [];
+        for (let i = 1; i <= verilecekSayisi; i++) {
+            verilecekPlaklar.push(mevcutPlakSayisi + i);
+        }
+        
+        if (verilecekSayisi === 1) {
+            answers['verilecek-plak'] = `Bu seans ${verilecekPlaklar[0]}. plağı vereceğiz`;
+        } else {
+            const plakListesi = verilecekPlaklar.join(', ');
+            answers['verilecek-plak'] = `Bu seans ${plakListesi} plakları vereceğiz`;
+        }
     }
     
     const output = generateSeffafReport(answers);
