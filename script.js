@@ -154,7 +154,7 @@ function updateSeffafOutput() {
     
     if (oncekiOnlar && oncekiBirler) {
         const combinedNumber = oncekiOnlar.dataset.value + oncekiBirler.dataset.value;
-        answers['onceki-seans'] = `${combinedNumber} numaralı plağa kadar verilmişti`;
+        answers['onceki-seans'] = `${combinedNumber}. plağa kadar verilmişti`;
     }
     
     // Handle mevcut plak number selector
@@ -163,7 +163,7 @@ function updateSeffafOutput() {
     
     if (mevcutOnlar && mevcutBirler) {
         const combinedNumber = mevcutOnlar.dataset.value + mevcutBirler.dataset.value;
-        answers['mevcut-plak'] = `${combinedNumber} numaralı plakta`;
+        answers['mevcut-plak'] = `${combinedNumber}. plakta`;
     }
     
     // Handle verilecek plak number selector
