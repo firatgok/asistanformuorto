@@ -28,10 +28,22 @@ function initializeCheckboxListeners() {
         button.addEventListener('click', handleOptionButtonClick);
     });
 
-    // Initialize number buttons
+    // Initialize number buttons (old system)
     const numberButtons = document.querySelectorAll('#seffaf-plak .number-btn');
     numberButtons.forEach(button => {
         button.addEventListener('click', handleNumberButtonClick);
+    });
+    
+    // Initialize unified number selectors (new system)
+    const unifiedNumberButtons = document.querySelectorAll('.unified-number-selector .number-btn');
+    unifiedNumberButtons.forEach(button => {
+        button.addEventListener('click', handleUnifiedNumberButtonClick);
+    });
+    
+    // Initialize clear buttons
+    const clearButtons = document.querySelectorAll('.clear-btn');
+    clearButtons.forEach(button => {
+        button.addEventListener('click', handleClearButtonClick);
     });
 
     // Tel tedavisi checkboxes (keep existing if any)
@@ -148,41 +160,30 @@ function updateSeffafOutput() {
         answers[question] = value;
     });
     
-    // Handle önceki seans number selector
-    const oncekiOnlar = document.querySelector('.number-btn[data-question="onceki-seans-onlar"].selected');
-    const oncekiBirler = document.querySelector('.number-btn[data-question="onceki-seans-birler"].selected');
-    
-    if (oncekiOnlar && oncekiBirler) {
-        const combinedNumber = oncekiOnlar.dataset.value + oncekiBirler.dataset.value;
-        answers['onceki-seans'] = `${combinedNumber}. plağa kadar verilmişti`;
+    // Handle unified number inputs
+    if (numberInputs['onceki-seans']) {
+        const oncekiSeans = parseInt(numberInputs['onceki-seans']);
+        answers['onceki-seans'] = `${oncekiSeans}. plağa kadar verilmişti`;
     }
     
-    // Handle mevcut plak number selector
-    const mevcutOnlar = document.querySelector('.number-btn[data-question="mevcut-plak-onlar"].selected');
-    const mevcutBirler = document.querySelector('.number-btn[data-question="mevcut-plak-birler"].selected');
-    
-    if (mevcutOnlar && mevcutBirler) {
-        const combinedNumber = mevcutOnlar.dataset.value + mevcutBirler.dataset.value;
-        answers['mevcut-plak'] = `${combinedNumber}. plakta`;
+    if (numberInputs['mevcut-plak']) {
+        const mevcutPlak = parseInt(numberInputs['mevcut-plak']);
+        answers['mevcut-plak'] = `${mevcutPlak}. plakta`;
     }
     
-    // Handle verilecek plak number selector
-    const verilecekOnlar = document.querySelector('.number-btn[data-question="verilecek-plak-onlar"].selected');
-    const verilecekBirler = document.querySelector('.number-btn[data-question="verilecek-plak-birler"].selected');
-    
-    if (verilecekOnlar && verilecekBirler) {
-        const verilecekSayisi = parseInt(verilecekOnlar.dataset.value + verilecekBirler.dataset.value);
+    if (numberInputs['verilecek-plak']) {
+        const verilecekSayisi = parseInt(numberInputs['verilecek-plak']);
         
         // Önceki seansta verilen en son plak sayısını al
         let oncekiSonPlak = 0;
-        if (oncekiOnlar && oncekiBirler) {
-            oncekiSonPlak = parseInt(oncekiOnlar.dataset.value + oncekiBirler.dataset.value);
+        if (numberInputs['onceki-seans']) {
+            oncekiSonPlak = parseInt(numberInputs['onceki-seans']);
         }
         
         // Mevcut plak sayısını al
         let mevcutPlakSayisi = 0;
-        if (mevcutOnlar && mevcutBirler) {
-            mevcutPlakSayisi = parseInt(mevcutOnlar.dataset.value + mevcutBirler.dataset.value);
+        if (numberInputs['mevcut-plak']) {
+            mevcutPlakSayisi = parseInt(numberInputs['mevcut-plak']);
         }
         
         // Hedef plak sayısını hesapla (mevcut + verilecek)
@@ -238,7 +239,7 @@ function generateSeffafReport(answers) {
     report += '=============================================\n\n';
     
     // RUTİN KONTROLLER bölümü
-    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'verilecek-plak', 'ipr-durum', 'adaptasyon', 'atasmanlar', 'lastik-tur', 'lastik-sure'].includes(key))) {
+    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'verilecek-plak', 'adaptasyon', 'atasmanlar', 'lastik-tur', 'lastik-sure'].includes(key)) || selectedInterdentalSpaces.size > 0) {
         report += 'RUTİN KONTROLLER:\n';
         report += '-----------------\n';
         
@@ -250,19 +251,17 @@ function generateSeffafReport(answers) {
             report += `• Hasta şu an ${answers['mevcut-plak']}\n`;
         }
         
-        // Seçilen bölgeleri ekle
+        // Seçilen IPR bölgelerini ekle
         const selectedTeethText = getSelectedTeethText();
         if (selectedTeethText) {
-            report += `• Kontrol edilen bölge: ${selectedTeethText}\n`;
+            report += `• IPR yapılacak bölge: ${selectedTeethText}\n`;
         }
         
         if (answers['verilecek-plak']) {
             report += `• Bu seansta ${answers['verilecek-plak']}\n`;
         }
         
-        if (answers['ipr-durum']) {
-            report += `• ${answers['ipr-durum']}\n`;
-        }
+
         
         if (answers['adaptasyon']) {
             report += `• Plak adaptasyonu: ${answers['adaptasyon']}\n`;
@@ -631,6 +630,13 @@ document.addEventListener('DOMContentLoaded', loadSavedFontSizes);
 // FDI Dental Chart Functionality
 let selectedInterdentalSpaces = new Set();
 
+// Number Input Storage
+let numberInputs = {
+    'onceki-seans': '',
+    'mevcut-plak': '',
+    'verilecek-plak': ''
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeToothSelection();
 });
@@ -679,7 +685,7 @@ function updateSelectedTeethDisplay() {
         display.textContent = 'Henüz bölge seçilmedi';
     } else {
         const sortedSpaces = Array.from(selectedInterdentalSpaces).sort();
-        display.textContent = `Dişarası: ${sortedSpaces.join(', ')}`;
+        display.textContent = `IPR: ${sortedSpaces.join(', ')}`;
     }
 }
 
@@ -691,9 +697,51 @@ function getSelectedTeethText() {
     const sortedSpaces = Array.from(selectedInterdentalSpaces).sort();
     
     if (sortedSpaces.length === 1) {
-        return `${sortedSpaces[0]} dişarası bölgesi`;
+        return `${sortedSpaces[0]} bölgesi`;
     } else {
         const lastSpace = sortedSpaces.pop();
-        return `${sortedSpaces.join(', ')} ve ${lastSpace} dişarası bölgeleri`;
+        return `${sortedSpaces.join(', ')} ve ${lastSpace} bölgeleri`;
+    }
+}
+
+// Unified Number Button Handler
+function handleUnifiedNumberButtonClick(event) {
+    const button = event.target;
+    const question = button.dataset.question;
+    const value = button.dataset.value;
+    
+    // Append digit to current input
+    if (numberInputs[question].length < 2) { // Limit to 2 digits
+        numberInputs[question] += value;
+    }
+    
+    // Update display
+    updateUnifiedNumberDisplay(question);
+    
+    // Update output
+    updateSeffafOutput();
+}
+
+// Clear Button Handler
+function handleClearButtonClick(event) {
+    const button = event.target;
+    const question = button.dataset.question;
+    
+    // Clear the input
+    numberInputs[question] = '';
+    
+    // Update display
+    updateUnifiedNumberDisplay(question);
+    
+    // Update output
+    updateSeffafOutput();
+}
+
+// Update unified number displays
+function updateUnifiedNumberDisplay(question) {
+    const displayElement = document.getElementById(question + '-display');
+    if (displayElement) {
+        const value = numberInputs[question];
+        displayElement.textContent = value || '--';
     }
 }

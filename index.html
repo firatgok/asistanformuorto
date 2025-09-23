@@ -25,12 +25,92 @@
                     <div class="form-left">
                         <h3>RUTİN KONTROLLER</h3>
                         
-                        <!-- FDI Diş Şablonu -->
+
+                        
+                        <!-- Önceki seans kaçıncı plağa kadar vermişiz -->
                         <div class="question-group">
                             <div class="question-header">
-                                <h4>Diş Seçimi (FDI Sistemi)</h4>
+                                <h4>Önceki seans kaçıncı plağa kadar vermişiz?</h4>
+                                <div class="selected-number-display">
+                                    <span>Girilen: </span>
+                                    <span id="onceki-seans-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="unified-number-selector">
+                                <div class="number-keypad">
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="1">1</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="2">2</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="3">3</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="4">4</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="5">5</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="6">6</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="7">7</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="8">8</button>
+                                    <button type="button" class="number-btn" data-question="onceki-seans" data-value="9">9</button>
+                                    <button type="button" class="number-btn zero-btn" data-question="onceki-seans" data-value="0">0</button>
+                                    <button type="button" class="clear-btn" data-question="onceki-seans">Sıfırla</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mevcut kaçıncı plakta hastamız -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Mevcut kaçıncı plakta hastamız?</h4>
+                                <div class="selected-number-display">
+                                    <span>Girilen: </span>
+                                    <span id="mevcut-plak-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="unified-number-selector">
+                                <div class="number-keypad">
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="1">1</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="2">2</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="3">3</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="4">4</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="5">5</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="6">6</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="7">7</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="8">8</button>
+                                    <button type="button" class="number-btn" data-question="mevcut-plak" data-value="9">9</button>
+                                    <button type="button" class="number-btn zero-btn" data-question="mevcut-plak" data-value="0">0</button>
+                                    <button type="button" class="clear-btn" data-question="mevcut-plak">Sıfırla</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kaç plak vereceğiz -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Kaç plak vereceğiz?</h4>
+                                <div class="selected-number-display">
+                                    <span>Girilen: </span>
+                                    <span id="verilecek-plak-display" class="number-display">--</span>
+                                </div>
+                            </div>
+                            <div class="unified-number-selector">
+                                <div class="number-keypad">
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="1">1</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="2">2</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="3">3</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="4">4</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="5">5</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="6">6</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="7">7</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="8">8</button>
+                                    <button type="button" class="number-btn" data-question="verilecek-plak" data-value="9">9</button>
+                                    <button type="button" class="number-btn zero-btn" data-question="verilecek-plak" data-value="0">0</button>
+                                    <button type="button" class="clear-btn" data-question="verilecek-plak">Sıfırla</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- IPR Seçimi -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>IPR Yapılacak Dişarası Bölgeler (FDI Sistemi)</h4>
                                 <div class="selected-teeth-display">
-                                    <span>Seçilen Bölgeler: </span>
+                                    <span>Seçilen IPR Bölgeleri: </span>
                                     <span id="selected-teeth-display" class="teeth-display">Henüz bölge seçilmedi</span>
                                 </div>
                             </div>
@@ -94,164 +174,26 @@
                                     </div>
                                     <!-- Alt Sağ Kadran (4) -->
                                     <div class="quadrant lower-right">
-                                        <span class="tooth-number">47</span>
-                                        <button class="interdental-btn" data-position="47-46">+</button>
-                                        <span class="tooth-number">46</span>
-                                        <button class="interdental-btn" data-position="46-45">+</button>
-                                        <span class="tooth-number">45</span>
-                                        <button class="interdental-btn" data-position="45-44">+</button>
-                                        <span class="tooth-number">44</span>
-                                        <button class="interdental-btn" data-position="44-43">+</button>
-                                        <span class="tooth-number">43</span>
-                                        <button class="interdental-btn" data-position="43-42">+</button>
-                                        <span class="tooth-number">42</span>
-                                        <button class="interdental-btn" data-position="42-41">+</button>
                                         <span class="tooth-number">41</span>
+                                        <button class="interdental-btn" data-position="41-42">+</button>
+                                        <span class="tooth-number">42</span>
+                                        <button class="interdental-btn" data-position="42-43">+</button>
+                                        <span class="tooth-number">43</span>
+                                        <button class="interdental-btn" data-position="43-44">+</button>
+                                        <span class="tooth-number">44</span>
+                                        <button class="interdental-btn" data-position="44-45">+</button>
+                                        <span class="tooth-number">45</span>
+                                        <button class="interdental-btn" data-position="45-46">+</button>
+                                        <span class="tooth-number">46</span>
+                                        <button class="interdental-btn" data-position="46-47">+</button>
+                                        <span class="tooth-number">47</span>
                                     </div>
                                 </div>
                                 
                                 <!-- Temizle Butonu -->
                                 <div class="dental-chart-controls">
-                                    <button class="clear-teeth-btn" type="button">Seçimi Temizle</button>
+                                    <button class="clear-teeth-btn" type="button">IPR Seçimini Temizle</button>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Önceki seans kaçıncı plağa kadar vermişiz -->
-                        <div class="question-group">
-                            <div class="question-header">
-                                <h4>Önceki seans kaçıncı plağa kadar vermişiz?</h4>
-                                <div class="selected-number-display">
-                                    <span>Seçilen: </span>
-                                    <span id="onceki-seans-display" class="number-display">--</span>
-                                </div>
-                            </div>
-                            <div class="number-selector-container">
-                                <div class="number-selector-section">
-                                    <h5>Onlar Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-onlar" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="onceki-seans-onlar" data-value="0">0</button>
-                                    </div>
-                                </div>
-                                <div class="number-selector-section">
-                                    <h5>Birler Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="onceki-seans-birler" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="onceki-seans-birler" data-value="0">0</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mevcut kaçıncı plakta hastamız -->
-                        <div class="question-group">
-                            <div class="question-header">
-                                <h4>Mevcut kaçıncı plakta hastamız?</h4>
-                                <div class="selected-number-display">
-                                    <span>Seçilen: </span>
-                                    <span id="mevcut-plak-display" class="number-display">--</span>
-                                </div>
-                            </div>
-                            <div class="number-selector-container">
-                                <div class="number-selector-section">
-                                    <h5>Onlar Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-onlar" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="mevcut-plak-onlar" data-value="0">0</button>
-                                    </div>
-                                </div>
-                                <div class="number-selector-section">
-                                    <h5>Birler Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="mevcut-plak-birler" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="mevcut-plak-birler" data-value="0">0</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Kaç plak vereceğiz -->
-                        <div class="question-group">
-                            <div class="question-header">
-                                <h4>Kaç plak vereceğiz?</h4>
-                                <div class="selected-number-display">
-                                    <span>Seçilen: </span>
-                                    <span id="verilecek-plak-display" class="number-display">--</span>
-                                </div>
-                            </div>
-                            <div class="number-selector-container">
-                                <div class="number-selector-section">
-                                    <h5>Onlar Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-onlar" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="verilecek-plak-onlar" data-value="0">0</button>
-                                    </div>
-                                </div>
-                                <div class="number-selector-section">
-                                    <h5>Birler Basamağı</h5>
-                                    <div class="number-keypad">
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="1">1</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="2">2</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="3">3</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="4">4</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="5">5</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="6">6</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="7">7</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="8">8</button>
-                                        <button type="button" class="number-btn" data-question="verilecek-plak-birler" data-value="9">9</button>
-                                        <button type="button" class="number-btn zero-btn" data-question="verilecek-plak-birler" data-value="0">0</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- IPR durumu -->
-                        <div class="question-group">
-                            <h4>Verdiğimiz plaklarda IPR var mı?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="ipr-durum" data-value="IPR mevcut">Evet</button>
-                                <button type="button" class="option-btn" data-question="ipr-durum" data-value="IPR yok">Hayır</button>
                             </div>
                         </div>
 
