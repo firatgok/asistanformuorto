@@ -267,7 +267,13 @@
                     </div>
                     
                     <div class="form-right">
-                        <h3>Değerlendirme Raporu</h3>
+                        <div class="output-header">
+                            <h3>Değerlendirme Raporu</h3>
+                            <div class="font-controls">
+                                <button class="font-btn" onclick="changeFontSize('seffaf-output', -1)" title="Yazıyı Küçült">A-</button>
+                                <button class="font-btn" onclick="changeFontSize('seffaf-output', 1)" title="Yazıyı Büyült">A+</button>
+                            </div>
+                        </div>
                         <div class="output-container">
                             <textarea id="seffaf-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
                             <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
@@ -334,7 +340,13 @@
                     </div>
                     
                     <div class="form-right">
-                        <h3>Değerlendirme Raporu</h3>
+                        <div class="output-header">
+                            <h3>Değerlendirme Raporu</h3>
+                            <div class="font-controls">
+                                <button class="font-btn" onclick="changeFontSize('tel-output', -1)" title="Yazıyı Küçült">A-</button>
+                                <button class="font-btn" onclick="changeFontSize('tel-output', 1)" title="Yazıyı Büyült">A+</button>
+                            </div>
+                        </div>
                         <div class="output-container">
                             <textarea id="tel-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
                             <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>

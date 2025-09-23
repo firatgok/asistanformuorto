@@ -550,3 +550,45 @@ document.addEventListener('change', function(e) {
 
 // Load state on page load
 document.addEventListener('DOMContentLoaded', loadSavedState);
+
+// Font size control
+let fontSizes = {
+    'seffaf-output': 14,
+    'tel-output': 14
+};
+
+function changeFontSize(elementId, delta) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    // Update font size (minimum 10px, maximum 24px)
+    fontSizes[elementId] = Math.max(10, Math.min(24, fontSizes[elementId] + delta));
+    
+    // Apply new font size
+    element.style.fontSize = fontSizes[elementId] + 'px';
+    
+    // Save to localStorage
+    localStorage.setItem('ortodonti-font-sizes', JSON.stringify(fontSizes));
+}
+
+// Load saved font sizes
+function loadSavedFontSizes() {
+    try {
+        const savedSizes = JSON.parse(localStorage.getItem('ortodonti-font-sizes') || '{}');
+        
+        Object.entries(savedSizes).forEach(([elementId, size]) => {
+            if (fontSizes.hasOwnProperty(elementId)) {
+                fontSizes[elementId] = size;
+                const element = document.getElementById(elementId);
+                if (element) {
+                    element.style.fontSize = size + 'px';
+                }
+            }
+        });
+    } catch (e) {
+        console.log('Font size loading error:', e);
+    }
+}
+
+// Load font sizes on page load
+document.addEventListener('DOMContentLoaded', loadSavedFontSizes);
