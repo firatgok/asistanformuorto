@@ -185,6 +185,51 @@ header h1 {
     background-color: #1e3d72;
 }
 
+/* Plak Değişim Buttons */
+.plak-degisim-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.plak-degisim-btn {
+    min-width: 150px;
+    min-height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 3px solid #007bff;
+    color: #007bff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.plak-degisim-btn:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+.plak-degisim-btn.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+.plak-degisim-btn.selected:hover {
+    background-color: #0056b3;
+}
+
+.plak-degisim-btn:active {
+    transform: scale(0.98);
+}
+
 /* Score Buttons */
 .score-btn {
     aspect-ratio: 1;
@@ -837,6 +882,18 @@ header h1 {
 
 /* iPad optimizations for dental chart */
 @media (max-width: 1024px) {
+    .plak-degisim-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .plak-degisim-btn {
+        min-width: 200px;
+        width: 100%;
+        max-width: 300px;
+    }
+    
     .tooth-btn {
         width: 35px;
         height: 35px;
@@ -878,6 +935,13 @@ header h1 {
 
 /* Mobile optimizations for dental chart */
 @media (max-width: 768px) {
+    .plak-degisim-btn {
+        min-width: 120px;
+        min-height: 50px;
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+    
     .tooth-btn {
         width: 28px;
         height: 28px;

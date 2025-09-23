@@ -246,7 +246,7 @@ function generateSeffafReport(answers) {
     report += '=============================================\n\n';
     
     // RUTİN KONTROLLER bölümü
-    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'verilecek-plak', 'adaptasyon', 'atasmanlar', 'lastik-tur', 'lastik-sure'].includes(key)) || selectedInterdentalSpaces.size > 0) {
+    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'verilecek-plak', 'plak-degisim', 'adaptasyon', 'atasmanlar', 'lastik-tur', 'lastik-sure'].includes(key)) || selectedInterdentalSpaces.size > 0) {
         report += 'RUTİN KONTROLLER:\n';
         report += '-----------------\n';
         
@@ -268,7 +268,9 @@ function generateSeffafReport(answers) {
             report += `• Bu seansta ${answers['verilecek-plak']}\n`;
         }
         
-
+        if (answers['plak-degisim']) {
+            report += `• ${answers['plak-degisim']}\n`;
+        }
         
         if (answers['adaptasyon']) {
             report += `• Plak adaptasyonu: ${answers['adaptasyon']}\n`;
