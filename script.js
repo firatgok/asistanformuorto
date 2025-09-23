@@ -173,16 +173,16 @@ function updateSeffafOutput() {
     if (verilecekOnlar && verilecekBirler) {
         const verilecekSayisi = parseInt(verilecekOnlar.dataset.value + verilecekBirler.dataset.value);
         
-        // Mevcut plak sayısını al
-        let mevcutPlakSayisi = 0;
-        if (mevcutOnlar && mevcutBirler) {
-            mevcutPlakSayisi = parseInt(mevcutOnlar.dataset.value + mevcutBirler.dataset.value);
+        // Önceki seansta verilen en son plak sayısını al
+        let oncekiSonPlak = 0;
+        if (oncekiOnlar && oncekiBirler) {
+            oncekiSonPlak = parseInt(oncekiOnlar.dataset.value + oncekiBirler.dataset.value);
         }
         
-        // Verilecek plak numaralarını oluştur
+        // Verilecek plak numaralarını oluştur (önceki seansın devamından)
         const verilecekPlaklar = [];
         for (let i = 1; i <= verilecekSayisi; i++) {
-            verilecekPlaklar.push(mevcutPlakSayisi + i);
+            verilecekPlaklar.push(oncekiSonPlak + i);
         }
         
         if (verilecekSayisi === 1) {
