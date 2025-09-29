@@ -295,8 +295,14 @@ function updateSeffafOutput() {
 
 // Lastik Calculation Functions
 function calculateLastikConsumption() {
+    console.log('🔍 calculateLastikConsumption başladı');
+    console.log('📋 Mevcut answers:', answers);
+    console.log('🎯 nextElasticSelections:', nextElasticSelections);
+    console.log('⚡ elasticSelections:', elasticSelections);
+    
     // Randevu kaç hafta sonra?
     const randevuText = answers['sonraki-randevu'];
+    console.log('📅 Randevu metni:', randevuText);
     if (!randevuText) {
         return { error: 'Önce randevu tarihini belirleyin' };
     }
@@ -405,10 +411,16 @@ function calculateLastikConsumption() {
 }
 
 function updateLastikCalculationDisplay() {
+    console.log('🔧 updateLastikCalculationDisplay çağrıldı');
     const display = document.getElementById('lastik-calculation-result');
-    if (!display) return;
+    if (!display) {
+        console.log('❌ lastik-calculation-result elementi bulunamadı');
+        return;
+    }
     
+    console.log('📱 Mobil hesaplama başlıyor...');
     const calculation = calculateLastikConsumption();
+    console.log('📊 Hesaplama sonucu:', calculation);
     
     if (calculation.error) {
         display.textContent = calculation.error;
