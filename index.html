@@ -114,6 +114,43 @@
                             </div>
                         </div>
 
+                        <!-- Sonraki Randevu -->
+                        <div class="question-group">
+                            <h4>Bir sonraki randevu kaç hafta sonra?</h4>
+                            <div class="randevu-buttons">
+                                <button type="button" class="randevu-btn option-btn" data-question="sonraki-randevu" data-value="2 hafta sonra">2 Hafta</button>
+                                <button type="button" class="randevu-btn option-btn" data-question="sonraki-randevu" data-value="4 hafta sonra">4 Hafta</button>
+                                <button type="button" class="randevu-btn option-btn" data-question="sonraki-randevu" data-value="6 hafta sonra">6 Hafta</button>
+                                <button type="button" class="randevu-btn option-btn" data-question="sonraki-randevu" data-value="8 hafta sonra">8 Hafta</button>
+                                <button type="button" class="randevu-manuel-btn option-btn" data-question="sonraki-randevu">Manuel Gir</button>
+                            </div>
+                            <div class="manuel-input-container" style="display: none;">
+                                <div class="manuel-input-group">
+                                    <input type="text" id="manuel-randevu-input" placeholder="Sadece sayı (örn: 3) veya tam metin (3 hafta sonra)" maxlength="50">
+                                    <button type="button" class="manuel-confirm-btn">Onayla</button>
+                                    <button type="button" class="manuel-cancel-btn">İptal</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lastik İhtiyacı -->
+                        <div class="question-group">
+                            <h4>Lastik ihtiyacı var mı?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="lastik-ihtiyac" data-value="Lastik ihtiyacı: Var">Var</button>
+                                <button type="button" class="option-btn" data-question="lastik-ihtiyac" data-value="Lastik ihtiyacı: Yok">Yok</button>
+                            </div>
+                        </div>
+
+                        <!-- Sakız İhtiyacı -->
+                        <div class="question-group">
+                            <h4>Sakız ihtiyacı var mı?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="sakiz-ihtiyac" data-value="Sakız ihtiyacı: Var">Var</button>
+                                <button type="button" class="option-btn" data-question="sakiz-ihtiyac" data-value="Sakız ihtiyacı: Yok">Yok</button>
+                            </div>
+                        </div>
+
                         <!-- IPR Seçimi -->
                         <div class="question-group">
                             <div class="question-header">
@@ -124,78 +161,91 @@
                                 </div>
                             </div>
                             <div class="fdi-dental-chart">
-                                <!-- Üst Çene -->
-                                <div class="upper-jaw">
-                                    <!-- Üst Sağ Kadran (1) -->
-                                    <div class="quadrant upper-right">
-                                        <span class="tooth-number">17</span>
-                                        <button class="interdental-btn" data-position="17-16">+</button>
-                                        <span class="tooth-number">16</span>
-                                        <button class="interdental-btn" data-position="16-15">+</button>
-                                        <span class="tooth-number">15</span>
-                                        <button class="interdental-btn" data-position="15-14">+</button>
-                                        <span class="tooth-number">14</span>
-                                        <button class="interdental-btn" data-position="14-13">+</button>
-                                        <span class="tooth-number">13</span>
-                                        <button class="interdental-btn" data-position="13-12">+</button>
-                                        <span class="tooth-number">12</span>
-                                        <button class="interdental-btn" data-position="12-11">+</button>
-                                        <span class="tooth-number">11</span>
+                                <div class="jaw-container">
+                                    <!-- Üst Çene -->
+                                    <div class="jaw-section upper-jaw-section">
+                                        <h5 class="jaw-title">Üst Çene</h5>
+                                        <div class="upper-jaw">
+                                            <!-- Üst Sağ Kadran (1) -->
+                                            <div class="quadrant upper-right">
+                                                <span class="tooth-number">17</span>
+                                                <button class="interdental-btn" data-position="17-16">+</button>
+                                                <span class="tooth-number">16</span>
+                                                <button class="interdental-btn" data-position="16-15">+</button>
+                                                <span class="tooth-number">15</span>
+                                                <button class="interdental-btn" data-position="15-14">+</button>
+                                                <span class="tooth-number">14</span>
+                                                <button class="interdental-btn" data-position="14-13">+</button>
+                                                <span class="tooth-number">13</span>
+                                                <button class="interdental-btn" data-position="13-12">+</button>
+                                                <span class="tooth-number">12</span>
+                                                <button class="interdental-btn" data-position="12-11">+</button>
+                                                <span class="tooth-number">11</span>
+                                            </div>
+                                            <!-- Üst Sol Kadran (2) -->
+                                            <div class="quadrant upper-left">
+                                                <span class="tooth-number">27</span>
+                                                <button class="interdental-btn" data-position="27-26">+</button>
+                                                <span class="tooth-number">26</span>
+                                                <button class="interdental-btn" data-position="26-25">+</button>
+                                                <span class="tooth-number">25</span>
+                                                <button class="interdental-btn" data-position="25-24">+</button>
+                                                <span class="tooth-number">24</span>
+                                                <button class="interdental-btn" data-position="24-23">+</button>
+                                                <span class="tooth-number">23</span>
+                                                <button class="interdental-btn" data-position="23-22">+</button>
+                                                <span class="tooth-number">22</span>
+                                                <button class="interdental-btn" data-position="22-21">+</button>
+                                                <span class="tooth-number">21</span>
+                                            </div>
+                                        </div>
+                                        <!-- Üst çene midline IPR -->
+                                        <div class="midline-container">
+                                            <button class="interdental-btn midline-btn" data-position="11-21">+</button>
+                                        </div>
                                     </div>
-                                    <!-- Üst Sol Kadran (2) -->
-                                    <div class="quadrant upper-left">
-                                        <span class="tooth-number">21</span>
-                                        <button class="interdental-btn" data-position="21-22">+</button>
-                                        <span class="tooth-number">22</span>
-                                        <button class="interdental-btn" data-position="22-23">+</button>
-                                        <span class="tooth-number">23</span>
-                                        <button class="interdental-btn" data-position="23-24">+</button>
-                                        <span class="tooth-number">24</span>
-                                        <button class="interdental-btn" data-position="24-25">+</button>
-                                        <span class="tooth-number">25</span>
-                                        <button class="interdental-btn" data-position="25-26">+</button>
-                                        <span class="tooth-number">26</span>
-                                        <button class="interdental-btn" data-position="26-27">+</button>
-                                        <span class="tooth-number">27</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Orta Çizgi -->
-                                <div class="midline"></div>
-                                
-                                <!-- Alt Çene -->
-                                <div class="lower-jaw">
-                                    <!-- Alt Sol Kadran (3) -->
-                                    <div class="quadrant lower-left">
-                                        <span class="tooth-number">37</span>
-                                        <button class="interdental-btn" data-position="37-36">+</button>
-                                        <span class="tooth-number">36</span>
-                                        <button class="interdental-btn" data-position="36-35">+</button>
-                                        <span class="tooth-number">35</span>
-                                        <button class="interdental-btn" data-position="35-34">+</button>
-                                        <span class="tooth-number">34</span>
-                                        <button class="interdental-btn" data-position="34-33">+</button>
-                                        <span class="tooth-number">33</span>
-                                        <button class="interdental-btn" data-position="33-32">+</button>
-                                        <span class="tooth-number">32</span>
-                                        <button class="interdental-btn" data-position="32-31">+</button>
-                                        <span class="tooth-number">31</span>
-                                    </div>
-                                    <!-- Alt Sağ Kadran (4) -->
-                                    <div class="quadrant lower-right">
-                                        <span class="tooth-number">41</span>
-                                        <button class="interdental-btn" data-position="41-42">+</button>
-                                        <span class="tooth-number">42</span>
-                                        <button class="interdental-btn" data-position="42-43">+</button>
-                                        <span class="tooth-number">43</span>
-                                        <button class="interdental-btn" data-position="43-44">+</button>
-                                        <span class="tooth-number">44</span>
-                                        <button class="interdental-btn" data-position="44-45">+</button>
-                                        <span class="tooth-number">45</span>
-                                        <button class="interdental-btn" data-position="45-46">+</button>
-                                        <span class="tooth-number">46</span>
-                                        <button class="interdental-btn" data-position="46-47">+</button>
-                                        <span class="tooth-number">47</span>
+                                    
+                                    <!-- Alt Çene -->
+                                    <div class="jaw-section lower-jaw-section">
+                                        <h5 class="jaw-title">Alt Çene</h5>
+                                        <div class="lower-jaw">
+                                            <!-- Alt Sol Kadran (3) -->
+                                            <div class="quadrant lower-left">
+                                                <span class="tooth-number">37</span>
+                                                <button class="interdental-btn" data-position="37-36">+</button>
+                                                <span class="tooth-number">36</span>
+                                                <button class="interdental-btn" data-position="36-35">+</button>
+                                                <span class="tooth-number">35</span>
+                                                <button class="interdental-btn" data-position="35-34">+</button>
+                                                <span class="tooth-number">34</span>
+                                                <button class="interdental-btn" data-position="34-33">+</button>
+                                                <span class="tooth-number">33</span>
+                                                <button class="interdental-btn" data-position="33-32">+</button>
+                                                <span class="tooth-number">32</span>
+                                                <button class="interdental-btn" data-position="32-31">+</button>
+                                                <span class="tooth-number">31</span>
+                                            </div>
+                                            <!-- Alt Sağ Kadran (4) -->
+                                            <div class="quadrant lower-right">
+                                                <span class="tooth-number">47</span>
+                                                <button class="interdental-btn" data-position="47-46">+</button>
+                                                <span class="tooth-number">46</span>
+                                                <button class="interdental-btn" data-position="46-45">+</button>
+                                                <span class="tooth-number">45</span>
+                                                <button class="interdental-btn" data-position="45-44">+</button>
+                                                <span class="tooth-number">44</span>
+                                                <button class="interdental-btn" data-position="44-43">+</button>
+                                                <span class="tooth-number">43</span>
+                                                <button class="interdental-btn" data-position="43-42">+</button>
+                                                <span class="tooth-number">42</span>
+                                                <button class="interdental-btn" data-position="42-41">+</button>
+                                                <span class="tooth-number">41</span>
+                                            </div>
+                                        </div>
+                                        <!-- Alt çene midline IPR -->
+                                        <div class="midline-container">
+                                            <button class="interdental-btn midline-btn" data-position="31-41">+</button>
+                                        </div>
                                     </div>
                                 </div>
                                 
@@ -206,47 +256,378 @@
                             </div>
                         </div>
 
+
+
+                        <!-- Mevcut Lastik Bölümü -->
+                        <div class="question-group">
+                            <h4>MEVCUT LASTİK KULLANIMI</h4>
+                            <div class="elastic-main-container">
+                                <!-- SAĞ Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn" data-direction="sag">SAĞ</button>
+                                    <!-- Sağ Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="sag-options" style="display: none;">
+                                        <!-- Sınıf II Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="sinif2">Sınıf II Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-sinif2-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif2" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif2" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif2" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Sınıf III Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="sinif3">Sınıf III Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-sinif3-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif3" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif3" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="sinif3" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cross Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="cross">Cross Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-cross-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="cross" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="cross" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sag" data-elastic-type="cross" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SOL Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn" data-direction="sol">SOL</button>
+                                    <!-- Sol Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="sol-options" style="display: none;">
+                                        <!-- Sınıf II Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="sinif2">Sınıf II Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-sinif2-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif2" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif2" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif2" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Sınıf III Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="sinif3">Sınıf III Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-sinif3-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif3" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif3" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="sinif3" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cross Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="cross">Cross Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-cross-duration">
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="cross" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="cross" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn" data-parent="sol" data-elastic-type="cross" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ÖN Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn" data-direction="on">ÖN</button>
+                                    <!-- Ön Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="on-options" style="display: none;">
+                                        <div class="elastic-sub-group">
+                                            <h5>TÜR</h5>
+                                            <div class="elastic-sub-buttons">
+                                                <button type="button" class="elastic-sub-btn" data-parent="on" data-type="tur" data-value="13-33 oblik">13-33 oblik</button>
+                                                <button type="button" class="elastic-sub-btn" data-parent="on" data-type="tur" data-value="23-43 oblik">23-43 oblik</button>
+                                            </div>
+                                        </div>
+                                        <div class="elastic-sub-group">
+                                            <h5>SÜRE</h5>
+                                            <div class="elastic-sub-buttons">
+                                                <button type="button" class="elastic-sub-btn" data-parent="on" data-type="sure" data-value="24 saat">24 saat</button>
+                                                <button type="button" class="elastic-sub-btn" data-parent="on" data-type="sure" data-value="12 saat">12 saat</button>
+                                                <button type="button" class="elastic-sub-btn" data-parent="on" data-type="sure" data-value="8 saat">8 saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <!-- Sonraki Seans Lastik Bölümü -->
+                        <div class="question-group">
+                            <h4>SONRAKİ SEANSA KADAR LASTİK KULLANIMI</h4>
+                            <div class="elastic-main-container">
+                                <!-- SAĞ Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn next-session" data-direction="sag-next">SAĞ</button>
+                                    <button type="button" class="same-elastic-btn" data-direction="sag-next">AYNI LASTİKLERLE DEVAM</button>
+                                    <!-- Sağ Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="sag-next-options" style="display: none;">
+                                        <!-- Sınıf II Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sag-next" data-elastic-type="sinif2">Sınıf II Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-next-sinif2-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif2" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif2" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif2" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Sınıf III Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sag-next" data-elastic-type="sinif3">Sınıf III Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-next-sinif3-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif3" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif3" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="sinif3" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cross Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sag-next" data-elastic-type="cross">Cross Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sag-next-cross-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="cross" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="cross" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sag-next" data-elastic-type="cross" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- SOL Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn next-session" data-direction="sol-next">SOL</button>
+                                    <button type="button" class="same-elastic-btn" data-direction="sol-next">AYNI LASTİKLERLE DEVAM</button>
+                                    <!-- Sol Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="sol-next-options" style="display: none;">
+                                        <!-- Sınıf II Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sol-next" data-elastic-type="sinif2">Sınıf II Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-next-sinif2-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif2" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif2" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif2" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Sınıf III Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sol-next" data-elastic-type="sinif3">Sınıf III Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-next-sinif3-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif3" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif3" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="sinif3" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Cross Lastik -->
+                                        <div class="elastic-type-group">
+                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-type-controls">
+                                                <button type="button" class="elastic-type-btn next-session" data-parent="sol-next" data-elastic-type="cross">Cross Seç</button>
+                                                <div class="elastic-duration-buttons" style="display: none;" id="sol-next-cross-duration">
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="cross" data-duration="24 saat">24 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="cross" data-duration="12 saat">12 saat</button>
+                                                    <button type="button" class="elastic-duration-btn next-session" data-parent="sol-next" data-elastic-type="cross" data-duration="8 saat">8 saat</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ÖN Lastik Bölümü -->
+                                <div class="elastic-direction-block">
+                                    <button type="button" class="elastic-main-btn next-session" data-direction="on-next">ÖN</button>
+                                    <button type="button" class="same-elastic-btn" data-direction="on-next">AYNI LASTİKLERLE DEVAM</button>
+                                    <!-- Ön Lastik Seçenekleri -->
+                                    <div class="elastic-sub-container" id="on-next-options" style="display: none;">
+                                        <div class="elastic-sub-group">
+                                            <h5>TÜR</h5>
+                                            <div class="elastic-sub-buttons">
+                                                <button type="button" class="elastic-sub-btn next-session" data-parent="on-next" data-type="tur" data-value="13-33 oblik">13-33 oblik</button>
+                                                <button type="button" class="elastic-sub-btn next-session" data-parent="on-next" data-type="tur" data-value="23-43 oblik">23-43 oblik</button>
+                                            </div>
+                                        </div>
+                                        <div class="elastic-sub-group">
+                                            <h5>SÜRE</h5>
+                                            <div class="elastic-sub-buttons">
+                                                <button type="button" class="elastic-sub-btn next-session" data-parent="on-next" data-type="sure" data-value="24 saat">24 saat</button>
+                                                <button type="button" class="elastic-sub-btn next-session" data-parent="on-next" data-type="sure" data-value="12 saat">12 saat</button>
+                                                <button type="button" class="elastic-sub-btn next-session" data-parent="on-next" data-type="sure" data-value="8 saat">8 saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Plak adaptasyonu -->
                         <div class="question-group">
                             <h4>Plak adaptasyonu hangi dişlerde eksik?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Adaptasyon iyi">İyi</button>
-                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Üst çenede adaptasyon eksik">Üst Çene</button>
-                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Alt çenede adaptasyon eksik">Alt Çene</button>
-                                <button type="button" class="option-btn" data-question="adaptasyon" data-value="Her iki çenede adaptasyon eksik">Her İkisi</button>
+                            <div class="fdi-chart-container">
+                                <div class="fdi-tooth-chart" id="adaptation-chart">
+                                    <div class="jaw-container">
+                                        <!-- Üst Çene Bölümü -->
+                                        <div class="jaw-section">
+                                            <div class="jaw-label">Üst Çene</div>
+                                            <div class="upper-jaw-container">
+                                                <div class="quadrant upper-right">
+                                                    <div class="tooth-btn-fdi" data-tooth="17" data-question="adaptasyon">17</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="16" data-question="adaptasyon">16</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="15" data-question="adaptasyon">15</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="14" data-question="adaptasyon">14</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="13" data-question="adaptasyon">13</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="12" data-question="adaptasyon">12</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="11" data-question="adaptasyon">11</div>
+                                                </div>
+                                                <div class="quadrant upper-left">
+                                                    <div class="tooth-btn-fdi" data-tooth="27" data-question="adaptasyon">27</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="26" data-question="adaptasyon">26</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="25" data-question="adaptasyon">25</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="24" data-question="adaptasyon">24</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="23" data-question="adaptasyon">23</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="22" data-question="adaptasyon">22</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="21" data-question="adaptasyon">21</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Alt Çene Bölümü -->
+                                        <div class="jaw-section">
+                                            <div class="jaw-label">Alt Çene</div>
+                                            <div class="lower-jaw-container">
+                                                <div class="quadrant lower-left">
+                                                    <div class="tooth-btn-fdi" data-tooth="37" data-question="adaptasyon">37</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="36" data-question="adaptasyon">36</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="35" data-question="adaptasyon">35</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="34" data-question="adaptasyon">34</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="33" data-question="adaptasyon">33</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="32" data-question="adaptasyon">32</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="31" data-question="adaptasyon">31</div>
+                                                </div>
+                                                <div class="quadrant lower-right">
+                                                    <div class="tooth-btn-fdi" data-tooth="47" data-question="adaptasyon">47</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="46" data-question="adaptasyon">46</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="45" data-question="adaptasyon">45</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="44" data-question="adaptasyon">44</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="43" data-question="adaptasyon">43</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="42" data-question="adaptasyon">42</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="41" data-question="adaptasyon">41</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-controls">
+                                    <button type="button" class="clear-selection-btn" onclick="clearToothSelection('adaptasyon')">Seçimi Temizle</button>
+                                </div>
                             </div>
                         </div>
 
                         <!-- Eksik ataşmanlar -->
                         <div class="question-group">
                             <h4>Eksik ataşmanlar neler?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Ataşmanlar tam">Eksiksiz</button>
-                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Üst çenede eksik ataşman">Üst Eksik</button>
-                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Alt çenede eksik ataşman">Alt Eksik</button>
-                                <button type="button" class="option-btn" data-question="atasmanlar" data-value="Çoklu eksik ataşman">Çoklu Eksik</button>
-                            </div>
-                        </div>
-
-                        <!-- Lastik türü -->
-                        <div class="question-group">
-                            <h4>Hangi lastikleri takıyor?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Sınıf II lastikleri">Sınıf II</button>
-                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Sınıf III lastikleri">Sınıf III</button>
-                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Çapraz lastikler">Çapraz</button>
-                                <button type="button" class="option-btn" data-question="lastik-tur" data-value="Lastik kullanmıyor">Yok</button>
-                            </div>
-                        </div>
-
-                        <!-- Lastik kullanım süresi -->
-                        <div class="question-group">
-                            <h4>Lastikleri kaç saat takması söylenmiş?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="12 saat lastik kullanımı">12 saat</button>
-                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="16 saat lastik kullanımı">16 saat</button>
-                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="20 saat lastik kullanımı">20 saat</button>
-                                <button type="button" class="option-btn" data-question="lastik-sure" data-value="Gece lastik kullanımı">Sadece Gece</button>
+                            <div class="fdi-chart-container">
+                                <div class="fdi-tooth-chart" id="attachment-chart">
+                                    <div class="jaw-container">
+                                        <!-- Üst Çene Bölümü -->
+                                        <div class="jaw-section">
+                                            <div class="jaw-label">Üst Çene</div>
+                                            <div class="upper-jaw-container">
+                                                <div class="quadrant upper-right">
+                                                    <div class="tooth-btn-fdi" data-tooth="17" data-question="atasmanlar">17</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="16" data-question="atasmanlar">16</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="15" data-question="atasmanlar">15</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="14" data-question="atasmanlar">14</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="13" data-question="atasmanlar">13</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="12" data-question="atasmanlar">12</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="11" data-question="atasmanlar">11</div>
+                                                </div>
+                                                <div class="quadrant upper-left">
+                                                    <div class="tooth-btn-fdi" data-tooth="27" data-question="atasmanlar">27</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="26" data-question="atasmanlar">26</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="25" data-question="atasmanlar">25</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="24" data-question="atasmanlar">24</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="23" data-question="atasmanlar">23</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="22" data-question="atasmanlar">22</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="21" data-question="atasmanlar">21</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Alt Çene Bölümü -->
+                                        <div class="jaw-section">
+                                            <div class="jaw-label">Alt Çene</div>
+                                            <div class="lower-jaw-container">
+                                                <div class="quadrant lower-left">
+                                                    <div class="tooth-btn-fdi" data-tooth="37" data-question="atasmanlar">37</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="36" data-question="atasmanlar">36</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="35" data-question="atasmanlar">35</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="34" data-question="atasmanlar">34</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="33" data-question="atasmanlar">33</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="32" data-question="atasmanlar">32</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="31" data-question="atasmanlar">31</div>
+                                                </div>
+                                                <div class="quadrant lower-right">
+                                                    <div class="tooth-btn-fdi" data-tooth="47" data-question="atasmanlar">47</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="46" data-question="atasmanlar">46</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="45" data-question="atasmanlar">45</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="44" data-question="atasmanlar">44</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="43" data-question="atasmanlar">43</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="42" data-question="atasmanlar">42</div>
+                                                    <div class="tooth-btn-fdi" data-tooth="41" data-question="atasmanlar">41</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-controls">
+                                    <button type="button" class="clear-selection-btn" onclick="clearToothSelection('atasmanlar')">Seçimi Temizle</button>
+                                </div>
                             </div>
                         </div>
 
@@ -307,6 +688,7 @@
                                 <button type="button" class="option-btn score-btn" data-question="agiz-hijyen" data-value="Ağız hijyeni: 10/10">10</button>
                             </div>
                         </div>
+
                     </div>
                     
                     <div class="form-right">
@@ -319,7 +701,10 @@
                         </div>
                         <div class="output-container">
                             <textarea id="seffaf-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
-                            <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
+                            <div class="output-buttons">
+                                <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
+                                <button class="clear-btn" onclick="clearOutput('seffaf-output')">🗑️ Temizle</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -392,7 +777,10 @@
                         </div>
                         <div class="output-container">
                             <textarea id="tel-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
-                            <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>
+                            <div class="output-buttons">
+                                <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>
+                                <button class="clear-btn" onclick="clearOutput('tel-output')">🗑️ Temizle</button>
+                            </div>
                         </div>
                     </div>
                 </div>
