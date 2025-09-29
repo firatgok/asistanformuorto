@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel Randevu Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .randevu-buttons {
+            margin: 20px 0;
+        }
+        .randevu-btn, .randevu-manuel-btn {
+            margin: 5px;
+            padding: 10px 15px;
+            border: 2px solid #007bff;
+            background: white;
+            color: #007bff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .randevu-btn.selected, .randevu-manuel-btn.selected {
+            background: #007bff;
+            color: white;
+        }
+        .manuel-input-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .manuel-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #manuel-randevu-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            flex: 1;
+        }
+        .manuel-confirm-btn, .manuel-cancel-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .manuel-confirm-btn {
+            background: #28a745;
+            color: white;
+        }
+        .manuel-cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manuel Randevu Giriş Testi</h1>
+    
+    <div class="randevu-buttons">
+        <button type="button" class="randevu-btn" data-question="sonraki-randevu" data-value="2 hafta sonra">2 Hafta</button>
+        <button type="button" class="randevu-btn" data-question="sonraki-randevu" data-value="4 hafta sonra">4 Hafta</button>
+        <button type="button" class="randevu-btn" data-question="sonraki-randevu" data-value="6 hafta sonra">6 Hafta</button>
+        <button type="button" class="randevu-btn" data-question="sonraki-randevu" data-value="8 hafta sonra">8 Hafta</button>
+        <button type="button" class="randevu-manuel-btn" data-question="sonraki-randevu">Manuel Gir</button>
+    </div>
+    
+    <div class="manuel-input-container" style="display: none;">
+        <div class="manuel-input-group">
+            <input type="text" id="manuel-randevu-input" placeholder="Sadece sayı (örn: 3) veya tam metin (3 hafta sonra)" maxlength="50">
+            <button type="button" class="manuel-confirm-btn">Onayla</button>
+            <button type="button" class="manuel-cancel-btn">İptal</button>
+        </div>
+    </div>
+    
+    <div id="output">Henüz randevu seçilmedi</div>
+    
+    <script>
+        let answers = {};
+        
+        function formatRandevuValue(value) {
+            const cleanValue = value.trim();
+            
+            // Check if the input is just a number (like "2", "4", "6", etc.)
+            if (/^\d+$/.test(cleanValue)) {
+                return `${cleanValue} hafta sonra`;
+            }
+            
+            // Check if it's a number followed by space and some text that doesn't contain "hafta", "gün", or "sonra"
+            const numberMatch = cleanValue.toLowerCase().match(/^(\d+)\s*(.*)$/);
+            if (numberMatch) {
+                const number = numberMatch[1];
+                const restText = numberMatch[2].trim();
+                
+                // If the rest doesn't contain time-related words, assume it's weeks
+                if (restText === '' || (!restText.includes('hafta') && !restText.includes('gün') && !restText.includes('sonra'))) {
+                    return `${number} hafta sonra`;
+                }
+            }
+            
+            return cleanValue;
+        }
+        
+        function updateOutput() {
+            const output = document.getElementById('output');
+            if (answers['sonraki-randevu']) {
+                output.textContent = `Randevu: ${answers['sonraki-randevu']}`;
+            } else {
+                output.textContent = 'Henüz randevu seçilmedi';
+            }
+        }
+        
+        function showManuelInput() {
+            const container = document.querySelector('.manuel-input-container');
+            if (container) {
+                container.style.display = 'block';
+                const input = document.getElementById('manuel-randevu-input');
+                if (input) {
+                    setTimeout(() => input.focus(), 100);
+                }
+            }
+        }
+        
+        function hideManuelInput() {
+            const container = document.querySelector('.manuel-input-container');
+            if (container) {
+                container.style.display = 'none';
+            }
+            const input = document.getElementById('manuel-randevu-input');
+            if (input) {
+                input.value = '';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Regular randevu buttons
+            const randevuButtons = document.querySelectorAll('.randevu-btn');
+            randevuButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Clear all selections
+                    document.querySelectorAll('.randevu-btn, .randevu-manuel-btn').forEach(b => b.classList.remove('selected'));
+                    hideManuelInput();
+                    
+                    // Select this button
+                    this.classList.add('selected');
+                    
+                    // Update answer
+                    answers['sonraki-randevu'] = this.dataset.value;
+                    updateOutput();
+                });
+            });
+            
+            // Manuel gir button
+            const manuelBtn = document.querySelector('.randevu-manuel-btn');
+            if (manuelBtn) {
+                manuelBtn.addEventListener('click', function() {
+                    // Clear all selections
+                    document.querySelectorAll('.randevu-btn, .randevu-manuel-btn').forEach(b => b.classList.remove('selected'));
+                    
+                    // Select manuel button
+                    this.classList.add('selected');
+                    
+                    // Show manuel input
+                    showManuelInput();
+                    
+                    // Clear existing randevu answer
+                    delete answers['sonraki-randevu'];
+                    updateOutput();
+                });
+            }
+            
+            // Manuel confirm button
+            const confirmBtn = document.querySelector('.manuel-confirm-btn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function() {
+                    const input = document.getElementById('manuel-randevu-input');
+                    const value = input.value.trim();
+                    
+                    if (value) {
+                        const formattedValue = formatRandevuValue(value);
+                        answers['sonraki-randevu'] = formattedValue;
+                        updateOutput();
+                        hideManuelInput();
+                    } else {
+                        alert('Lütfen bir değer girin');
+                    }
+                });
+            }
+            
+            // Manuel cancel button
+            const cancelBtn = document.querySelector('.manuel-cancel-btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    hideManuelInput();
+                    // Clear manuel button selection
+                    document.querySelector('.randevu-manuel-btn').classList.remove('selected');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

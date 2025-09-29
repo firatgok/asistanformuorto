@@ -79,12 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
         'mevcut-plak': '',
         'verilecek-plak': ''
     };
-    
-    // Initialize lastik calculation display
-    updateLastikCalculationDisplay();
-    
-    // Clear localStorage to ensure fresh start
-    clearAllStoredData();
 });
 
 function initializeCheckboxListeners() {
@@ -291,6 +285,9 @@ function updateSeffafOutput() {
     
     const output = generateSeffafReport(answers);
     outputElement.value = output;
+    
+    // Update lastik calculation
+    updateLastikCalculationDisplay();
 }
 
 // Lastik Calculation Functions
@@ -316,61 +313,26 @@ function calculateLastikConsumption() {
     let onCount = 0;
     
     // SAĞ taraf lastikleri say
-    if (nextElasticSelections['sag-next']) {
-        if (nextElasticSelections['sag-next'].sameAsNow) {
-            // "Aynı lastiklerle devam" seçili - mevcut SAĞ lastikleri say
-            if (elasticSelections['sag'] && elasticSelections['sag'].types) {
-                Object.keys(elasticSelections['sag'].types).forEach(type => {
-                    if (elasticSelections['sag'].types[type] && elasticSelections['sag'].types[type].selected) {
-                        sagCount++;
-                    }
-                });
+    if (nextElasticSelections['sag-next'] && nextElasticSelections['sag-next'].types) {
+        Object.keys(nextElasticSelections['sag-next'].types).forEach(type => {
+            if (nextElasticSelections['sag-next'].types[type] && nextElasticSelections['sag-next'].types[type].selected) {
+                sagCount++;
             }
-        } else if (nextElasticSelections['sag-next'].types) {
-            // Manuel seçim - sonraki seans seçimlerini say
-            Object.keys(nextElasticSelections['sag-next'].types).forEach(type => {
-                if (nextElasticSelections['sag-next'].types[type] && nextElasticSelections['sag-next'].types[type].selected) {
-                    sagCount++;
-                }
-            });
-        }
+        });
     }
     
     // SOL taraf lastikleri say
-    if (nextElasticSelections['sol-next']) {
-        if (nextElasticSelections['sol-next'].sameAsNow) {
-            // "Aynı lastiklerle devam" seçili - mevcut SOL lastikleri say
-            if (elasticSelections['sol'] && elasticSelections['sol'].types) {
-                Object.keys(elasticSelections['sol'].types).forEach(type => {
-                    if (elasticSelections['sol'].types[type] && elasticSelections['sol'].types[type].selected) {
-                        solCount++;
-                    }
-                });
+    if (nextElasticSelections['sol-next'] && nextElasticSelections['sol-next'].types) {
+        Object.keys(nextElasticSelections['sol-next'].types).forEach(type => {
+            if (nextElasticSelections['sol-next'].types[type] && nextElasticSelections['sol-next'].types[type].selected) {
+                solCount++;
             }
-        } else if (nextElasticSelections['sol-next'].types) {
-            // Manuel seçim - sonraki seans seçimlerini say
-            Object.keys(nextElasticSelections['sol-next'].types).forEach(type => {
-                if (nextElasticSelections['sol-next'].types[type] && nextElasticSelections['sol-next'].types[type].selected) {
-                    solCount++;
-                }
-            });
-        }
+        });
     }
     
     // ÖN taraf lastikleri say  
-    if (nextElasticSelections['on-next']) {
-        if (nextElasticSelections['on-next'].sameAsNow) {
-            // "Aynı lastiklerle devam" seçili - mevcut ÖN lastiği kontrol et
-            if (elasticSelections['on'] && elasticSelections['on'].active && 
-                (elasticSelections['on'].tur && elasticSelections['on'].sure)) {
-                onCount = 1;
-            }
-        } else {
-            // Manuel seçim - tur ve sure seçili mi kontrol et
-            if (nextElasticSelections['on-next'].tur && nextElasticSelections['on-next'].sure) {
-                onCount = 1;
-            }
-        }
+    if (nextElasticSelections['on-next'] && nextElasticSelections['on-next'].selected) {
+        onCount = 1;
     }
     
     // Toplam günlük kullanım
@@ -429,6 +391,9 @@ function updateLastikCalculationDisplay() {
             breakdown: calculation.breakdown
         };
     }
+    
+    // Update main output
+    updateSeffafOutput();
 }
 
 function updateOutput(checkboxes, outputElement, type) {
@@ -726,60 +691,41 @@ function generateSeffafReport(answers) {
         }
     }
     
-
-    
-    // EK İHTİYAÇLAR bölümü
-    if (answers['lastik-calculation'] || answers['sakiz-ihtiyac']) {
-        report += 'EK İHTİYAÇLAR:\n';
-        report += '-------------\n';
+    // MOTİVASYON bölümü
+    if (Object.keys(answers).some(key => ['lastik-aksama', 'plak-aksama', 'plak-temizlik', 'agiz-hijyen'].includes(key))) {
+        report += 'MOTİVASYON VE UYUM DEĞERLENDİRMESİ:\n';
+        report += '-----------------------------------\n';
         
-        // Always show lastik calculation if available
-        if (answers['lastik-calculation']) {
-            const calc = answers['lastik-calculation'];
-            const detailText = calc.details.join(', ');
-            report += `• Lastik İhtiyacı: ${calc.weeks} hafta için ${calc.totalNeeded} adet lastik pakedi gerekli (${detailText})\n`;
+        if (answers['lastik-aksama']) {
+            report += `• ${answers['lastik-aksama']}\n`;
         }
         
-        if (answers['sakiz-ihtiyac']) {
-            report += `• ${answers['sakiz-ihtiyac']}\n`;
+        if (answers['plak-aksama']) {
+            report += `• ${answers['plak-aksama']}\n`;
+        }
+        
+        if (answers['plak-temizlik']) {
+            report += `• ${answers['plak-temizlik']}\n`;
+        }
+        
+        if (answers['agiz-hijyen']) {
+            report += `• ${answers['agiz-hijyen']}\n`;
         }
         
         report += '\n';
     }
     
-    // MOTİVASYON VE UYUM DEĞERLENDİRMESİ bölümü
-    if (answers['lastik-aksama'] || answers['lastik-saat'] || answers['plak-aksama'] || answers['plak-saat'] || answers['plak-temizlik'] || answers['agiz-hijyen']) {
-        report += 'MOTİVASYON VE UYUM DEĞERLENDİRMESİ:\n';
-        report += '-----------------------------------\n';
+    // EK İHTİYAÇLAR bölümü
+    if (answers['lastik-ihtiyac'] || answers['sakiz-ihtiyac']) {
+        report += 'EK İHTİYAÇLAR:\n';
+        report += '-------------\n';
         
-        // Lastik kullanım aksama
-        if (answers['lastik-aksama']) {
-            report += `• ${answers['lastik-aksama']}\n`;
+        if (answers['lastik-ihtiyac']) {
+            report += `• ${answers['lastik-ihtiyac']}\n`;
         }
         
-        // Lastik kullanım saati
-        if (answers['lastik-saat']) {
-            report += `• Lastik kullanım süresi: ${answers['lastik-saat']}\n`;
-        }
-        
-        // Plak aksama
-        if (answers['plak-aksama']) {
-            report += `• ${answers['plak-aksama']}\n`;
-        }
-        
-        // Plak kullanım saati
-        if (answers['plak-saat']) {
-            report += `• Plak kullanım süresi: ${answers['plak-saat']}\n`;
-        }
-        
-        // Plak temizlik
-        if (answers['plak-temizlik']) {
-            report += `• ${answers['plak-temizlik']}\n`;
-        }
-        
-        // Ağız hijyeni
-        if (answers['agiz-hijyen']) {
-            report += `• ${answers['agiz-hijyen']}\n`;
+        if (answers['sakiz-ihtiyac']) {
+            report += `• ${answers['sakiz-ihtiyac']}\n`;
         }
         
         report += '\n';
@@ -790,12 +736,8 @@ function generateSeffafReport(answers) {
     report += '--------------------\n';
     
     // Otomatik öneriler
-    if (answers['plak-saat'] && answers['plak-saat'].includes('Yetersiz')) {
+    if (answers['plak-aksama'] && answers['plak-aksama'].includes('10 saatten az')) {
         report += '• Hasta motivasyonu artırılmalı, plak kullanım süresi yetersiz\n';
-    }
-    
-    if (answers['plak-aksama'] && (answers['plak-aksama'].includes('ciddi aksama') || answers['plak-aksama'].includes('Kullanmıyor'))) {
-        report += '• Plak kullanım motivasyonu artırılmalı, hasta eğitimi tekrarlanmalı\n';
     }
     
     if (answers['plak-temizlik'] && (answers['plak-temizlik'].includes('1/10') || answers['plak-temizlik'].includes('2/10') || answers['plak-temizlik'].includes('3/10'))) {
@@ -941,8 +883,6 @@ function initializeToothCharts() {
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeToothCharts();
-    // Initialize randevu buttons
-    initializeRandevuButtons();
 });
 
 function toggleToothSelection(button) {
@@ -1074,15 +1014,6 @@ function clearAllSeffafSelections() {
     
     // Clear motivasyon sorularını da answers'dan sil
     clearMotivasyonAnswers();
-    
-    // Clear lastik calculations
-    clearLastikCalculations();
-    
-    // Clear randevu inputs
-    clearRandevuInputs();
-    
-    // Clear IPR duration calculations
-    clearIPRDurationCalculations();
     
     // Update output
     updateSeffafOutput();
@@ -1286,6 +1217,12 @@ function clearRutinKontroller() {
 }
 
 function clearEkIhtiyaclar() {
+    // Clear lastik ihtiyacı buttons
+    const lastikButtons = document.querySelectorAll('[data-question="lastik-ihtiyac"].option-btn.selected');
+    lastikButtons.forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
     // Clear sakız ihtiyacı buttons  
     const sakizButtons = document.querySelectorAll('[data-question="sakiz-ihtiyac"].option-btn.selected');
     sakizButtons.forEach(btn => {
@@ -1293,78 +1230,13 @@ function clearEkIhtiyaclar() {
     });
     
     // Clear from answers object
+    delete answers['lastik-ihtiyac'];
     delete answers['sakiz-ihtiyac'];
-}
-
-function clearLastikCalculations() {
-    // Clear lastik calculation display
-    const lastikCalculationDisplay = document.getElementById('lastik-calculation-display');
-    if (lastikCalculationDisplay) {
-        lastikCalculationDisplay.innerHTML = '';
-        lastikCalculationDisplay.style.display = 'none';
-    }
-    
-    // Clear lastik result display in output
-    const lastikResult = document.querySelector('.lastik-result');
-    if (lastikResult) {
-        lastikResult.remove();
-    }
-}
-
-function clearRandevuInputs() {
-    // Clear randevu number input
-    const randevuInput = document.getElementById('randevu-sayisi');
-    if (randevuInput) {
-        randevuInput.value = '';
-    }
-    
-    // Clear manuel randevu input
-    const manuelRandevuInput = document.getElementById('manuel-randevu');
-    if (manuelRandevuInput) {
-        manuelRandevuInput.value = '';
-    }
-    
-    // Clear randevu preview
-    const randevuPreview = document.getElementById('randevu-preview');
-    if (randevuPreview) {
-        randevuPreview.innerHTML = '';
-    }
-    
-    // Clear from answers object
-    delete answers['randevu-sayisi'];
-    delete answers['manuel-randevu'];
-}
-
-function clearIPRDurationCalculations() {
-    // Clear IPR duration display
-    const iprDurationDisplay = document.getElementById('ipr-duration-display');
-    if (iprDurationDisplay) {
-        iprDurationDisplay.innerHTML = '';
-        iprDurationDisplay.style.display = 'none';
-    }
-    
-    // Clear duration method selection
-    const durationButtons = document.querySelectorAll('.duration-method-btn.selected');
-    durationButtons.forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    
-    // Clear manual duration input
-    const manualDurationInput = document.getElementById('manual-duration');
-    if (manualDurationInput) {
-        manualDurationInput.value = '';
-    }
-    
-    // Clear duration result display
-    const durationResult = document.getElementById('duration-result');
-    if (durationResult) {
-        durationResult.innerHTML = '';
-    }
 }
 
 function clearMotivasyonAnswers() {
     // Clear motivasyon related answers that are set by option buttons
-    const motivasyonKeys = ['lastik-aksama', 'lastik-saat', 'plak-aksama', 'plak-saat', 'plak-temizlik', 'agiz-hijyen'];
+    const motivasyonKeys = ['lastik-aksama', 'plak-aksama', 'plak-temizlik', 'agiz-hijyen'];
     
     motivasyonKeys.forEach(key => {
         delete answers[key];
@@ -1423,9 +1295,6 @@ document.addEventListener('keydown', function(e) {
 
 // Auto-save functionality (optional - stores in localStorage)
 function autoSave() {
-    // Auto-save devre dışı - her açılışta temiz başlangıç için
-    return;
-    
     const seffafButtons = document.querySelectorAll('#seffaf-plak .option-btn.selected');
     const seffafNumbers = document.querySelectorAll('#seffaf-plak .number-btn.selected');
     const telCheckboxes = document.querySelectorAll('input[name="tel"]');
@@ -1509,19 +1378,7 @@ document.addEventListener('change', function(e) {
 });
 
 // Load state on page load
-// document.addEventListener('DOMContentLoaded', loadSavedState); // Devre dışı - ilk açılışta hiçbir şey seçili olmasın
-
-// Clear all stored data for fresh start
-function clearAllStoredData() {
-    try {
-        localStorage.removeItem('ortodonti-seffaf-state');
-        localStorage.removeItem('ortodonti-tel-state');
-        // Don't clear font sizes as user preferences should persist
-        // localStorage.removeItem('ortodonti-font-sizes');
-    } catch (e) {
-        console.log('LocalStorage temizlenirken hata:', e);
-    }
-}
+document.addEventListener('DOMContentLoaded', loadSavedState);
 
 // Font size control
 let fontSizes = {
@@ -2085,9 +1942,6 @@ function updateElasticReport() {
         delete answers['sonraki-lastik'];
     }
     
-    // Update lastik calculation when elastic selections change
-    updateLastikCalculationDisplay();
-    
     // Şeffaf plak sekmesi rapor güncellemesi
     updateSeffafOutput();
 }
@@ -2175,8 +2029,6 @@ function initializeRandevuButtons() {
             const value = this.dataset.value;
             answers[question] = value;
             
-            // Update lastik calculation
-            updateLastikCalculationDisplay();
             updateSeffafOutput();
         });
     });
@@ -2210,9 +2062,6 @@ function initializeRandevuButtons() {
                 
                 // Update answers
                 answers['sonraki-randevu'] = formattedValue;
-                
-                // Update lastik calculation
-                updateLastikCalculationDisplay();
                 updateSeffafOutput();
                 
                 // Show success feedback

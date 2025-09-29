@@ -133,12 +133,11 @@
                             </div>
                         </div>
 
-                        <!-- Lastik İhtiyacı -->
+                        <!-- Lastik Hesaplama -->
                         <div class="question-group">
-                            <h4>Lastik ihtiyacı var mı?</h4>
-                            <div class="button-group">
-                                <button type="button" class="option-btn" data-question="lastik-ihtiyac" data-value="Lastik ihtiyacı: Var">Var</button>
-                                <button type="button" class="option-btn" data-question="lastik-ihtiyac" data-value="Lastik ihtiyacı: Yok">Yok</button>
+                            <h4>Lastik İhtiyacı</h4>
+                            <div class="lastik-calculation-display">
+                                <div id="lastik-calculation-result">Lastik hesaplaması için sonraki seans lastiklerini seçin</div>
                             </div>
                         </div>
 
@@ -148,6 +147,38 @@
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="sakiz-ihtiyac" data-value="Sakız ihtiyacı: Var">Var</button>
                                 <button type="button" class="option-btn" data-question="sakiz-ihtiyac" data-value="Sakız ihtiyacı: Yok">Yok</button>
+                            </div>
+                        </div>
+
+                        <!-- IPR Sayısı -->
+                        <div class="question-group">
+                            <h4>Bir sonraki seans kaç adet IPR yapılacak?</h4>
+                            <div class="ipr-count-container">
+                                <div class="ipr-input-group">
+                                    <input type="number" id="ipr-count-input" placeholder="IPR sayısı (örn: 4)" min="0" max="50" maxlength="2">
+                                    <span class="ipr-duration-display" id="ipr-duration-display">Tahmini süre hesaplanacak</span>
+                                </div>
+                                <div class="ipr-algorithm-info">
+                                    <small>• 1-3 IPR: 20 dakika | 4-6 IPR: 30 dakika | 7-10 IPR: 45 dakika | 10+ IPR: 60 dakika</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Randevu Süresi -->
+                        <div class="question-group">
+                            <h4>Bir sonraki randevu süresi?</h4>
+                            <div class="duration-method-buttons">
+                                <button type="button" class="duration-method-btn option-btn" data-method="auto">IPR'den Otomatik Al</button>
+                                <button type="button" class="duration-method-btn option-btn" data-method="manual">Manuel Gir</button>
+                            </div>
+                            <div class="duration-input-container" style="display: none;">
+                                <div class="duration-input-group">
+                                    <input type="number" id="manual-duration-input" placeholder="Süre (dakika)" min="5" max="120" maxlength="3">
+                                    <span class="duration-unit">dakika</span>
+                                </div>
+                            </div>
+                            <div class="duration-result-display">
+                                <span id="duration-result">Süre hesaplama yöntemi seçin</span>
                             </div>
                         </div>
 
@@ -251,7 +282,7 @@
                                 
                                 <!-- Temizle Butonu -->
                                 <div class="dental-chart-controls">
-                                    <button class="clear-teeth-btn" type="button">IPR Seçimini Temizle</button>
+                                    <button class="clear-teeth-btn" type="button">Temizle</button>
                                 </div>
                             </div>
                         </div>
@@ -631,11 +662,11 @@
                             </div>
                         </div>
 
-                        <h3 class="section-title">MOTİVASYON</h3>
+                        <h3 class="section-title">MOTİVASYON VE UYUM DEĞERLENDİRMESİ</h3>
 
                         <!-- Lastik aksama -->
                         <div class="question-group">
-                            <h4>Lastik kullanımında aksama var mı? Ortalama kaç saat takıyor?</h4>
+                            <h4>Lastik kullanımında aksama var mı?</h4>
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımı düzenli">Düzenli</button>
                                 <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımında hafif aksama">Hafif Aksama</button>
@@ -644,14 +675,36 @@
                             </div>
                         </div>
 
+                        <!-- Lastik kullanım saati -->
+                        <div class="question-group">
+                            <h4>Lastikleri ortalama kaç saat takıyor?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="lastik-saat" data-value="Verilen saate uygun">Verilen saate uygun</button>
+                                <button type="button" class="option-btn" data-question="lastik-saat" data-value="Verilen saatin 2/3'ü kadar">Verilen saatin 2/3'ü kadar</button>
+                                <button type="button" class="option-btn" data-question="lastik-saat" data-value="Verilen saatin 1/2'si kadar">Verilen saatin 1/2'si kadar</button>
+                                <button type="button" class="option-btn" data-question="lastik-saat" data-value="Verilen saatin 1/3'ü kadar">Verilen saatin 1/3'ü kadar</button>
+                            </div>
+                        </div>
+
                         <!-- Plak aksama -->
                         <div class="question-group">
-                            <h4>Plak kullanımında aksama var mı? Ortalama kaç saat takıyor?</h4>
+                            <h4>Plak kullanımında aksama var mı?</h4>
                             <div class="button-group">
-                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 20+ saat">Çok İyi (20+)</button>
-                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 15-20 saat">İyi (15-20)</button>
-                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 10-15 saat">Orta (10-15)</button>
-                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı 10 saatten az">Yetersiz (<10)</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı düzenli">Düzenli</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımında hafif aksama">Hafif Aksama</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımında ciddi aksama">Ciddi Aksama</button>
+                                <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanmıyor">Kullanmıyor</button>
+                            </div>
+                        </div>
+
+                        <!-- Plak kullanım saati -->
+                        <div class="question-group">
+                            <h4>Plakları ortalama kaç saat takıyor?</h4>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="plak-saat" data-value="Çok İyi (20-22 saat)">Çok İyi (20-22)</button>
+                                <button type="button" class="option-btn" data-question="plak-saat" data-value="İyi (18-20 saat)">İyi (18-20)</button>
+                                <button type="button" class="option-btn" data-question="plak-saat" data-value="Kötü (16-18 saat)">Kötü (16-18)</button>
+                                <button type="button" class="option-btn" data-question="plak-saat" data-value="Çok Kötü (16 saat altı)">Çok Kötü (16 Altı)</button>
                             </div>
                         </div>
 

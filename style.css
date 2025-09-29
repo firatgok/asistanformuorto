@@ -377,6 +377,158 @@ header h1 {
     transform: translateY(-1px);
 }
 
+/* IPR Count Styles */
+.ipr-count-container {
+    margin-top: 10px;
+}
+
+.ipr-input-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 8px;
+}
+
+#ipr-count-input {
+    width: 120px;
+    padding: 8px 12px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: border-color 0.2s ease;
+}
+
+#ipr-count-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.ipr-duration-display {
+    font-weight: 600;
+    color: #007bff;
+    font-size: 14px;
+    padding: 6px 12px;
+    background: #e3f2fd;
+    border-radius: 20px;
+    border: 1px solid #bbdefb;
+}
+
+.ipr-algorithm-info {
+    margin-top: 5px;
+}
+
+.ipr-algorithm-info small {
+    color: #666;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Duration Method Styles */
+.duration-method-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.duration-method-btn {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #007bff;
+    background: white;
+    color: #007bff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.duration-method-btn:hover {
+    background: #f8f9fa;
+    transform: translateY(-1px);
+}
+
+.duration-method-btn.selected {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.duration-input-container {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.duration-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#manual-duration-input {
+    width: 100px;
+    padding: 8px 12px;
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    transition: border-color 0.2s ease;
+}
+
+#manual-duration-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.duration-unit {
+    font-weight: 500;
+    color: #495057;
+}
+
+.duration-result-display {
+    padding: 12px;
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 6px;
+    text-align: center;
+}
+
+#duration-result {
+    font-weight: 600;
+    color: #007bff;
+    font-size: 14px;
+}
+
+/* Lastik Calculation Styles */
+.lastik-calculation-display {
+    margin-top: 10px;
+    padding: 12px;
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+}
+
+#lastik-calculation-result {
+    font-weight: 600;
+    color: #856404;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+#lastik-calculation-result.has-calculation {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    padding: 8px;
+    border-radius: 4px;
+}
+
 /* Score Buttons */
 .score-btn {
     aspect-ratio: 1;
@@ -1360,14 +1512,14 @@ header h1 {
 /* FDI Dental Chart Styles */
 .fdi-dental-chart {
     background-color: #f8f9fa;
-    border-radius: 4px;
-    padding: 20px;
-    margin: 5px 0px 90px 0px;
-    border: 1px solid #e9ecef;
-    transform: scale(1.0);
-    transform-origin: top left;
-    width: 90%;
-    max-width: 90%;
+    border-radius: 10px;
+    padding: 40px;
+    margin: 15px 0px 150px 0px;
+    border: 3px solid #e9ecef;
+    transform: scale(1.5);
+    transform-origin: top center;
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -1387,10 +1539,10 @@ header h1 {
 }
 
 .jaw-title {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     color: #495057;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
@@ -1409,19 +1561,19 @@ header h1 {
 }
 
 .upper-right {
-    margin-right: 2px;
+    margin-right: 8px;
 }
 
 .upper-left {
-    margin-left: 2px;
+    margin-left: 8px;
 }
 
 .lower-left {
-    margin-right: 2px;
+    margin-right: 8px;
 }
 
 .lower-right {
-    margin-left: 2px;
+    margin-left: 8px;
 }
 
 .tooth-btn {
@@ -1461,27 +1613,27 @@ header h1 {
 }
 
 .tooth-number {
-    width: 32px;
-    height: 32px;
+    width: 56px;
+    height: 56px;
     background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    font-size: 11px;
+    border: 3px solid #dee2e6;
+    border-radius: 10px;
+    font-size: 18px;
     font-weight: bold;
     color: #495057;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2px;
+    margin: 6px;
 }
 
 .interdental-btn {
-    width: 24px;
-    height: 24px;
+    width: 44px;
+    height: 44px;
     background-color: #ffc107;
-    border: 1px solid #ffb300;
+    border: 3px solid #ffb300;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 22px;
     font-weight: bold;
     color: #333;
     cursor: pointer;
@@ -1489,7 +1641,7 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2px;
+    margin: 6px;
     align-self: center;
 }
 
@@ -1572,19 +1724,21 @@ header h1 {
 
 .dental-chart-controls {
     text-align: center;
-    margin-top: 8px;
+    margin-top: 20px;
 }
 
 .clear-teeth-btn {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
+    padding: 16px 32px;
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: bold;
     transition: all 0.3s ease;
+    min-height: 60px;
+    min-width: 140px;
 }
 
 .clear-teeth-btn:hover {
