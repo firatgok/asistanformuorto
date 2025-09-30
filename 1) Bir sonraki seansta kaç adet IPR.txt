@@ -1,0 +1,11 @@
+1) Bir sonraki seansta kaç adet IPR yapılacak?
+
+2) Bir sonraki seans kaç dakika olacak?
+
+a) Manuel gir
+
+b) IPR'a göre otomatik hesapla
+
+3) Serbest not kısmı ekleme
+
+4) Lastiklerin takılma şeklini hatırlatıcı konabilir.
