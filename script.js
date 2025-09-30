@@ -2588,8 +2588,7 @@ function openImageModal(elasticType) {
     
     switch(elasticType) {
         case 'sinif2':
-            // Using base64 encoded image for Sınıf II elastic
-            imageSrc = 'data:image/jpeg;base64,' + getSinif2ImageData();
+            imageSrc = 'images/sinif2-lastik.jpg';
             title = 'Sınıf II Elastik Takma Yöntemi';
             break;
         case 'sinif3':
@@ -2604,6 +2603,16 @@ function openImageModal(elasticType) {
             imageSrc = 'images/placeholder.jpg';
             title = 'Elastik Takma Yöntemi';
     }
+    
+    // Add error handling for image loading
+    modalImage.onerror = function() {
+        console.log('Resim yüklenemedi:', imageSrc);
+        modalTitle.textContent = title + ' (Resim yüklenemedi)';
+    };
+    
+    modalImage.onload = function() {
+        console.log('Resim başarıyla yüklendi:', imageSrc);
+    };
     
     modalImage.src = imageSrc;
     modalTitle.textContent = title;
@@ -2634,10 +2643,5 @@ function handleModalKeydown(e) {
     }
 }
 
-// Base64 encoded image data for Sınıf II elastic (placeholder - will be replaced with real image)
-function getSinif2ImageData() {
-    // This is a placeholder - you would replace this with the actual base64 data of your image
-    // For now, we'll use a simple data URL that creates a small colored rectangle
-    return 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
-}
+
 
