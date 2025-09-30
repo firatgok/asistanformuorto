@@ -2218,3 +2218,61 @@ header h1 {
         backdrop-filter: blur(10px);
     }
 }
+
+/* Elastic Status Styles */
+.elastic-status-container {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.elastic-status-btn {
+    min-width: 120px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.elastic-status-btn[data-status="evet"].selected {
+    background: linear-gradient(135deg, var(--success-600), var(--success-500));
+    border-color: var(--success-400);
+    color: white;
+}
+
+.elastic-status-btn[data-status="evet"].selected:hover {
+    background: linear-gradient(135deg, var(--success-700), var(--success-600));
+    border-color: var(--success-300);
+}
+
+.elastic-status-btn[data-status="hayir"].selected {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border-color: #bd2130;
+    color: white;
+}
+
+.elastic-status-btn[data-status="hayir"].selected:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130);
+    border-color: #a71e2a;
+}
+
+.elastic-status-note {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    border: 1px solid var(--primary-200);
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-500);
+}
+
+.elastic-status-note p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--primary-700);
+    line-height: 1.4;
+}
+
+.elastic-status-note strong {
+    color: var(--primary-800);
+}

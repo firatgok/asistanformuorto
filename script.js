@@ -225,6 +225,13 @@ function updateSeffafOutput() {
     // Reset answers for selected buttons only (keep FDI tooth data)
     const tempAnswers = {};
     
+    // Check elastic status
+    const elasticStatusSelected = document.querySelector('.elastic-status-btn.selected');
+    if (elasticStatusSelected) {
+        const status = elasticStatusSelected.dataset.status;
+        tempAnswers['elastic-status'] = status === 'evet' ? 'Hasta lastiklerini takmıştır' : 'Hasta lastiklerini takmamıştır';
+    }
+    
     // Handle regular option buttons
     selectedButtons.forEach(button => {
         const question = button.dataset.question;
@@ -1037,6 +1044,12 @@ function clearOutput(elementId) {
 }
 
 function clearAllSeffafSelections() {
+    // Clear elastic status buttons
+    const elasticStatusButtons = document.querySelectorAll('.elastic-status-btn.selected');
+    elasticStatusButtons.forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
     // Clear all checkboxes in şeffaf plak tab
     const seffafTab = document.getElementById('seffaf-plak');
     const checkboxes = seffafTab.querySelectorAll('input[type="checkbox"]');
@@ -1101,6 +1114,12 @@ function clearAllSeffafSelections() {
 }
 
 function clearAllTelSelections() {
+    // Clear elastic status buttons
+    const elasticStatusButtons = document.querySelectorAll('.elastic-status-btn.selected');
+    elasticStatusButtons.forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
     // Clear all checkboxes in tel tedavisi tab
     const telTab = document.getElementById('tel-tedavisi');
     const checkboxes = telTab.querySelectorAll('input[type="checkbox"]');
@@ -2110,6 +2129,14 @@ function updateTelOutput() {
 
     let report = [];
     
+    // Check elastic status
+    const elasticStatusSelected = document.querySelector('.elastic-status-btn.selected');
+    if (elasticStatusSelected) {
+        const status = elasticStatusSelected.dataset.status;
+        report.push(status === 'evet' ? '• Hasta lastiklerini takmıştır' : '• Hasta lastiklerini takmamıştır');
+        report.push(''); // Boş satır ekle
+    }
+    
     // Tel tedavisi sekmesinden seçilen tüm seçenekleri topla
     const telTab = document.getElementById('tel-tedavisi');
     if (!telTab) return;
@@ -2645,6 +2672,29 @@ function handleModalKeydown(e) {
     if (e.key === 'Escape') {
         closeImageModal();
     }
+}
+
+// Elastic Status Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    initializeElasticStatusButtons();
+});
+
+function initializeElasticStatusButtons() {
+    const elasticStatusButtons = document.querySelectorAll('.elastic-status-btn');
+    
+    elasticStatusButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Clear all elastic status selections
+            elasticStatusButtons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Select clicked button
+            this.classList.add('selected');
+            
+            // Update report if needed
+            updateSeffafOutput();
+            updateTelOutput();
+        });
+    });
 }
 
 
