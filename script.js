@@ -2599,6 +2599,10 @@ function openImageModal(elasticType) {
             imageSrc = 'images/cross-lastik.jpg';
             title = 'Cross Elastik Takma Yöntemi';
             break;
+        case 'on-oblik':
+            imageSrc = 'images/on-oblik-lastik.jpg';
+            title = 'Ön Oblik Lastik Takma Yöntemi';
+            break;
         default:
             imageSrc = 'images/placeholder.jpg';
             title = 'Elastik Takma Yöntemi';
