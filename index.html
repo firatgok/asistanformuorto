@@ -300,7 +300,10 @@
                                     <div class="elastic-sub-container" id="sag-options" style="display: none;">
                                         <!-- Sınıf II Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>SINIF II LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('sinif2')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="sinif2">Sınıf II Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sag-sinif2-duration">
@@ -313,7 +316,10 @@
                                         
                                         <!-- Sınıf III Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>SINIF III LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('sinif3')" title="Sınıf III Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="sinif3">Sınıf III Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sag-sinif3-duration">
@@ -326,7 +332,10 @@
                                         
                                         <!-- Cross Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>CROSS LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('cross')" title="Cross Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sag" data-elastic-type="cross">Cross Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sag-cross-duration">
@@ -346,7 +355,10 @@
                                     <div class="elastic-sub-container" id="sol-options" style="display: none;">
                                         <!-- Sınıf II Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>SINIF II LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('sinif2')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="sinif2">Sınıf II Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sol-sinif2-duration">
@@ -359,7 +371,10 @@
                                         
                                         <!-- Sınıf III Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>SINIF III LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>SINIF III LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('sinif3')" title="Sınıf III Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="sinif3">Sınıf III Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sol-sinif3-duration">
@@ -372,7 +387,10 @@
                                         
                                         <!-- Cross Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>CROSS LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>CROSS LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('cross')" title="Cross Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn" data-parent="sol" data-elastic-type="cross">Cross Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sol-cross-duration">
@@ -424,7 +442,10 @@
                                     <div class="elastic-sub-container" id="sag-next-options" style="display: none;">
                                         <!-- Sınıf II Lastik -->
                                         <div class="elastic-type-group">
-                                            <h5>SINIF II LASTİK</h5>
+                                            <div class="elastic-title-container">
+                                                <h5>SINIF II LASTİK</h5>
+                                                <button type="button" class="photo-btn" onclick="openImageModal('sinif2')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+                                            </div>
                                             <div class="elastic-type-controls">
                                                 <button type="button" class="elastic-type-btn next-session" data-parent="sag-next" data-elastic-type="sinif2">Sınıf II Seç</button>
                                                 <div class="elastic-duration-buttons" style="display: none;" id="sag-next-sinif2-duration">
@@ -838,6 +859,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <div class="image-modal-content">
+            <button class="modal-close" onclick="closeImageModal()">&times;</button>
+            <img id="modalImage" class="modal-image" src="" alt="">
+            <div id="modalTitle" class="modal-title"></div>
         </div>
     </div>
 

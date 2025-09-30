@@ -2576,3 +2576,68 @@ function initializeDurationMethod() {
     }
 }
 
+// Image Modal Functions
+function openImageModal(elasticType) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    
+    // Set image source and title based on elastic type
+    let imageSrc = '';
+    let title = '';
+    
+    switch(elasticType) {
+        case 'sinif2':
+            // Using base64 encoded image for Sınıf II elastic
+            imageSrc = 'data:image/jpeg;base64,' + getSinif2ImageData();
+            title = 'Sınıf II Elastik Takma Yöntemi';
+            break;
+        case 'sinif3':
+            imageSrc = 'images/sinif3-lastik.jpg';
+            title = 'Sınıf III Elastik Takma Yöntemi';
+            break;
+        case 'cross':
+            imageSrc = 'images/cross-lastik.jpg';
+            title = 'Cross Elastik Takma Yöntemi';
+            break;
+        default:
+            imageSrc = 'images/placeholder.jpg';
+            title = 'Elastik Takma Yöntemi';
+    }
+    
+    modalImage.src = imageSrc;
+    modalTitle.textContent = title;
+    modal.style.display = 'block';
+    
+    // Add event listener for clicking outside modal
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeImageModal();
+        }
+    });
+    
+    // Add event listener for ESC key
+    document.addEventListener('keydown', handleModalKeydown);
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    
+    // Remove event listeners
+    document.removeEventListener('keydown', handleModalKeydown);
+}
+
+function handleModalKeydown(e) {
+    if (e.key === 'Escape') {
+        closeImageModal();
+    }
+}
+
+// Base64 encoded image data for Sınıf II elastic (placeholder - will be replaced with real image)
+function getSinif2ImageData() {
+    // This is a placeholder - you would replace this with the actual base64 data of your image
+    // For now, we'll use a simple data URL that creates a small colored rectangle
+    return 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+}
+
