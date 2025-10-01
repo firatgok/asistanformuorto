@@ -2697,5 +2697,80 @@ function initializeElasticStatusButtons() {
     });
 }
 
+// Theme System
+function initializeTheme() {
+    // Check for saved theme preference or default to system preference
+    const savedTheme = localStorage.getItem('orthodontic-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    // Auto set theme based on time if no saved preference
+    if (!savedTheme) {
+        const currentHour = new Date().getHours();
+        // Dark mode between 6 PM (18) and 6 AM (6)
+        const autoTheme = (currentHour >= 18 || currentHour < 6) ? 'dark' : 'light';
+        setTheme(autoTheme);
+    } else {
+        setTheme(savedTheme);
+    }
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('orthodontic-theme')) {
+            setTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+}
+
+function setTheme(theme) {
+    // Apply theme to document
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    // Save preference
+    localStorage.setItem('orthodontic-theme', theme);
+    
+    // Update button states
+    updateThemeButtons(theme);
+    
+    // Smooth transition
+    document.body.style.transition = 'all 0.3s ease';
+    setTimeout(() => {
+        document.body.style.transition = '';
+    }, 300);
+}
+
+function updateThemeButtons(activeTheme) {
+    // Update all theme buttons
+    const lightButtons = document.querySelectorAll('#light-btn, #light-btn-2');
+    const darkButtons = document.querySelectorAll('#dark-btn, #dark-btn-2');
+    
+    lightButtons.forEach(btn => {
+        btn.classList.toggle('active', activeTheme === 'light');
+    });
+    
+    darkButtons.forEach(btn => {
+        btn.classList.toggle('active', activeTheme === 'dark');
+    });
+}
+
+// Auto theme based on time
+function autoSetThemeByTime() {
+    const currentHour = new Date().getHours();
+    // Dark mode between 6 PM (18) and 6 AM (6)
+    const autoTheme = (currentHour >= 18 || currentHour < 6) ? 'dark' : 'light';
+    
+    // Only auto-set if user hasn't manually set a preference
+    if (!localStorage.getItem('orthodontic-theme')) {
+        setTheme(autoTheme);
+    }
+}
+
+// Initialize theme system when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    
+    // Auto-update theme every hour
+    setInterval(autoSetThemeByTime, 3600000); // 1 hour = 3600000 ms
+});
+
 
 
