@@ -326,30 +326,30 @@ header h1 {
     font-weight: bold;
     padding: 10px 20px;
     border-radius: 8px;
-    background-color: #ffffff;
-    border: 2px solid #007bff;
-    color: #007bff;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--primary-500);
+    color: var(--primary-500);
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
 
 .plak-degisim-btn:hover {
-    background-color: #e3f2fd;
+    background-color: var(--hover-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
 }
 
 .plak-degisim-btn.selected {
-    background-color: #007bff;
+    background-color: var(--primary-500);
     color: white;
-    border-color: #0056b3;
+    border-color: var(--primary-600);
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
 }
 
 .plak-degisim-btn.selected:hover {
-    background-color: #0056b3;
+    background-color: var(--primary-600);
 }
 
 .plak-degisim-btn:active {
@@ -439,11 +439,11 @@ header h1 {
     border-radius: 12px;
     font-size: 14px;
     font-family: var(--font-primary);
-    background: linear-gradient(135deg, var(--gray-50), white);
+    background: var(--bg-secondary);
     backdrop-filter: blur(10px);
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    color: var(--gray-700);
+    color: var(--text-primary);
     box-shadow: var(--shadow-sm);
 }
 
@@ -537,15 +537,17 @@ header h1 {
 #ipr-count-input {
     width: 120px;
     padding: 8px 12px;
-    border: 2px solid #ced4da;
+    border: 2px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
     text-align: center;
     transition: border-color 0.2s ease;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 #ipr-count-input:focus {
-    border-color: #007bff;
+    border-color: var(--primary-500);
     outline: none;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -618,15 +620,17 @@ header h1 {
 #manual-duration-input {
     width: 100px;
     padding: 8px 12px;
-    border: 2px solid #ced4da;
+    border: 2px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
     text-align: center;
     transition: border-color 0.2s ease;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 #manual-duration-input:focus {
-    border-color: #007bff;
+    border-color: var(--primary-500);
     outline: none;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
@@ -801,9 +805,9 @@ header h1 {
 }
 
 .number-btn {
-    background-color: #ffffff;
-    border: 2px solid #dee2e6;
-    color: #495057;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
     padding: 16px;
     border-radius: 8px;
     cursor: pointer;
@@ -1777,12 +1781,12 @@ header h1 {
 .tooth-btn {
     width: 40px;
     height: 40px;
-    background-color: #ffffff;
-    border: 2px solid #dee2e6;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 12px;
     font-weight: bold;
-    color: #495057;
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
