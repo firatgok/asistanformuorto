@@ -203,21 +203,23 @@ header h1 {
 
 /* Form Left Side - Questions */
 .form-left {
-    background-color: #f8f9fa;
+    background: var(--gradient-card);
     padding: 8px;
     min-height: 800px;
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
     overflow: hidden;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 .form-left h3 {
-    color: #2c5aa0;
+    color: var(--primary-600);
     margin-bottom: 20px;
     font-size: 1.4em;
-    border-bottom: 2px solid #2c5aa0;
+    border-bottom: 2px solid var(--primary-600);
     padding-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
 .section-title {
@@ -229,14 +231,15 @@ header h1 {
 /* Question Groups */
 .question-group {
     margin-bottom: 25px;
-    background-color: white;
+    background: var(--bg-secondary);
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
 }
 
 .question-group h4 {
-    color: #495057;
+    color: var(--text-primary);
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 15px;
@@ -363,9 +366,9 @@ header h1 {
 }
 
 .randevu-btn, .randevu-manuel-btn {
-    background-color: #f8f9fa;
-    color: #495057;
-    border: 2px solid #dee2e6;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 12px 20px;
     cursor: pointer;
@@ -414,10 +417,11 @@ header h1 {
 .manuel-input-container {
     margin-top: 15px;
     padding: 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     animation: slideDown 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .manuel-input-group {
@@ -576,9 +580,9 @@ header h1 {
 .duration-method-btn {
     flex: 1;
     padding: 10px 15px;
-    border: 2px solid #007bff;
-    background: white;
-    color: #007bff;
+    border: 2px solid var(--primary-500);
+    background: var(--bg-secondary);
+    color: var(--primary-500);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -586,12 +590,12 @@ header h1 {
 }
 
 .duration-method-btn:hover {
-    background: #f8f9fa;
+    background: var(--hover-color);
     transform: translateY(-1px);
 }
 
 .duration-method-btn.selected {
-    background: #007bff;
+    background: var(--primary-500);
     color: white;
     box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
 }
@@ -599,9 +603,10 @@ header h1 {
 .duration-input-container {
     margin-bottom: 15px;
     padding: 15px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .duration-input-group {
@@ -871,15 +876,15 @@ header h1 {
     align-items: flex-start;
     cursor: pointer;
     padding: 12px;
-    background-color: white;
+    background-color: var(--bg-secondary);
     border-radius: 6px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .checkbox-group label:hover {
-    background-color: #e3f2fd;
+    background-color: var(--hover-color);
     border-color: #2c5aa0;
 }
 
@@ -900,10 +905,10 @@ header h1 {
 
 /* Form Right Side - Output */
 .form-right {
-    background-color: #f8f9fa;
+    background: var(--gradient-card);
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--border-color);
     position: sticky;
     top: 20px;
     height: calc(100vh - 40px);
@@ -912,6 +917,7 @@ header h1 {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    transition: all 0.3s ease;
 }
 
 .output-header {
@@ -919,14 +925,16 @@ header h1 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 2px solid #2c5aa0;
+    border-bottom: 2px solid var(--primary-600);
     padding-bottom: 10px;
+    transition: all 0.3s ease;
 }
 
 .form-right h3 {
-    color: #2c5aa0;
+    color: var(--primary-600);
     margin: 0;
     font-size: 1.4em;
+    transition: all 0.3s ease;
 }
 
 .font-controls {
@@ -935,9 +943,9 @@ header h1 {
 }
 
 .font-btn {
-    background-color: #fff;
-    border: 2px solid #2c5aa0;
-    color: #2c5aa0;
+    background: var(--bg-primary);
+    border: 2px solid var(--primary-600);
+    color: var(--primary-600);
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -948,7 +956,7 @@ header h1 {
 }
 
 .font-btn:hover {
-    background-color: #2c5aa0;
+    background: var(--primary-600);
     color: white;
     transform: translateY(-1px);
 }
@@ -1091,10 +1099,11 @@ header h1 {
 }
 
 .fdi-tooth-chart {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 12px;
+    transition: all 0.3s ease;
     margin: 10px 0;
     transform: scale(0.9);
     transform-origin: top center;
@@ -1253,12 +1262,13 @@ header h1 {
 }
 
 .elastic-sub-container {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 20px;
     margin: 10px 0;
     animation: slideDown 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .elastic-sub-group {
@@ -1283,9 +1293,9 @@ header h1 {
 }
 
 .elastic-sub-btn {
-    background-color: white;
-    color: #495057;
-    border: 1px solid #ced4da;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px 15px;
     font-size: 14px;
@@ -1321,15 +1331,16 @@ header h1 {
 
 /* Yeni Lastik Tür Grupları */
 .elastic-type-group {
-    background-color: white;
-    border: 1px solid #e9ecef;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 15px;
     margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
 
 .elastic-type-group h5 {
-    color: #495057;
+    color: var(--text-primary);
     font-size: 13px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -1345,9 +1356,9 @@ header h1 {
 }
 
 .elastic-type-btn {
-    background-color: #f8f9fa;
-    color: #495057;
-    border: 1px solid #ced4da;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px 15px;
     font-size: 14px;
@@ -1376,9 +1387,9 @@ header h1 {
 }
 
 .elastic-duration-btn {
-    background-color: white;
-    color: #495057;
-    border: 1px solid #ced4da;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 0px;
     padding: 12px 20px;
     font-size: 16px;
@@ -1697,11 +1708,12 @@ header h1 {
 
 /* FDI Dental Chart Styles */
 .fdi-dental-chart {
-    background-color: #f8f9fa;
+    background-color: var(--bg-secondary);
     border-radius: 10px;
     padding: 40px;
     margin: 15px 0px 150px 0px;
-    border: 3px solid #e9ecef;
+    border: 3px solid var(--border-color);
+    transition: all 0.3s ease;
     transform: scale(1.5);
     transform-origin: top center;
     width: 100%;
@@ -1801,12 +1813,12 @@ header h1 {
 .tooth-number {
     width: 56px;
     height: 56px;
-    background-color: #f8f9fa;
-    border: 3px solid #dee2e6;
+    background-color: var(--bg-secondary);
+    border: 3px solid var(--border-color);
     border-radius: 10px;
     font-size: 18px;
     font-weight: bold;
-    color: #495057;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     justify-content: center;
