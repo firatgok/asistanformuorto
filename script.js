@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     numberInputs = {
         'onceki-seans': '',
         'mevcut-plak': '',
+        'plak-gun': '',
         'verilecek-plak': ''
     };
     
@@ -248,6 +249,11 @@ function updateSeffafOutput() {
     if (numberInputs['mevcut-plak']) {
         const mevcutPlak = parseInt(numberInputs['mevcut-plak']);
         tempAnswers['mevcut-plak'] = `${mevcutPlak}. plakta`;
+    }
+    
+    if (numberInputs['plak-gun']) {
+        const plakGun = parseInt(numberInputs['plak-gun']);
+        tempAnswers['plak-gun'] = `${plakGun}. günde`;
     }
     
     if (numberInputs['verilecek-plak']) {
@@ -485,7 +491,7 @@ function generateSeffafReport(answers) {
     report += '=============================================\n\n';
     
     // RUTİN KONTROLLER bölümü
-    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'verilecek-plak', 'plak-degisim', 'sonraki-randevu', 'adaptasyon', 'atasmanlar'].includes(key)) || selectedInterdentalSpaces.size > 0) {
+    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'plak-gun', 'verilecek-plak', 'plak-degisim', 'sonraki-randevu', 'adaptasyon', 'atasmanlar'].includes(key)) || selectedInterdentalSpaces.size > 0) {
         report += 'RUTİN KONTROLLER:\n';
         report += '-----------------\n';
         
@@ -495,6 +501,10 @@ function generateSeffafReport(answers) {
         
         if (answers['mevcut-plak']) {
             report += `• Hasta şu an ${answers['mevcut-plak']}\n`;
+        }
+        
+        if (answers['plak-gun']) {
+            report += `• Mevcut plak ${answers['plak-gun']}\n`;
         }
         
         // Seçilen IPR bölgelerini ekle
@@ -1240,7 +1250,7 @@ function clearAllElasticSelections() {
 
 function clearRutinKontroller() {
     // Clear number button selections and displays
-    const numberQuestions = ['onceki-seans', 'mevcut-plak', 'verilecek-plak'];
+    const numberQuestions = ['onceki-seans', 'mevcut-plak', 'plak-gun', 'verilecek-plak'];
     
     numberQuestions.forEach(questionId => {
         // Clear number button selections
