@@ -253,7 +253,7 @@ function updateSeffafOutput() {
     
     if (numberInputs['plak-gun']) {
         const plakGun = parseInt(numberInputs['plak-gun']);
-        tempAnswers['plak-gun'] = `${plakGun}. günde`;
+        tempAnswers['plak-gun'] = `${plakGun} gün olmuş`;
     }
     
     if (numberInputs['verilecek-plak']) {
@@ -504,7 +504,7 @@ function generateSeffafReport(answers) {
         }
         
         if (answers['plak-gun']) {
-            report += `• Mevcut plak ${answers['plak-gun']}\n`;
+            report += `• Mevcut plağa başlayalı ${answers['plak-gun']}\n`;
         }
         
         // Seçilen IPR bölgelerini ekle
