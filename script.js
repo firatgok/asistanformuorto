@@ -491,7 +491,7 @@ function generateSeffafReport(answers) {
     report += '=============================================\n\n';
     
     // RUTİN KONTROLLER bölümü
-    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'plak-gun', 'verilecek-plak', 'plak-degisim', 'sonraki-randevu', 'adaptasyon', 'atasmanlar'].includes(key)) || selectedInterdentalSpaces.size > 0) {
+    if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'plak-gun', 'verilecek-plak', 'plak-degisim', 'sonraki-randevu', 'adaptasyon', 'atasmanlar', 'ipr-yok', 'bu-seans-ipr-yok'].includes(key)) || selectedInterdentalSpaces.size > 0) {
         report += 'RUTİN KONTROLLER:\n';
         report += '-----------------\n';
         
@@ -507,10 +507,15 @@ function generateSeffafReport(answers) {
             report += `• Mevcut plağa başlayalı ${answers['plak-gun']}\n`;
         }
         
-        // Seçilen IPR bölgelerini ekle
-        const selectedTeethText = getSelectedTeethText();
-        if (selectedTeethText) {
-            report += `• IPR yapılacak bölge: ${selectedTeethText}\n`;
+        // Bu seans IPR kontrol
+        if (answers['bu-seans-ipr-yok']) {
+            report += `• ${answers['bu-seans-ipr-yok']}\n`;
+        } else {
+            // Seçilen IPR bölgelerini ekle
+            const selectedTeethText = getSelectedTeethText();
+            if (selectedTeethText) {
+                report += `• IPR yapılacak bölge: ${selectedTeethText}\n`;
+            }
         }
         
         if (answers['verilecek-plak']) {
@@ -525,7 +530,9 @@ function generateSeffafReport(answers) {
             report += `• Bir sonraki randevu ${answers['sonraki-randevu']}\n`;
         }
         
-        if (answers['ipr-count'] && answers['ipr-category']) {
+        if (answers['ipr-yok']) {
+            report += `• Sonraki seansta IPR yapılmayacak\n`;
+        } else if (answers['ipr-count'] && answers['ipr-category']) {
             report += `• Sonraki seansta ${answers['ipr-count']} adet IPR yapılacak (${answers['ipr-category']})\n`;
         }
         
@@ -1296,6 +1303,12 @@ function clearRutinKontroller() {
         iprInput.value = '';
         updateIPRDurationDisplay();
     }
+    
+    // Clear IPR Yok buttons
+    const iprYokBtn = document.getElementById('ipr-yok-btn');
+    const buSeansIprYokBtn = document.getElementById('bu-seans-ipr-yok-btn');
+    if (iprYokBtn) iprYokBtn.classList.remove('selected');
+    if (buSeansIprYokBtn) buSeansIprYokBtn.classList.remove('selected');
     
     // Clear duration method selection
     const durationButtons = document.querySelectorAll('.duration-method-btn.selected');
@@ -2331,6 +2344,9 @@ function initializeRandevuButtons() {
     // Initialize IPR count input
     initializeIPRCountInput();
     
+    // Initialize IPR Yok buttons
+    initializeIPRYokButtons();
+    
     // Initialize duration method
     initializeDurationMethod();
 }
@@ -2421,32 +2437,39 @@ function formatRandevuValue(value) {
 
 // IPR Count and Duration Calculation Functions
 function calculateIPRDuration(iprCount) {
+    // Handle 0 IPR (IPR Yok durumu)
     if (!iprCount || iprCount <= 0) {
-        return { duration: 0, text: 'IPR sayısı girilmedi' };
+        const arTime = 20; // Asistan formu doldurması için sabit 20 dk
+        const rdTime = 10; // IPR yok ise minimum RD süresi
+        const formattedDuration = `${arTime} dk AR ve ${rdTime} dk RD`;
+        
+        return {
+            duration: formattedDuration,
+            text: `${formattedDuration} (IPR Yok)`,
+            category: 'IPR Yok',
+            count: 0,
+            ar: arTime,
+            rd: rdTime,
+            rawRD: rdTime
+        };
     }
     
-    let duration;
-    let category;
+    // Yeni algoritma: (IPR sayısı × 3) + 10, sonucu 5'in katlarına yuvarla
+    const rawRD = (iprCount * 3) + 10;
+    const roundedRD = Math.ceil(rawRD / 5) * 5; // 5'in katlarına yuvarla
+    const arTime = 20; // Asistan formu doldurması için sabit 20 dk
     
-    if (iprCount <= 3) {
-        duration = 20;
-        category = 'Az IPR (1-3 adet)';
-    } else if (iprCount <= 6) {
-        duration = 30;
-        category = 'Orta IPR (4-6 adet)';
-    } else if (iprCount <= 10) {
-        duration = 45;
-        category = 'Çok IPR (7-10 adet)';
-    } else {
-        duration = 60;
-        category = 'Yoğun IPR (10+ adet)';
-    }
+    const category = `${iprCount} adet IPR`;
+    const formattedDuration = `${arTime} dk AR ve ${roundedRD} dk RD`;
     
     return {
-        duration: duration,
-        text: `${duration} dakika (${category})`,
+        duration: formattedDuration,
+        text: `${formattedDuration} (${category})`,
         category: category,
-        count: iprCount
+        count: iprCount,
+        ar: arTime,
+        rd: roundedRD,
+        rawRD: rawRD
     };
 }
 
@@ -2464,16 +2487,43 @@ function updateIPRDurationDisplay() {
         display.style.color = '#007bff';
         display.style.background = '#e3f2fd';
         
+        // Clear IPR Yok selection when number is entered
+        const iprYokBtn = document.getElementById('ipr-yok-btn');
+        if (iprYokBtn) {
+            iprYokBtn.classList.remove('selected');
+        }
+        delete answers['ipr-yok'];
+        
         // Store in answers for report generation
         answers['ipr-count'] = iprCount;
         answers['ipr-duration'] = result.duration;
         answers['ipr-category'] = result.category;
+        
+        // Auto-select "IPR'dan Otomatik Al" button if none selected
+        const selectedMethodBtn = document.querySelector('.duration-method-btn.selected');
+        const autoMethodBtn = document.querySelector('.duration-method-btn[data-method="auto"]');
+        
+        if (!selectedMethodBtn && autoMethodBtn) {
+            // Clear all method buttons and select auto
+            const allMethodBtns = document.querySelectorAll('.duration-method-btn');
+            allMethodBtns.forEach(btn => btn.classList.remove('selected'));
+            autoMethodBtn.classList.add('selected');
+            
+            // Hide manual input container
+            const manualContainer = document.querySelector('.duration-input-container');
+            if (manualContainer) {
+                manualContainer.style.display = 'none';
+            }
+        }
         
         // Update the main output
         updateSeffafOutput();
         
         // Update duration method if auto is selected
         updateDurationResult();
+        
+        // Update report
+        updateReport();
     } else {
         display.textContent = 'Tahmini süre hesaplanacak';
         display.style.color = '#666';
@@ -2514,6 +2564,109 @@ function initializeIPRCountInput() {
     }
 }
 
+function initializeIPRYokButtons() {
+    // IPR Clear button
+    const iprClearBtn = document.getElementById('ipr-clear-btn');
+    if (iprClearBtn) {
+        iprClearBtn.addEventListener('click', function() {
+            // Clear IPR input
+            const iprInput = document.getElementById('ipr-count-input');
+            if (iprInput) {
+                iprInput.value = '';
+                updateIPRDurationDisplay();
+            }
+            
+            // Clear IPR Yok selection
+            const iprYokBtn = document.getElementById('ipr-yok-btn');
+            if (iprYokBtn) {
+                iprYokBtn.classList.remove('selected');
+            }
+            
+            // Remove from answers
+            delete answers['ipr-yok'];
+            delete answers['ipr-count'];
+            delete answers['ipr-duration'];
+            delete answers['ipr-category'];
+            delete answers['randevu-duration'];
+            delete answers['duration-method'];
+            delete answers['duration-source'];
+            
+            // Reset duration display
+            const resultDisplay = document.getElementById('duration-result');
+            if (resultDisplay) {
+                resultDisplay.textContent = 'Süre hesaplama yöntemi seçin';
+            }
+            
+            updateReport();
+        });
+    }
+
+    // IPR Yok button (next session)
+    const iprYokBtn = document.getElementById('ipr-yok-btn');
+    if (iprYokBtn) {
+        iprYokBtn.addEventListener('click', function() {
+            // Clear IPR input
+            const iprInput = document.getElementById('ipr-count-input');
+            if (iprInput) {
+                iprInput.value = '';
+                updateIPRDurationDisplay();
+            }
+            
+            // Remove IPR count answers to prevent conflict
+            delete answers['ipr-count'];
+            delete answers['ipr-duration'];
+            delete answers['ipr-category'];
+            
+            // Set IPR Yok answer (but don't set duration - that should be done via duration method selection)
+            answers['ipr-yok'] = 'IPR Yok';
+            
+            // Reset duration method selection - user needs to select duration method separately
+            const durationButtons = document.querySelectorAll('.duration-method-btn');
+            durationButtons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Update display - show that IPR count is 0 for calculation purposes
+            const resultDisplay = document.getElementById('duration-result');
+            if (resultDisplay) {
+                resultDisplay.textContent = 'Süre hesaplama yöntemi seçin (IPR: 0 adet)';
+            }
+            
+            // Visual feedback
+            updateButtonSelections(iprYokBtn, 'ipr-yok');
+            
+            updateReport();
+        });
+    }
+    
+    // Bu seans IPR Yok button
+    const buSeansIPRYokBtn = document.getElementById('bu-seans-ipr-yok-btn');
+    if (buSeansIPRYokBtn) {
+        buSeansIPRYokBtn.addEventListener('click', function() {
+            // Clear selected interdental spaces
+            selectedInterdentalSpaces.clear();
+            
+            // Clear all interdental buttons
+            const allInterdentalBtns = document.querySelectorAll('.interdental-btn');
+            allInterdentalBtns.forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Update display
+            const selectedDisplay = document.getElementById('selected-teeth-display');
+            if (selectedDisplay) {
+                selectedDisplay.textContent = 'Bu seans IPR yapılmayacak';
+            }
+            
+            // Set answer
+            answers['bu-seans-ipr-yok'] = 'Bu seans yapılacak herhangi bir IPR bulunmamaktadır';
+            
+            // Visual feedback
+            updateButtonSelections(buSeansIPRYokBtn, 'bu-seans-ipr-yok');
+            
+            updateReport();
+        });
+    }
+}
+
 // Duration Method Functions
 function updateDurationResult() {
     const resultDisplay = document.getElementById('duration-result');
@@ -2526,21 +2679,52 @@ function updateDurationResult() {
     const method = selectedMethod.dataset.method;
     
     if (method === 'auto') {
-        // Use IPR calculation
-        const iprCount = parseInt(document.getElementById('ipr-count-input').value) || 0;
-        const iprResult = calculateIPRDuration(iprCount);
+        // Use IPR calculation - check if IPR data already stored
+        const iprInput = document.getElementById('ipr-count-input');
+        const iprYokSelected = document.getElementById('ipr-yok-btn')?.classList.contains('selected');
         
-        if (iprCount > 0) {
-            resultDisplay.textContent = `Otomatik: ${iprResult.duration} dakika (${iprResult.category})`;
+        let iprCount = 0;
+        let sourceText = '';
+        let iprResult = null;
+        
+        // First check if IPR calculation is already stored (from number input)
+        if (answers['ipr-count'] && answers['ipr-duration']) {
+            iprCount = answers['ipr-count'];
+            iprResult = {
+                duration: answers['ipr-duration'],
+                category: answers['ipr-category']
+            };
+            sourceText = `${iprCount} adet IPR - Otomatik hesaplama`;
+        } else if (iprYokSelected) {
+            // IPR Yok selected - count is 0
+            iprCount = 0;
+            iprResult = calculateIPRDuration(0);
+            sourceText = 'IPR Yok - Otomatik hesaplama';
+        } else if (iprInput && iprInput.value) {
+            // IPR count entered but not stored yet
+            iprCount = parseInt(iprInput.value) || 0;
+            iprResult = calculateIPRDuration(iprCount);
+            sourceText = `${iprCount} adet IPR - Otomatik hesaplama`;
+        }
+        
+        if (iprResult) {
+            resultDisplay.textContent = `Otomatik: ${iprResult.duration} (${sourceText})`;
             answers['randevu-duration'] = iprResult.duration;
             answers['duration-method'] = 'auto';
-            answers['duration-source'] = iprResult.category;
+            answers['duration-source'] = sourceText;
         } else {
-            resultDisplay.textContent = 'Önce IPR sayısı girin';
+            resultDisplay.textContent = 'Önce IPR sayısı girin veya "IPR Yok" seçin';
             delete answers['randevu-duration'];
             delete answers['duration-method'];
             delete answers['duration-source'];
         }
+    } else if (method === 'standard') {
+        // Standard appointment
+        const standardDuration = '20 dk AR ve 10 dk RD';
+        resultDisplay.textContent = `Standart: ${standardDuration}`;
+        answers['randevu-duration'] = standardDuration;
+        answers['duration-method'] = 'standard';
+        answers['duration-source'] = 'Standart randevu süresi';
     } else if (method === 'manual') {
         // Use manual input
         const manualInput = document.getElementById('manual-duration-input');
@@ -2548,7 +2732,7 @@ function updateDurationResult() {
         
         if (duration > 0) {
             resultDisplay.textContent = `Manuel: ${duration} dakika`;
-            answers['randevu-duration'] = duration;
+            answers['randevu-duration'] = `${duration} dakika`;
             answers['duration-method'] = 'manual';
             answers['duration-source'] = 'Manuel giriş';
         } else {
@@ -2561,6 +2745,9 @@ function updateDurationResult() {
     
     // Update main output
     updateSeffafOutput();
+    
+    // Update report
+    updateReport();
 }
 
 function initializeDurationMethod() {
@@ -2772,6 +2959,73 @@ function autoSetThemeByTime() {
     if (!localStorage.getItem('orthodontic-theme')) {
         setTheme(autoTheme);
     }
+}
+
+// Utility Functions
+function updateButtonSelections(selectedButton, questionType) {
+    // Remove selected class from all buttons in the same question group
+    const questionGroup = selectedButton.closest('.question-group');
+    if (questionGroup) {
+        const allButtons = questionGroup.querySelectorAll('.option-btn');
+        allButtons.forEach(btn => btn.classList.remove('selected'));
+    }
+    
+    // Add selected class to the clicked button
+    selectedButton.classList.add('selected');
+}
+
+function updateReport() {
+    // Update both report areas
+    updateMobileReportArea();
+    updateDesktopReportArea();
+}
+
+function updateMobileReportArea() {
+    const reportContent = generateCompleteReport();
+    const mobileReportArea = document.getElementById('mobile-report-content');
+    if (mobileReportArea) {
+        mobileReportArea.textContent = reportContent;
+    }
+}
+
+function updateDesktopReportArea() {
+    const reportContent = generateCompleteReport();
+    const desktopReportArea = document.getElementById('desktop-report-content');
+    if (desktopReportArea) {
+        desktopReportArea.textContent = reportContent;
+    }
+}
+
+function generateCompleteReport() {
+    let completeReport = '';
+    
+    // Get active tab
+    const activeTab = document.querySelector('.tab-btn.active');
+    const activeTabId = activeTab ? activeTab.getAttribute('data-tab') : 'seffaf-plak';
+    
+    if (activeTabId === 'seffaf-plak') {
+        // Generate Şeffaf Plak report
+        completeReport = generateSeffafReport(answers);
+    } else if (activeTabId === 'tel-tedavi') {
+        // Generate Tel Tedavi report
+        const selectedItems = getSelectedTelItems();
+        completeReport = generateTelReport(selectedItems);
+    }
+    
+    return completeReport;
+}
+
+function getSelectedTelItems() {
+    // Get selected items from tel tedavi tab
+    const selectedItems = [];
+    const checkboxes = document.querySelectorAll('#tel-tedavi input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => {
+        const label = checkbox.closest('label');
+        if (label) {
+            selectedItems.push(label.textContent.trim());
+        }
+    });
+    return selectedItems;
 }
 
 // Initialize theme system when DOM loads

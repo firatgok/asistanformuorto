@@ -184,8 +184,12 @@
                                     <input type="number" id="ipr-count-input" placeholder="IPR sayısı (örn: 4)" min="0" max="50" maxlength="2">
                                     <span class="ipr-duration-display" id="ipr-duration-display">Tahmini süre hesaplanacak</span>
                                 </div>
+                                <div class="button-group" style="margin-top: 15px;">
+                                    <button type="button" class="option-btn" id="ipr-yok-btn" data-question="ipr-yok" data-value="IPR Yok">IPR Yok</button>
+                                    <button type="button" class="clear-btn" id="ipr-clear-btn">Sıfırla</button>
+                                </div>
                                 <div class="ipr-algorithm-info">
-                                    <small>• 1-3 IPR: 20 dakika | 4-6 IPR: 30 dakika | 7-10 IPR: 45 dakika | 10+ IPR: 60 dakika</small>
+                                    <small>• Hesaplama: (IPR sayısı × 3) + 10 dk (RD) | 5'in katlarına yuvarlanır | + 20 dk (AR) asistan formu</small>
                                 </div>
                             </div>
                         </div>
@@ -195,6 +199,7 @@
                             <h4>Bir sonraki randevu süresi?</h4>
                             <div class="duration-method-buttons">
                                 <button type="button" class="duration-method-btn option-btn" data-method="auto">IPR'den Otomatik Al</button>
+                                <button type="button" class="duration-method-btn option-btn" data-method="standard">Standart Randevu</button>
                                 <button type="button" class="duration-method-btn option-btn" data-method="manual">Manuel Gir</button>
                             </div>
                             <div class="duration-input-container" style="display: none;">
@@ -211,11 +216,14 @@
                         <!-- IPR Seçimi -->
                         <div class="question-group">
                             <div class="question-header">
-                                <h4>IPR Yapılacak Dişarası Bölgeler (FDI Sistemi)</h4>
+                                <h4>Bu seans IPR (Stripping) yapılacak bölgeler</h4>
                                 <div class="selected-teeth-display">
                                     <span>Seçilen IPR Bölgeleri: </span>
                                     <span id="selected-teeth-display" class="teeth-display">Henüz bölge seçilmedi</span>
                                 </div>
+                            </div>
+                            <div class="button-group" style="margin-bottom: 15px;">
+                                <button type="button" class="option-btn" id="bu-seans-ipr-yok-btn" data-question="bu-seans-ipr-yok" data-value="Bu seans IPR Yok">Bu Seans IPR Yok</button>
                             </div>
                             <div class="fdi-dental-chart">
                                 <div class="jaw-container">
