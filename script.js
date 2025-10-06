@@ -1930,22 +1930,26 @@ function updateUnifiedNumberDisplay(question) {
 
 // Lastik Fonksiyonları
 function initializeElasticButtons() {
-    // Ana yön butonları
-    const mainButtons = document.querySelectorAll('.elastic-main-btn');
+    // Ana yön butonları (sadece data-direction attribute'u olanlar için)
+    const mainButtons = document.querySelectorAll('.elastic-main-btn[data-direction]');
     mainButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const direction = this.dataset.direction;
-            toggleElasticDirection(direction, this);
+            if (direction) {
+                toggleElasticDirection(direction, this);
+            }
         });
     });
 
-    // Lastik tür seçme butonları (yeni)
-    const typeButtons = document.querySelectorAll('.elastic-type-btn');
+    // Lastik tür seçme butonları (yeni) - sadece data attribute'u olanlar için
+    const typeButtons = document.querySelectorAll('.elastic-type-btn[data-parent][data-elastic-type]');
     typeButtons.forEach(btn => {
         btn.addEventListener('click', function() {
             const parent = this.dataset.parent;
             const elasticType = this.dataset.elasticType;
-            toggleElasticType(parent, elasticType, this);
+            if (parent && elasticType) {
+                toggleElasticType(parent, elasticType, this);
+            }
         });
     });
 
@@ -3293,6 +3297,8 @@ let nextElasticUsage = {
 
 // Hafta seçimi fonksiyonu
 function selectWeeks(section, weeks) {
+    console.log(`selectWeeks called: section=${section}, weeks=${weeks}`);
+    
     // Önceki seçimi temizle
     const buttons = document.querySelectorAll(`#${section}-tedavisi .time-btn`);
     buttons.forEach(btn => btn.classList.remove('selected'));
@@ -3301,10 +3307,14 @@ function selectWeeks(section, weeks) {
     const selectedBtn = document.querySelector(`#${section}-tedavisi .time-btn[data-weeks="${weeks}"]`);
     if (selectedBtn) {
         selectedBtn.classList.add('selected');
+        console.log(`Button selected successfully for ${weeks} weeks`);
+    } else {
+        console.error(`Button not found for ${section}-tedavisi with weeks=${weeks}`);
     }
     
     // Seçimi kaydet
     selectedAppointment[section] = weeks;
+    console.log(`selectedAppointment updated:`, selectedAppointment);
     
     // Manuel input'u gizle
     const manualInput = document.getElementById(`${section}-manual-input`);
