@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Demo - Colorffy Palette</title>
+    <script>
+    (function(){
+      try{
+        var s=localStorage.getItem('theme');
+        var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var t=s||(prefersDark?'dark':'light');
+        if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+      }catch(e){}
+    })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        .demo-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .color-sample {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid var(--border);
+        }
+        .theme-info {
+            background: var(--info-bg);
+            border: 1px solid var(--info-border);
+            color: var(--info-text);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+        .component-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        .demo-table th, .demo-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .demo-table th {
+            background: var(--surface-2);
+            font-weight: 600;
+        }
+        .demo-table tr:hover {
+            background: var(--surface-1);
+        }
+        .demo-input {
+            margin: 0.5rem 0;
+            display: block;
+        }
+        .demo-input input, .demo-input textarea {
+            width: 100%;
+            max-width: 300px;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--input-bg);
+            color: var(--input-text);
+        }
+        .demo-input label {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header -->
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1 style="color: var(--text-primary); margin: 0;">Dark Mode Demo - Colorffy Palette</h1>
+            <button id="theme-toggle" class="btn btn-outline" aria-label="Tema değiştir">🌗</button>
+        </header>
+
+        <!-- Theme Info -->
+        <div class="theme-info">
+            <h3>📊 Colorffy Palette Detayları (Updated #363333 Base)</h3>
+            <p><strong>Base Background:</strong> <span class="color-sample" style="background: #363333;"></span> #363333</p>
+            <p><strong>Primary Orange:</strong> <span class="color-sample" style="background: #E38400;"></span> #E38400</p>
+            <p><strong>Success Green:</strong> <span class="color-sample" style="background: #22946E;"></span> #22946E</p>
+            <p><strong>Warning:</strong> <span class="color-sample" style="background: #A87A2A;"></span> #A87A2A</p>
+            <p><strong>Danger:</strong> <span class="color-sample" style="background: #9C2121;"></span> #9C2121</p>
+            <p><strong>Info Blue:</strong> <span class="color-sample" style="background: #21498A;"></span> #21498A</p>
+        </div>
+
+        <!-- Button Showcase -->
+        <div class="demo-card">
+            <h3>🔘 Button Showcase</h3>
+            <div class="component-showcase">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-outline">Outline Button</button>
+                <button class="btn btn-primary" disabled>Disabled Button</button>
+            </div>
+        </div>
+
+        <!-- Form Elements -->
+        <div class="demo-card">
+            <h3>📝 Form Elements</h3>
+            <div class="demo-grid">
+                <div>
+                    <div class="demo-input">
+                        <label for="demo-text">Text Input:</label>
+                        <input type="text" id="demo-text" placeholder="Type something...">
+                    </div>
+                    <div class="demo-input">
+                        <label for="demo-email">Email Input:</label>
+                        <input type="email" id="demo-email" placeholder="email@example.com">
+                    </div>
+                    <div class="demo-input">
+                        <label for="demo-select">Select Dropdown:</label>
+                        <select id="demo-select">
+                            <option>Choose an option</option>
+                            <option>Option 1</option>
+                            <option>Option 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <div class="demo-input">
+                        <label for="demo-textarea">Textarea:</label>
+                        <textarea id="demo-textarea" rows="4" placeholder="Enter your message..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert System -->
+        <div class="demo-card">
+            <h3>🚨 Alert System</h3>
+            
+            <div class="alert alert-success" style="background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success-text); padding: 1rem; margin: 0.5rem 0; border-radius: 4px;">
+                <strong>✅ Success!</strong> This is a success alert with Colorffy green.
+            </div>
+            
+            <div class="alert alert-warning" style="background: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-text); padding: 1rem; margin: 0.5rem 0; border-radius: 4px;">
+                <strong>⚠️ Warning!</strong> This is a warning alert with Colorffy amber.
+            </div>
+            
+            <div class="alert alert-danger" style="background: var(--danger-bg); border: 1px solid var(--danger-border); color: var(--danger-text); padding: 1rem; margin: 0.5rem 0; border-radius: 4px;">
+                <strong>❌ Error!</strong> This is an error alert with Colorffy red.
+            </div>
+            
+            <div class="alert alert-info" style="background: var(--info-bg); border: 1px solid var(--info-border); color: var(--info-text); padding: 1rem; margin: 0.5rem 0; border-radius: 4px;">
+                <strong>ℹ️ Info!</strong> This is an info alert with Colorffy blue.
+            </div>
+        </div>
+
+        <!-- Links -->
+        <div class="demo-card">
+            <h3>🔗 Links & Navigation</h3>
+            <p>This is a paragraph with a <a href="#" style="color: var(--link);">primary link</a> and another <a href="#" style="color: var(--link-hover);">hover state link</a>.</p>
+            <p>External link: <a href="https://colorffy.com/dark-theme-generator" target="_blank" style="color: var(--link);">Colorffy Generator →</a></p>
+        </div>
+
+        <!-- Data Table -->
+        <div class="demo-card">
+            <h3>📊 Data Table</h3>
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Color Variable</th>
+                        <th>HEX Value</th>
+                        <th>Usage</th>
+                        <th>Contrast Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>--bg</code></td>
+                        <td>#363333</td>
+                        <td>Base background</td>
+                        <td>12.6:1</td>
+                    </tr>
+                    <tr>
+                        <td><code>--primary</code></td>
+                        <td>#E38400</td>
+                        <td>Primary buttons, links</td>
+                        <td>4.9:1</td>
+                    </tr>
+                    <tr>
+                        <td><code>--success</code></td>
+                        <td>#22946E</td>
+                        <td>Success messages</td>
+                        <td>4.5:1</td>
+                    </tr>
+                    <tr>
+                        <td><code>--text-primary</code></td>
+                        <td>#FFFFFF</td>
+                        <td>Primary text</td>
+                        <td>12.6:1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Cards -->
+        <div class="demo-card">
+            <h3>🃏 Card Components</h3>
+            <div class="demo-grid">
+                <div style="background: var(--surface-2); padding: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <h4 style="color: var(--text-primary); margin-top: 0;">Surface Level 2</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 0;">Card with surface-2 background for content areas.</p>
+                </div>
+                <div style="background: var(--surface-3); padding: 1rem; border-radius: 6px; border: 1px solid var(--border);">
+                    <h4 style="color: var(--text-primary); margin-top: 0;">Surface Level 3</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 0;">Card with surface-3 background for navigation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--surface-4); border-top: 1px solid var(--border); border-radius: 8px;">
+            <p style="color: var(--text-muted); margin: 0;">
+                🎨 Colorffy Dark Mode Demo | 
+                <a href="https://colorffy.com/dark-theme-generator?colors=E38400-363333&success=22946E&warning=A87A2A&danger=9C2121&info=21498A&primaryCount=6&surfaceCount=7" 
+                   style="color: var(--link);" target="_blank">
+                    Generated with Colorffy →
+                </a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+        var b=document.getElementById('theme-toggle'); if(!b) return;
+        b.addEventListener('click',function(){
+            var dark=document.documentElement.getAttribute('data-theme')==='dark';
+            if(dark){ 
+                document.documentElement.removeAttribute('data-theme'); 
+                localStorage.setItem('theme','light'); 
+            }
+            else{ 
+                document.documentElement.setAttribute('data-theme','dark'); 
+                localStorage.setItem('theme','dark'); 
+            }
+        });
+    });
+    </script>
+</body>
+</html>

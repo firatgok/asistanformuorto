@@ -4,12 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ortodonti Hasta Formu</title>
+    <script>
+    (function(){
+      try{
+        var s=localStorage.getItem('theme');
+        var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var t=s||(prefersDark?'dark':'light');
+        if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+      }catch(e){}
+    })();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Ortodonti Hasta Formu</h1>
+            <div class="header-content">
+                <div class="header-left">
+                    <img src="images/logo.png" alt="Ortodonti Logo" class="header-logo">
+                    <h1>Ortodonti Hasta Formu</h1>
+                </div>
+                <div class="header-right">
+                    <img src="images/slogan.png" alt="Profesyonel Tedavi" class="header-slogan">
+                    <button id="theme-toggle" class="btn btn-outline theme-toggle-btn" aria-label="Tema değiştir">🌗</button>
+                </div>
+            </div>
         </header>
 
         <!-- Tab Navigation -->
@@ -835,13 +854,17 @@
                     <div class="form-right">
                         <div class="output-header">
                             <h3>Değerlendirme Raporu</h3>
-                            <div class="font-controls">
+                            <div class="header-controls">
+                                <button class="electric-switch" onclick="switchToOtherTab()" title="Tel Tedavisine Geç">
+                                    <div class="switch-body">
+                                        <div class="switch-lever up"></div>
+                                        <span class="switch-label">⇄ Tel</span>
+                                    </div>
+                                </button>
                                 <button class="font-btn" onclick="changeFontSize('seffaf-output', -1)" title="Yazıyı Küçült">A-</button>
                                 <button class="font-btn" onclick="changeFontSize('seffaf-output', 1)" title="Yazıyı Büyült">A+</button>
-                                <div class="theme-controls">
-                                    <button class="theme-btn" id="light-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
-                                    <button class="theme-btn" id="dark-btn" onclick="setTheme('dark')" title="Dark Mode">🌙</button>
-                                </div>
+                                <button class="theme-btn" id="light-btn" onclick="setTheme('light')" title="Light Mode">☀️</button>
+                                <button class="theme-btn" id="dark-btn" onclick="setTheme('dark')" title="Dark Mode">🌙</button>
                             </div>
                         </div>
                         <div class="output-container">
@@ -859,69 +882,779 @@
             <div id="tel-tedavisi" class="tab-content">
                 <div class="form-container">
                     <div class="form-left">
-                        <h3>Değerlendirme Kriterleri</h3>
-                        <div class="checkbox-group">
-                            <label>
-                                <input type="checkbox" name="tel" value="Metal braket tedavisi uygun">
-                                Metal braket tedavisi uygun
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Seramik braket tedavisi uygun">
-                                Seramik braket tedavisi uygun
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Şiddetli çapraşıklık mevcut">
-                                Şiddetli çapraşıklık
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Çekim endikasyonu var">
-                                Çekim endikasyonu
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Çekim endikasyonu yok">
-                                Çekim endikasyonu yok
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Ankraj ihtiyacı var">
-                                Ankraj ihtiyacı
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Elastik kullanımı gerekli">
-                                Elastik kullanımı
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Tedavi süresi 18-24 ay">
-                                Tedavi süresi 18-24 ay
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Ağız hijyeni eğitimi verildi">
-                                Ağız hijyeni eğitimi
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Beslenme önerileri verildi">
-                                Beslenme önerileri
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="Retainer kullanımı gerekli">
-                                Retainer kullanımı
-                            </label>
-                            <label>
-                                <input type="checkbox" name="tel" value="4-6 haftalık kontroller">
-                                Kontrol sıklığı açıklandı
-                            </label>
+                        <h3>Randevu Planlama</h3>
+                        <div class="question-group">
+                            <div class="question-title">Bir sonraki randevu kaç hafta sonra?</div>
+                            <div class="button-group">
+                                <button type="button" class="time-btn" data-weeks="2" onclick="selectWeeks('tel', 2)">2 Hafta</button>
+                                <button type="button" class="time-btn" data-weeks="4" onclick="selectWeeks('tel', 4)">4 Hafta</button>
+                                <button type="button" class="time-btn" data-weeks="6" onclick="selectWeeks('tel', 6)">6 Hafta</button>
+                                <button type="button" class="time-btn" data-weeks="8" onclick="selectWeeks('tel', 8)">8 Hafta</button>
+                                <button type="button" class="time-btn manual-btn" onclick="showManualInput('tel')">Manuel Gir</button>
+                            </div>
+                            <div id="tel-manual-input" class="manual-input-container" style="display: none;">
+                                <input type="number" id="tel-manual-weeks" placeholder="Hafta sayısı girin" min="1" max="52" onkeydown="handleManualInputKeydown(event, 'tel')" oninput="updateManualWeeksRealTime('tel')">
+                                <button type="button" class="confirm-btn" onclick="confirmManualWeeks('tel')">Onayla</button>
+                                <button type="button" class="cancel-btn" onclick="cancelManualInput('tel')">İptal</button>
+                            </div>
+                        </div>
+                        
+                        <div class="question-group">
+                            <div class="question-title">Bir sonraki randevu süresi?</div>
+                            <div class="button-group">
+                                <button type="button" class="duration-btn" data-duration="standart" onclick="selectDuration('tel', 'standart')">Standart Randevu</button>
+                                <button type="button" class="duration-btn" data-duration="uzun" onclick="selectDuration('tel', 'uzun')">Uzun Randevu</button>
+                                <button type="button" class="duration-btn" data-duration="kisa" onclick="selectDuration('tel', 'kisa')">Kısa Randevu</button>
+                                <button type="button" class="duration-btn manual-btn" onclick="showDurationManualInput('tel')">Manuel Gir</button>
+                            </div>
+                            <div id="tel-duration-manual-input" class="manual-duration-container" style="display: none;">
+                                <div class="duration-input-group">
+                                    <label>Doktor:</label>
+                                    <input type="number" id="tel-manual-doctor" placeholder="Dakika" min="5" max="120" onkeydown="handleDurationInputKeydown(event, 'tel')" oninput="updateManualDurationRealTime('tel')">
+                                </div>
+                                <div class="duration-input-group">
+                                    <label>Asistan:</label>
+                                    <input type="number" id="tel-manual-assistant" placeholder="Dakika" min="5" max="120" onkeydown="handleDurationInputKeydown(event, 'tel')" oninput="updateManualDurationRealTime('tel')">
+                                </div>
+                                <div class="duration-buttons">
+                                    <button type="button" class="confirm-btn" onclick="confirmManualDuration('tel')">Onayla</button>
+                                    <button type="button" class="cancel-btn" onclick="cancelManualDuration('tel')">İptal</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="question-group">
+                            <div class="question-title">Hastamız şu an lastiklerini taktı mı?</div>
+                            <div class="button-group">
+                                <button type="button" class="elastic-status-btn" data-status="evet" onclick="selectElasticStatus('tel', 'evet')">Evet</button>
+                                <button type="button" class="elastic-status-btn" data-status="hayir" onclick="selectElasticStatus('tel', 'hayir')">Hayır</button>
+                            </div>
+                            <div class="elastic-note">
+                                <p><strong>Not:</strong> Mevcut lastik kullanımını değerlendirmek için şimdi hastamıza lastiklerini taktıralım!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="question-group">
+                            <h3 class="section-title">MEVCUT LASTİK KULLANIMI</h3>
+                            
+                            <!-- Sağ Taraf -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel', 'sag')">
+                                        <span><span class="status-dot current-dot"></span>Sağ</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-sag-section" class="elastic-subsection" style="display: none;">
+                                    <!-- Sınıf II -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'sinif2')">Sınıf II</button>
+                                        <div id="tel-sag-sinif2-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif2', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif2', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif2', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sınıf III -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'sinif3')">Sınıf III</button>
+                                        <div id="tel-sag-sinif3-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif3', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif3', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'sinif3', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cross -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'cross')">Cross</button>
+                                        <div id="tel-sag-cross-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'cross', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'cross', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sol Taraf -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel', 'sol')">
+                                        <span><span class="status-dot current-dot"></span>Sol</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-sol-section" class="elastic-subsection" style="display: none;">
+                                    <!-- Sınıf II -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'sinif2')">Sınıf II</button>
+                                        <div id="tel-sol-sinif2-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif2', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif2', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif2', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sınıf III -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'sinif3')">Sınıf III</button>
+                                        <div id="tel-sol-sinif3-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif3', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif3', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'sinif3', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cross -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'cross')">Cross</button>
+                                        <div id="tel-sol-cross-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Orta -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel', 'orta')">
+                                        <span><span class="status-dot current-dot"></span>Orta</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-orta-section" class="elastic-subsection" style="display: none;">
+                                    <!-- 13-33 Oblik -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'orta', 'oblik1333')">13-33 Oblik</button>
+                                        <div id="tel-orta-oblik1333-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik1333', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik1333', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik1333', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 23-43 Oblik -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'orta', 'oblik2343')">23-43 Oblik</button>
+                                        <div id="tel-orta-oblik2343-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik2343', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik2343', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'orta', 'oblik2343', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="question-group">
+                            <h3 class="section-title">SONRAKİ SEANSA KADAR LASTİK KULLANIMI</h3>
+                            
+                            <!-- Sağ Taraf -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel-next', 'sag')">
+                                        <span><span class="status-dot next-dot"></span>Sağ</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-next-sag-section" class="elastic-subsection" style="display: none;">
+                                    <!-- Aynı lastiklere devam seçeneği -->
+                                    <div class="continue-elastic-container">
+                                        <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'sag')">
+                                            ⟳ Aynı lastiklere devam
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Sınıf II -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif2')">Sınıf II</button>
+                                        <div id="tel-next-sag-sinif2-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif2', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif2', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif2', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sınıf III -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif3')">Sınıf III</button>
+                                        <div id="tel-next-sag-sinif3-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif3', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif3', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif3', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cross -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'cross')">Cross</button>
+                                        <div id="tel-next-sag-cross-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'cross', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'cross', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Sol Taraf -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel-next', 'sol')">
+                                        <span><span class="status-dot next-dot"></span>Sol</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-next-sol-section" class="elastic-subsection" style="display: none;">
+                                    <!-- Aynı lastiklere devam seçeneği -->
+                                    <div class="continue-elastic-container">
+                                        <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'sol')">
+                                            ⟳ Aynı lastiklere devam
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Sınıf II -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif2')">Sınıf II</button>
+                                        <div id="tel-next-sol-sinif2-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif2', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif2', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif2', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Sınıf III -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif3')">Sınıf III</button>
+                                        <div id="tel-next-sol-sinif3-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif3', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif3', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif3', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Cross -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'cross')">Cross</button>
+                                        <div id="tel-next-sol-cross-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Orta -->
+                            <div class="elastic-section">
+                                <div class="elastic-main-btn-container">
+                                    <button type="button" class="elastic-main-btn" onclick="toggleElasticSection('tel-next', 'orta')">
+                                        <span><span class="status-dot next-dot"></span>Orta</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="tel-next-orta-section" class="elastic-subsection" style="display: none;">
+                                    <!-- Aynı lastiklere devam seçeneği -->
+                                    <div class="continue-elastic-container">
+                                        <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'orta')">
+                                            ⟳ Aynı lastiklere devam
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- 13-33 Oblik -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik1333')">13-33 Oblik</button>
+                                        <div id="tel-next-orta-oblik1333-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik1333', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik1333', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik1333', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- 23-43 Oblik -->
+                                    <div class="elastic-type-item">
+                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik2343')">23-43 Oblik</button>
+                                        <div id="tel-next-orta-oblik2343-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik2343', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik2343', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik2343', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Mevcut Takılı Teller Bölümü -->
+                        <div class="question-group">
+                            <h3 class="section-title">MEVCUT TAKILI TELLER</h3>
+                            
+                            <!-- Alt Çene -->
+                            <div class="wire-section">
+                                <div class="wire-main-btn-container">
+                                    <button type="button" class="wire-main-btn" onclick="toggleWireSection('alt')">
+                                        <span><span class="status-dot current-dot"></span>Alt Çene</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="alt-wire-section" class="wire-subsection" style="display: none;">
+                                    <!-- Tel Tipleri -->
+                                    <div class="wire-type-group">
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('alt', 'niti')">
+                                                <span>Niti</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="alt-niti-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'niti', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('alt', 'ss')">
+                                                <span>SS</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="alt-ss-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('alt', 'rc')">
+                                                <span>RC</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="alt-rc-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'rc', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('alt', 'ss-bukumlu')">
+                                                <span>SS Bükümlü</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="alt-ss-bukumlu-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('alt', 'ss-bukumlu', '21x25')">21x25</button>
+                                                </div>
+                                                
+                                                <!-- Büküm Seçimi FDI Şablonu -->
+                                                <div id="alt-ss-bukumlu-bends" class="wire-bend-section" style="display: none;">
+                                                    <h6 class="bend-title">Hangi bükümler mevcut?</h6>
+                                                    <div class="bend-fdi-chart">
+                                                        <div class="jaw-container">
+                                                            <!-- Üst Çene -->
+                                                            <div class="jaw-section upper-jaw-section">
+                                                                <h5 class="jaw-title">Üst Çene</h5>
+                                                                <div class="upper-jaw">
+                                                                    <!-- Üst Sağ Kadran (1) -->
+                                                                    <div class="quadrant upper-right">
+                                                                        <button class="tooth-btn" data-tooth="17">17</button>
+                                                                        <button class="bend-btn" data-position="17-16">+</button>
+                                                                        <button class="tooth-btn" data-tooth="16">16</button>
+                                                                        <button class="bend-btn" data-position="16-15">+</button>
+                                                                        <button class="tooth-btn" data-tooth="15">15</button>
+                                                                        <button class="bend-btn" data-position="15-14">+</button>
+                                                                        <button class="tooth-btn" data-tooth="14">14</button>
+                                                                        <button class="bend-btn" data-position="14-13">+</button>
+                                                                        <button class="tooth-btn" data-tooth="13">13</button>
+                                                                        <button class="bend-btn" data-position="13-12">+</button>
+                                                                        <button class="tooth-btn" data-tooth="12">12</button>
+                                                                        <button class="bend-btn" data-position="12-11">+</button>
+                                                                        <button class="tooth-btn" data-tooth="11">11</button>
+                                                                    </div>
+                                                                    <!-- Üst Sol Kadran (2) -->
+                                                                    <div class="quadrant upper-left">
+                                                                        <button class="tooth-btn" data-tooth="21">21</button>
+                                                                        <button class="bend-btn" data-position="21-22">+</button>
+                                                                        <button class="tooth-btn" data-tooth="22">22</button>
+                                                                        <button class="bend-btn" data-position="22-23">+</button>
+                                                                        <button class="tooth-btn" data-tooth="23">23</button>
+                                                                        <button class="bend-btn" data-position="23-24">+</button>
+                                                                        <button class="tooth-btn" data-tooth="24">24</button>
+                                                                        <button class="bend-btn" data-position="24-25">+</button>
+                                                                        <button class="tooth-btn" data-tooth="25">25</button>
+                                                                        <button class="bend-btn" data-position="25-26">+</button>
+                                                                        <button class="tooth-btn" data-tooth="26">26</button>
+                                                                        <button class="bend-btn" data-position="26-27">+</button>
+                                                                        <button class="tooth-btn" data-tooth="27">27</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Üst çene midline -->
+                                                                <div class="midline-container">
+                                                                    <button class="bend-btn midline-btn" data-position="11-21">+</button>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <!-- Alt Çene -->
+                                                            <div class="jaw-section lower-jaw-section">
+                                                                <h5 class="jaw-title">Alt Çene</h5>
+                                                                <div class="lower-jaw">
+                                                                    <!-- Alt Sol Kadran (4) - 40'lı sayılar -->
+                                                                    <div class="quadrant lower-left">
+                                                                        <button class="tooth-btn" data-tooth="47">47</button>
+                                                                        <button class="bend-btn" data-position="47-46">+</button>
+                                                                        <button class="tooth-btn" data-tooth="46">46</button>
+                                                                        <button class="bend-btn" data-position="46-45">+</button>
+                                                                        <button class="tooth-btn" data-tooth="45">45</button>
+                                                                        <button class="bend-btn" data-position="45-44">+</button>
+                                                                        <button class="tooth-btn" data-tooth="44">44</button>
+                                                                        <button class="bend-btn" data-position="44-43">+</button>
+                                                                        <button class="tooth-btn" data-tooth="43">43</button>
+                                                                        <button class="bend-btn" data-position="43-42">+</button>
+                                                                        <button class="tooth-btn" data-tooth="42">42</button>
+                                                                        <button class="bend-btn" data-position="42-41">+</button>
+                                                                        <button class="tooth-btn" data-tooth="41">41</button>
+                                                                    </div>
+                                                                    <!-- Alt Sağ Kadran (3) - 30'lu sayılar -->
+                                                                    <div class="quadrant lower-right">
+                                                                        <button class="tooth-btn" data-tooth="37">37</button>
+                                                                        <button class="bend-btn" data-position="37-36">+</button>
+                                                                        <button class="tooth-btn" data-tooth="36">36</button>
+                                                                        <button class="bend-btn" data-position="36-35">+</button>
+                                                                        <button class="tooth-btn" data-tooth="35">35</button>
+                                                                        <button class="bend-btn" data-position="35-34">+</button>
+                                                                        <button class="tooth-btn" data-tooth="34">34</button>
+                                                                        <button class="bend-btn" data-position="34-33">+</button>
+                                                                        <button class="tooth-btn" data-tooth="33">33</button>
+                                                                        <button class="bend-btn" data-position="33-32">+</button>
+                                                                        <button class="tooth-btn" data-tooth="32">32</button>
+                                                                        <button class="bend-btn" data-position="32-31">+</button>
+                                                                        <button class="tooth-btn" data-tooth="31">31</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Alt çene midline -->
+                                                                <div class="midline-container">
+                                                                    <button class="bend-btn midline-btn" data-position="31-41">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Temizle Butonu -->
+                                                        <div class="bend-chart-controls">
+                                                            <button class="clear-bends-btn" type="button" onclick="clearWireBends('alt')">Temizle</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Üst Çene -->
+                            <div class="wire-section">
+                                <div class="wire-main-btn-container">
+                                    <button type="button" class="wire-main-btn" onclick="toggleWireSection('ust')">
+                                        <span><span class="status-dot current-dot"></span>Üst Çene</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                </div>
+                                <div id="ust-wire-section" class="wire-subsection" style="display: none;">
+                                    <!-- Tel Tipleri -->
+                                    <div class="wire-type-group">
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('ust', 'niti')">
+                                                <span>Niti</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="ust-niti-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'niti', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('ust', 'ss')">
+                                                <span>SS</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="ust-ss-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('ust', 'rc')">
+                                                <span>RC</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="ust-rc-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'rc', '21x25')">21x25</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="wire-type-item">
+                                            <div class="wire-type-header" onclick="toggleWireType('ust', 'ss-bukumlu')">
+                                                <span>SS Bükümlü</span>
+                                                <span class="arrow">▼</span>
+                                            </div>
+                                            <div id="ust-ss-bukumlu-sizes" class="wire-size-container" style="display: none;">
+                                                <div class="wire-size-buttons">
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '0.12')">0.12</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '0.14')">0.14</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '0.16')">0.16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '0.18')">0.18</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '0.20')">0.20</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '16x16')">16x16</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '16x22')">16x22</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '17x25')">17x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '19x25')">19x25</button>
+                                                    <button type="button" class="wire-size-btn" onclick="selectWireSize('ust', 'ss-bukumlu', '21x25')">21x25</button>
+                                                </div>
+                                                
+                                                <!-- Büküm Seçimi FDI Şablonu -->
+                                                <div id="ust-ss-bukumlu-bends" class="wire-bend-section" style="display: none;">
+                                                    <h6 class="bend-title">Hangi bükümler mevcut?</h6>
+                                                    <div class="bend-fdi-chart">
+                                                        <div class="jaw-container">
+                                                            <!-- Üst Çene -->
+                                                            <div class="jaw-section upper-jaw-section">
+                                                                <h5 class="jaw-title">Üst Çene</h5>
+                                                                <div class="upper-jaw">
+                                                                    <!-- Üst Sağ Kadran (1) -->
+                                                                    <div class="quadrant upper-right">
+                                                                        <button class="tooth-btn" data-tooth="17">17</button>
+                                                                        <button class="bend-btn" data-position="17-16">+</button>
+                                                                        <button class="tooth-btn" data-tooth="16">16</button>
+                                                                        <button class="bend-btn" data-position="16-15">+</button>
+                                                                        <button class="tooth-btn" data-tooth="15">15</button>
+                                                                        <button class="bend-btn" data-position="15-14">+</button>
+                                                                        <button class="tooth-btn" data-tooth="14">14</button>
+                                                                        <button class="bend-btn" data-position="14-13">+</button>
+                                                                        <button class="tooth-btn" data-tooth="13">13</button>
+                                                                        <button class="bend-btn" data-position="13-12">+</button>
+                                                                        <button class="tooth-btn" data-tooth="12">12</button>
+                                                                        <button class="bend-btn" data-position="12-11">+</button>
+                                                                        <button class="tooth-btn" data-tooth="11">11</button>
+                                                                    </div>
+                                                                    <!-- Üst Sol Kadran (2) -->
+                                                                    <div class="quadrant upper-left">
+                                                                        <button class="tooth-btn" data-tooth="27">27</button>
+                                                                        <button class="bend-btn" data-position="27-26">+</button>
+                                                                        <button class="tooth-btn" data-tooth="26">26</button>
+                                                                        <button class="bend-btn" data-position="26-25">+</button>
+                                                                        <button class="tooth-btn" data-tooth="25">25</button>
+                                                                        <button class="bend-btn" data-position="25-24">+</button>
+                                                                        <button class="tooth-btn" data-tooth="24">24</button>
+                                                                        <button class="bend-btn" data-position="24-23">+</button>
+                                                                        <button class="tooth-btn" data-tooth="23">23</button>
+                                                                        <button class="bend-btn" data-position="23-22">+</button>
+                                                                        <button class="tooth-btn" data-tooth="22">22</button>
+                                                                        <button class="bend-btn" data-position="22-21">+</button>
+                                                                        <button class="tooth-btn" data-tooth="21">21</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Üst çene midline -->
+                                                                <div class="midline-container">
+                                                                    <button class="bend-btn midline-btn" data-position="11-21">+</button>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <!-- Alt Çene -->
+                                                            <div class="jaw-section lower-jaw-section">
+                                                                <h5 class="jaw-title">Alt Çene</h5>
+                                                                <div class="lower-jaw">
+                                                                    <!-- Alt Sol Kadran (4) - 40'lı sayılar -->
+                                                                    <div class="quadrant lower-left">
+                                                                        <button class="tooth-btn" data-tooth="47">47</button>
+                                                                        <button class="bend-btn" data-position="47-46">+</button>
+                                                                        <button class="tooth-btn" data-tooth="46">46</button>
+                                                                        <button class="bend-btn" data-position="46-45">+</button>
+                                                                        <button class="tooth-btn" data-tooth="45">45</button>
+                                                                        <button class="bend-btn" data-position="45-44">+</button>
+                                                                        <button class="tooth-btn" data-tooth="44">44</button>
+                                                                        <button class="bend-btn" data-position="44-43">+</button>
+                                                                        <button class="tooth-btn" data-tooth="43">43</button>
+                                                                        <button class="bend-btn" data-position="43-42">+</button>
+                                                                        <button class="tooth-btn" data-tooth="42">42</button>
+                                                                        <button class="bend-btn" data-position="42-41">+</button>
+                                                                        <button class="tooth-btn" data-tooth="41">41</button>
+                                                                    </div>
+                                                                    <!-- Alt Sağ Kadran (3) - 30'lu sayılar -->
+                                                                    <div class="quadrant lower-right">
+                                                                        <button class="tooth-btn" data-tooth="37">37</button>
+                                                                        <button class="bend-btn" data-position="37-36">+</button>
+                                                                        <button class="tooth-btn" data-tooth="36">36</button>
+                                                                        <button class="bend-btn" data-position="36-35">+</button>
+                                                                        <button class="tooth-btn" data-tooth="35">35</button>
+                                                                        <button class="bend-btn" data-position="35-34">+</button>
+                                                                        <button class="tooth-btn" data-tooth="34">34</button>
+                                                                        <button class="bend-btn" data-position="34-33">+</button>
+                                                                        <button class="tooth-btn" data-tooth="33">33</button>
+                                                                        <button class="bend-btn" data-position="33-32">+</button>
+                                                                        <button class="tooth-btn" data-tooth="32">32</button>
+                                                                        <button class="bend-btn" data-position="32-31">+</button>
+                                                                        <button class="tooth-btn" data-tooth="31">31</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Alt çene midline -->
+                                                                <div class="midline-container">
+                                                                    <button class="bend-btn midline-btn" data-position="31-41">+</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Temizle Butonu -->
+                                                        <div class="bend-chart-controls">
+                                                            <button class="clear-bends-btn" type="button" onclick="clearWireBends('ust')">Temizle</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Lastik İhtiyacı Hesaplama Bölümü -->
+                        <div class="question-group">
+                            <h3 class="section-title">LASTİK İHTİYACI</h3>
+                            
+                            <div class="elastic-need-section">
+                                <h4 class="elastic-need-subtitle">İhtiyaç Hesaplaması:</h4>
+                                <p style="color: var(--gray-400); font-size: 12px; margin-bottom: 15px;">
+                                    Hesaplama "Randevu Haftası" ve "Sonraki Seans Lastik Seçimleri" bazında otomatik yapılır.
+                                </p>
+                                <div id="elastic-calculation-result" class="calculation-result">
+                                    <p class="no-selection">Randevu haftası ve lastik seçimi yapılmadı</p>
+                                </div>
+                                <!-- Test Butonları -->
+                                <div style="margin-top: 10px; display: flex; gap: 5px;">
+                                    <button type="button" onclick="testElasticCalculation()" style="padding: 5px 10px; background: var(--warning-500); color: white; border: none; border-radius: 4px; font-size: 10px;">Debug Test</button>
+                                    <button type="button" onclick="testSwitches()" style="padding: 5px 10px; background: var(--success-600); color: white; border: none; border-radius: 4px; font-size: 10px;">Switch Test</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="form-right">
                         <div class="output-header">
                             <h3>Değerlendirme Raporu</h3>
-                            <div class="font-controls">
+                            <div class="header-controls">
+                                <button class="electric-switch" onclick="switchToOtherTab()" title="Şeffaf Plağa Geç">
+                                    <div class="switch-body">
+                                        <div class="switch-lever up"></div>
+                                        <span class="switch-label">⇄ Plak</span>
+                                    </div>
+                                </button>
                                 <button class="font-btn" onclick="changeFontSize('tel-output', -1)" title="Yazıyı Küçült">A-</button>
                                 <button class="font-btn" onclick="changeFontSize('tel-output', 1)" title="Yazıyı Büyült">A+</button>
-                                <div class="theme-controls">
-                                    <button class="theme-btn" id="light-btn-2" onclick="setTheme('light')" title="Light Mode">☀️</button>
-                                    <button class="theme-btn" id="dark-btn-2" onclick="setTheme('dark')" title="Dark Mode">🌙</button>
-                                </div>
+                                <button class="theme-btn" id="light-btn-2" onclick="setTheme('light')" title="Light Mode">☀️</button>
+                                <button class="theme-btn" id="dark-btn-2" onclick="setTheme('dark')" title="Dark Mode">🌙</button>
                             </div>
                         </div>
                         <div class="output-container">
@@ -947,5 +1680,122 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+    // Emergency fallback for switchToOtherTab
+    window.switchToOtherTab = function() {
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (!activeTab) {
+            document.querySelector('[data-tab="seffaf-plak"]').click();
+            return;
+        }
+        
+        const currentTab = activeTab.getAttribute('data-tab');
+        const targetTab = currentTab === 'seffaf-plak' ? 'tel-tedavisi' : 'seffaf-plak';
+        
+        const targetTabBtn = document.querySelector(`[data-tab="${targetTab}"]`);
+        if (targetTabBtn) {
+            targetTabBtn.click();
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded',function(){
+      // Initialize tabs if script.js fails
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      if (tabBtns.length > 0 && !document.querySelector('.tab-btn.active')) {
+          tabBtns[0].classList.add('active');
+          if (tabContents.length > 0) {
+              tabContents[0].classList.add('active');
+          }
+      }
+      
+      tabBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+              const targetTab = this.dataset.tab;
+              
+              tabBtns.forEach(b => b.classList.remove('active'));
+              tabContents.forEach(content => content.classList.remove('active'));
+              
+              this.classList.add('active');
+              const targetContent = document.getElementById(targetTab);
+              if (targetContent) {
+                  targetContent.classList.add('active');
+              }
+          });
+      });
+        
+      var b=document.getElementById('theme-toggle'); if(!b) return;
+      b.addEventListener('click',function(){
+        var dark=document.documentElement.getAttribute('data-theme')==='dark';
+        if(dark){ 
+          document.documentElement.removeAttribute('data-theme'); 
+          localStorage.setItem('theme','light'); 
+        }
+        else{ 
+          document.documentElement.setAttribute('data-theme','dark'); 
+          localStorage.setItem('theme','dark'); 
+        }
+      });
+    });
+    </script>
+
+    <!-- Büküm Tipi Seçim Popup -->
+    <div id="bend-type-popup" class="bend-popup" style="display: none;">
+        <div class="bend-popup-content">
+            <div class="bend-popup-header">
+                <h6 id="popup-tooth-title">Diş Bükümü Seçin</h6>
+                <button class="close-popup-btn" onclick="closeBendPopup()">×</button>
+            </div>
+            <div class="bend-popup-body">
+                <div class="bend-type-list">
+                    <button class="bend-type-btn" data-bend="bukkal-kron-tork">Bukkal Kron Torku</button>
+                    <button class="bend-type-btn" data-bend="piggy-back">Piggy Back</button>
+                    <button class="bend-type-btn" data-bend="distal-tipping">Distal Tipping</button>
+                    <button class="bend-type-btn" data-bend="meziyal-tipping">Meziyal Tipping</button>
+                    <button class="bend-type-btn" data-bend="distal-angulasyon">Distal Angulasyon</button>
+                    <button class="bend-type-btn" data-bend="meziyal-angulasyon">Meziyal Angulasyon</button>
+                    <button class="bend-type-btn" data-bend="mesial-out">Mesial Out</button>
+                    <button class="bend-type-btn" data-bend="distal-out">Distal Out</button>
+                    <button class="bend-type-btn" data-bend="mesial-in">Mesial In</button>
+                    <button class="bend-type-btn" data-bend="distal-in">Distal In</button>
+                    <button class="bend-type-btn" data-bend="distal-rotasyon">Distal Rotasyon</button>
+                    <button class="bend-type-btn" data-bend="meziyal-rotasyon">Meziyal Rotasyon</button>
+                </div>
+            </div>
+            <div class="bend-popup-footer">
+                <button class="popup-clear-btn" onclick="clearToothBends()">Temizle</button>
+                <button class="popup-close-btn" onclick="closeBendPopup()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dişler Arası Büküm Tipi Seçim Popup -->
+    <div id="interbend-type-popup" class="bend-popup" style="display: none;">
+        <div class="bend-popup-content">
+            <div class="bend-popup-header">
+                <h6 id="interbend-popup-title">Dişler Arası Büküm Seçin</h6>
+                <button class="close-popup-btn" onclick="closeInterbendPopup()">×</button>
+            </div>
+            <div class="bend-popup-body">
+                <div class="bend-type-list">
+                    <button class="bend-type-btn" data-interbend="key-hole-loop" onclick="selectInterbendType('key-hole-loop')">Key Hole Loop</button>
+                    <button class="bend-type-btn" data-interbend="intruzyon" onclick="selectInterbendType('intruzyon')">Intrüzyon</button>
+                    <button class="bend-type-btn" data-interbend="ekstruzyon" onclick="selectInterbendType('ekstruzyon')">Ekstrüzyon</button>
+                    <button class="bend-type-btn" data-interbend="tork" onclick="selectInterbendType('tork')">Tork</button>
+                    <button class="bend-type-btn" data-interbend="crimp-hook" onclick="selectInterbendType('crimp-hook')">Crimp Hook</button>
+                </div>
+            </div>
+            <div class="bend-popup-footer">
+                <button class="popup-clear-btn" onclick="clearInterbendSelection()">Temizle</button>
+                <button class="popup-close-btn" onclick="closeInterbendPopup()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Overlay -->
+    <div id="popup-overlay" class="popup-overlay" style="display: none;" onclick="closeBendPopup()"></div>
+    <div id="interbend-popup-overlay" class="popup-overlay" style="display: none;" onclick="closeInterbendPopup()"></div>
+
 </body>
 </html>

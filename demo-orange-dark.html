@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Demo - Orange Theme</title>
+    <script>
+    (function(){
+      try{
+        var s=localStorage.getItem('theme');
+        var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var t=s||(prefersDark?'dark':'light');
+        if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+      }catch(e){}
+    })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 24px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        .demo-section {
+            margin-bottom: 32px;
+            padding: 20px;
+            background: var(--surface-2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .demo-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            font-size: 1.25rem;
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+        
+        /* Alert Components */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .alert-success {
+            background: var(--success-bg);
+            border-left-color: var(--success);
+            color: var(--success-text);
+        }
+        .alert-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning);
+            color: var(--warning-text);
+        }
+        .alert-danger {
+            background: var(--danger-bg);
+            border-left-color: var(--danger);
+            color: var(--danger-text);
+        }
+        .alert-info {
+            background: var(--info-bg);
+            border-left-color: var(--info);
+            color: var(--info-text);
+        }
+        
+        /* Table Component */
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .demo-table th,
+        .demo-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .demo-table th {
+            background: var(--surface-3);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .demo-table tbody tr:nth-child(even) {
+            background: var(--surface-1);
+        }
+        .demo-table tbody tr:hover {
+            background: var(--surface-2);
+        }
+        
+        /* Footer Component */
+        .demo-footer {
+            background: var(--surface-4);
+            padding: 24px;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 24px;
+            border: 1px solid var(--border);
+        }
+        
+        /* Form Components */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--input-text);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .form-control::placeholder {
+            color: var(--placeholder);
+        }
+        .form-control:focus {
+            outline: 2px solid var(--primary-300);
+            border-color: var(--primary-400);
+            outline-offset: 2px;
+        }
+        
+        /* Card Component */
+        .card {
+            background: var(--surface-3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .card-title {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .card-text {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        /* Link styling */
+        .demo-link {
+            color: var(--link);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .demo-link:hover {
+            color: var(--link-hover);
+        }
+        
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .badge-success { background: var(--success-bg); color: var(--success-text); }
+        .badge-warning { background: var(--warning-bg); color: var(--warning-text); }
+        .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+        .badge-info { background: var(--info-bg); color: var(--info-text); }
+        
+        /* Theme info */
+        .theme-info {
+            background: var(--surface-1);
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header with theme toggle -->
+        <header>
+            <div class="header-content">
+                <h1>Orange Dark Mode Demo</h1>
+                <button id="theme-toggle" class="btn btn-outline" aria-label="Tema değiştir">🌗</button>
+            </div>
+        </header>
+
+        <!-- Theme Information -->
+        <div class="theme-info">
+            <h4 style="color: var(--text-primary); margin-bottom: 12px;">Current Color Palette</h4>
+            <p style="color: var(--text-secondary); margin: 0;">
+                <span class="color-swatch" style="background: #E38400;"></span>Primary: #E38400 (Orange)
+                <span class="color-swatch" style="background: #121212; margin-left: 16px;"></span>Background: #121212
+                <span class="color-swatch" style="background: #22946E; margin-left: 16px;"></span>Success: #22946E
+                <span class="color-swatch" style="background: #A87A2A; margin-left: 16px;"></span>Warning: #A87A2A
+                <span class="color-swatch" style="background: #9C2121; margin-left: 16px;"></span>Danger: #9C2121
+                <span class="color-swatch" style="background: #21498A; margin-left: 16px;"></span>Info: #21498A
+            </p>
+        </div>
+
+        <!-- Cards and Links Section -->
+        <div class="demo-section">
+            <h3>Cards & Links</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="card">
+                    <div class="card-title">Patient Information</div>
+                    <div class="card-text">
+                        This is a sample card component. 
+                        <a href="#" class="demo-link">Click this link</a> to see hover effect.
+                        Visit our <a href="#" class="demo-link">documentation</a> for more details.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Treatment Status</div>
+                    <div class="card-text">
+                        Current treatment progress with 
+                        <a href="#" class="demo-link">detailed reports</a> available in the system.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button Examples -->
+        <div class="demo-section">
+            <h3>Button Examples</h3>
+            <div class="demo-grid">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-outline">Outline Button</button>
+            </div>
+        </div>
+
+        <!-- Form Elements -->
+        <div class="demo-section">
+            <h3>Form Elements</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="demo-input">Patient Name:</label>
+                    <input type="text" id="demo-input" class="form-control" placeholder="Enter patient name...">
+                </div>
+                <div class="form-group">
+                    <label for="demo-select">Treatment Type:</label>
+                    <select id="demo-select" class="form-control">
+                        <option value="">Select treatment...</option>
+                        <option value="clear">Clear Aligners</option>
+                        <option value="braces">Traditional Braces</option>
+                        <option value="retainer">Retainer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="demo-textarea">Treatment Notes:</label>
+                <textarea id="demo-textarea" class="form-control" rows="3" placeholder="Enter treatment notes and observations..."></textarea>
+            </div>
+        </div>
+
+        <!-- Alert Examples -->
+        <div class="demo-section">
+            <h3>Alert Examples</h3>
+            <div class="alert alert-success">
+                <strong>Success!</strong> Treatment completed successfully. Patient is ready for the next phase.
+            </div>
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> Patient missed the last appointment. Please reschedule as soon as possible.
+            </div>
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Treatment plan needs immediate revision due to complications.
+            </div>
+            <div class="alert alert-info">
+                <strong>Info:</strong> Next appointment scheduled for orthodontic adjustment and progress evaluation.
+            </div>
+        </div>
+
+        <!-- Table Example -->
+        <div class="demo-section">
+            <h3>Patient Data Table</h3>
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Treatment Type</th>
+                        <th>Progress</th>
+                        <th>Status</th>
+                        <th>Next Appointment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ahmet Yılmaz</td>
+                        <td>Clear Aligners</td>
+                        <td>75%</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td>Nov 15, 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Elif Demir</td>
+                        <td>Traditional Braces</td>
+                        <td>45%</td>
+                        <td><span class="badge badge-warning">Pending</span></td>
+                        <td>Nov 20, 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Can Özkan</td>
+                        <td>Retainer</td>
+                        <td>100%</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                        <td>Follow-up</td>
+                    </tr>
+                    <tr>
+                        <td>Zeynep Kaya</td>
+                        <td>Clear Aligners</td>
+                        <td>20%</td>
+                        <td><span class="badge badge-danger">Overdue</span></td>
+                        <td>Reschedule</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <footer class="demo-footer">
+            <p style="color: var(--text-secondary); margin: 0; font-size: 14px;">
+                © 2024 Orthodontic Patient Form System
+                <br>
+                <strong>Theme Status:</strong> 
+                <span style="color: var(--primary); font-weight: 600;" id="theme-status">Detecting...</span>
+                <br>
+                <small>Toggle between light and dark modes using the 🌗 button</small>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      // Theme toggle functionality
+      var el=document.getElementById('theme-toggle');
+      var statusEl = document.getElementById('theme-status');
+      
+      function updateThemeStatus() {
+        var isDark = document.documentElement.getAttribute('data-theme')==='dark';
+        statusEl.textContent = isDark ? 'Dark Mode Active (Orange Primary)' : 'Light Mode Active';
+        statusEl.style.color = isDark ? 'var(--primary)' : 'var(--primary-600)';
+      }
+      
+      if(el) {
+        updateThemeStatus();
+        
+        el.addEventListener('click',function(){
+          var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+          if(isDark){ 
+            document.documentElement.removeAttribute('data-theme'); 
+            localStorage.setItem('theme','light'); 
+          }
+          else{ 
+            document.documentElement.setAttribute('data-theme','dark'); 
+            localStorage.setItem('theme','dark'); 
+          }
+          updateThemeStatus();
+        });
+      }
+      
+      // Demonstrate form interactions
+      var inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(function(input) {
+        input.addEventListener('focus', function() {
+          this.style.transform = 'scale(1.02)';
+        });
+        input.addEventListener('blur', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    });
+    </script>
+</body>
+</html>
