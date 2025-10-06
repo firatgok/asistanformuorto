@@ -4266,6 +4266,7 @@ function calculateElasticNeed() {
 function updateElasticCalculation() {
     console.log('updateElasticCalculation called');
     calculateElasticNeed();
+    updateTelOutput(); // Raporu da güncelle
 }
 
 // Lastik tipi metnini dönüştürme yardımcı fonksiyonu
