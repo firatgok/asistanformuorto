@@ -4120,12 +4120,14 @@ function calculateElasticNeed() {
             // "Aynı lastiklere devam" seçili mi kontrol et
             if (sagElastics.continuesCurrent && typeof currentElasticUsage !== 'undefined' && currentElasticUsage.tel && currentElasticUsage.tel.sag) {
                 console.log('Sağ taraf aynı lastiklere devam seçili');
+                console.log('currentElasticUsage.tel.sag:', currentElasticUsage.tel.sag);
                 // Mevcut seçilen lastikleri say
                 const sagTypes = ['sinif2', 'sinif3', 'cross'];
                 sagTypes.forEach(type => {
+                    console.log(`Checking current sag ${type}:`, currentElasticUsage.tel.sag[type]);
                     if (currentElasticUsage.tel.sag[type] && currentElasticUsage.tel.sag[type].selected && currentElasticUsage.tel.sag[type].hours) {
                         sagCount++;
-                        console.log(`Sağ ${type} mevcut lastik sayıldı`);
+                        console.log(`Sağ ${type} mevcut lastik sayıldı - sagCount: ${sagCount}`);
                     }
                 });
             } else {
@@ -4153,12 +4155,14 @@ function calculateElasticNeed() {
             // "Aynı lastiklere devam" seçili mi kontrol et
             if (solElastics.continuesCurrent && typeof currentElasticUsage !== 'undefined' && currentElasticUsage.tel && currentElasticUsage.tel.sol) {
                 console.log('Sol taraf aynı lastiklere devam seçili');
+                console.log('currentElasticUsage.tel.sol:', currentElasticUsage.tel.sol);
                 // Mevcut seçilen lastikleri say
                 const solTypes = ['sinif2', 'sinif3', 'cross'];
                 solTypes.forEach(type => {
+                    console.log(`Checking current sol ${type}:`, currentElasticUsage.tel.sol[type]);
                     if (currentElasticUsage.tel.sol[type] && currentElasticUsage.tel.sol[type].selected && currentElasticUsage.tel.sol[type].hours) {
                         solCount++;
-                        console.log(`Sol ${type} mevcut lastik sayıldı`);
+                        console.log(`Sol ${type} mevcut lastik sayıldı - solCount: ${solCount}`);
                     }
                 });
             } else {
