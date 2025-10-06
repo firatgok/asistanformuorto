@@ -776,6 +776,28 @@ header h1 {
     color: var(--warning-800);
 }
 
+/* Duration Info Span */
+.duration-info {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    letter-spacing: 0;
+}
+
+.duration-btn:hover .duration-info {
+    background: rgba(255, 255, 255, 0.4);
+    opacity: 0.9;
+}
+
+.duration-btn.selected .duration-info {
+    background: rgba(255, 255, 255, 0.25);
+    opacity: 1;
+}
+
 /* Manuel Duration Container */
 .manual-duration-container {
     margin-top: 15px;

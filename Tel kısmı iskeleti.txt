@@ -13,3 +13,5 @@ Lastik kullanımında aksama var mı?
 Lastikleri ortalama kaç saat takıyor?
 
 Ağız Hijyeni (1-10 arası skor)
+
+Raporu hangi asistan giriyor?

@@ -1985,7 +1985,7 @@ function toggleElasticDirection(direction, buttonElement) {
     const optionsContainer = document.getElementById(direction + '-options');
     
     // Sonraki seans butonları için
-    if (direction.includes('-next')) {
+    if (direction && direction.includes('-next')) {
         const isCurrentlyActive = nextElasticSelections[direction].active;
         
         if (isCurrentlyActive) {
@@ -2027,6 +2027,10 @@ function toggleElasticDirection(direction, buttonElement) {
         }
     } else {
         // Mevcut sistem (değişiklik yok)
+        if (!direction || !elasticSelections[direction]) {
+            console.error('Direction is undefined or not found in elasticSelections:', direction);
+            return;
+        }
         const isCurrentlyActive = elasticSelections[direction].active;
 
         if (isCurrentlyActive) {
@@ -2070,7 +2074,7 @@ function toggleElasticType(parent, elasticType, buttonElement) {
     const durationContainer = document.getElementById(`${parent}-${elasticType}-duration`);
     
     // Sonraki seans için
-    if (parent.includes('-next')) {
+    if (parent && parent.includes('-next')) {
         const isCurrentlySelected = nextElasticSelections[parent].types[elasticType].selected;
         
         if (isCurrentlySelected) {
