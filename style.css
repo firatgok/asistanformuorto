@@ -4413,9 +4413,9 @@ input::placeholder, textarea::placeholder {
     background: white;
     border-radius: 12px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    min-width: 320px;
-    max-width: 400px;
-    max-height: 80vh;
+    min-width: 400px;
+    max-width: 500px;
+    max-height: 90vh;
     overflow: hidden;
 }
 
@@ -4463,7 +4463,7 @@ input::placeholder, textarea::placeholder {
 
 .bend-popup-body {
     padding: 20px 24px;
-    max-height: 50vh;
+    max-height: 65vh;
     overflow-y: auto;
 }
 
@@ -4611,4 +4611,83 @@ input::placeholder, textarea::placeholder {
     background: rgba(0, 0, 0, 0.5);
     z-index: 9998;
     backdrop-filter: blur(2px);
+}
+
+/* Tablet optimizasyonu - Büküm FDI Şablonu */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .bend-fdi-chart .tooth-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        margin: 2px;
+        border-width: 2px;
+    }
+    
+    .bend-fdi-chart .bend-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        margin: 0 4px;
+        border-width: 2px;
+    }
+    
+    .bend-fdi-chart .quadrant {
+        gap: 6px;
+        padding: 12px;
+    }
+    
+    .bend-fdi-chart .jaw-container {
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .bend-popup {
+        min-width: 450px;
+        max-width: 550px;
+    }
+    
+    .bend-type-btn {
+        padding: 16px 20px;
+        font-size: 16px;
+        min-height: 50px;
+    }
+}
+
+/* Mobil optimizasyonu - Büküm FDI Şablonu */
+@media (max-width: 767px) {
+    .bend-fdi-chart .tooth-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+        margin: 1px;
+    }
+    
+    .bend-fdi-chart .bend-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+        margin: 0 2px;
+    }
+    
+    .bend-fdi-chart .quadrant {
+        gap: 4px;
+        padding: 8px;
+    }
+    
+    .bend-fdi-chart .jaw-container {
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .bend-popup {
+        min-width: 90vw;
+        max-width: 95vw;
+        max-height: 85vh;
+    }
+    
+    .bend-type-btn {
+        padding: 14px 16px;
+        font-size: 15px;
+        min-height: 48px;
+    }
 }

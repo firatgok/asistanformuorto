@@ -4035,47 +4035,17 @@ function updateTelOutput() {
     if (elasticNeedCalculation.totalNeed > 0) {
         const appointmentWeeks = selectedAppointment.tel || 0;
         
-        // Detaylı bilgileri topla
-        let elasticDetails = [];
-        if (typeof nextElasticUsage !== 'undefined' && nextElasticUsage['tel-next']) {
-            // Sağ taraf
-            if (nextElasticUsage['tel-next'].sag) {
-                let sagCount = 0;
-                for (const type in nextElasticUsage['tel-next'].sag) {
-                    if (nextElasticUsage['tel-next'].sag[type].selected && nextElasticUsage['tel-next'].sag[type].hours) {
-                        sagCount++;
-                    }
-                }
-                if (sagCount > 0) elasticDetails.push(`Sağ: ${sagCount}/gün`);
-            }
-            
-            // Sol taraf
-            if (nextElasticUsage['tel-next'].sol) {
-                let solCount = 0;
-                for (const type in nextElasticUsage['tel-next'].sol) {
-                    if (nextElasticUsage['tel-next'].sol[type].selected && nextElasticUsage['tel-next'].sol[type].hours) {
-                        solCount++;
-                    }
-                }
-                if (solCount > 0) elasticDetails.push(`Sol: ${solCount}/gün`);
-            }
-            
-            // Orta taraf
-            if (nextElasticUsage['tel-next'].orta) {
-                let ortaCount = 0;
-                for (const type in nextElasticUsage['tel-next'].orta) {
-                    if (nextElasticUsage['tel-next'].orta[type].selected && nextElasticUsage['tel-next'].orta[type].hours) {
-                        ortaCount++;
-                    }
-                }
-                if (ortaCount > 0) elasticDetails.push(`Ön: ${ortaCount}/gün`);
-            }
-        }
-        
         output += '\nEK İHTİYAÇLAR:\n';
         output += '-------------\n';
-        const detailsText = elasticDetails.join(', ');
-        output += `• Lastik İhtiyacı: ${appointmentWeeks} hafta için ${elasticNeedCalculation.totalNeed} adet lastik pakedi gerekli (${detailsText})\n`;
+        
+        // elasticNeedCalculation objesindeki details bilgisini kullan
+        if (elasticNeedCalculation.details && elasticNeedCalculation.details.length > 0) {
+            const detailsText = elasticNeedCalculation.details.join(', ');
+            const calculationText = `${detailsText} × ${elasticNeedCalculation.days} gün`;
+            output += `• Lastik İhtiyacı: ${appointmentWeeks} hafta için ${elasticNeedCalculation.totalNeed} adet lastik pakedi gerekli (${calculationText})\n`;
+        } else {
+            output += `• Lastik İhtiyacı: ${appointmentWeeks} hafta için ${elasticNeedCalculation.totalNeed} adet lastik pakedi gerekli\n`;
+        }
     }
     
     // Çıktıyı güncelle
@@ -4147,11 +4117,13 @@ function calculateElasticNeed() {
             if (sagElastics.continuesCurrent && typeof currentElasticUsage !== 'undefined' && currentElasticUsage.tel && currentElasticUsage.tel.sag) {
                 console.log('Sağ taraf aynı lastiklere devam seçili');
                 // Mevcut seçilen lastikleri say
-                for (const type in currentElasticUsage.tel.sag) {
-                    if (currentElasticUsage.tel.sag[type].selected && currentElasticUsage.tel.sag[type].hours) {
+                const sagTypes = ['sinif2', 'sinif3', 'cross'];
+                sagTypes.forEach(type => {
+                    if (currentElasticUsage.tel.sag[type] && currentElasticUsage.tel.sag[type].selected && currentElasticUsage.tel.sag[type].hours) {
                         sagCount++;
+                        console.log(`Sağ ${type} mevcut lastik sayıldı`);
                     }
-                }
+                });
             } else {
                 // Manuel seçimleri kontrol et
                 for (const type in sagElastics) {
@@ -4178,11 +4150,13 @@ function calculateElasticNeed() {
             if (solElastics.continuesCurrent && typeof currentElasticUsage !== 'undefined' && currentElasticUsage.tel && currentElasticUsage.tel.sol) {
                 console.log('Sol taraf aynı lastiklere devam seçili');
                 // Mevcut seçilen lastikleri say
-                for (const type in currentElasticUsage.tel.sol) {
-                    if (currentElasticUsage.tel.sol[type].selected && currentElasticUsage.tel.sol[type].hours) {
+                const solTypes = ['sinif2', 'sinif3', 'cross'];
+                solTypes.forEach(type => {
+                    if (currentElasticUsage.tel.sol[type] && currentElasticUsage.tel.sol[type].selected && currentElasticUsage.tel.sol[type].hours) {
                         solCount++;
+                        console.log(`Sol ${type} mevcut lastik sayıldı`);
                     }
-                }
+                });
             } else {
                 // Manuel seçimleri kontrol et
                 for (const type in solElastics) {
@@ -4207,11 +4181,13 @@ function calculateElasticNeed() {
             if (ortaElastics.continuesCurrent && typeof currentElasticUsage !== 'undefined' && currentElasticUsage.tel && currentElasticUsage.tel.orta) {
                 console.log('Orta taraf aynı lastiklere devam seçili');
                 // Mevcut seçilen lastikleri say
-                for (const type in currentElasticUsage.tel.orta) {
-                    if (currentElasticUsage.tel.orta[type].selected && currentElasticUsage.tel.orta[type].hours) {
+                const ortaTypes = ['oblik1333', 'oblik2343'];
+                ortaTypes.forEach(type => {
+                    if (currentElasticUsage.tel.orta[type] && currentElasticUsage.tel.orta[type].selected && currentElasticUsage.tel.orta[type].hours) {
                         ortaCount++;
+                        console.log(`Orta ${type} mevcut lastik sayıldı`);
                     }
-                }
+                });
             } else {
                 // Manuel seçimleri kontrol et
                 for (const type in ortaElastics) {
@@ -4250,7 +4226,8 @@ function calculateElasticNeed() {
     elasticNeedCalculation = {
         days: totalDays,
         elasticsPerDay: totalElasticsPerDay,
-        totalNeed: totalNeed
+        totalNeed: totalNeed,
+        details: details.map(detail => detail.replace('lastik', '/gün'))
     };
 }
 
