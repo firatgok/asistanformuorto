@@ -4154,6 +4154,7 @@ function calculateElasticNeed() {
             if (sagCount > 0) {
                 totalElasticsPerDay += sagCount;
                 details.push(`Sağ: ${sagCount} lastik`);
+                console.log('Added sagCount to totalElasticsPerDay:', totalElasticsPerDay);
             }
         }
         
@@ -4184,9 +4185,11 @@ function calculateElasticNeed() {
                 }
             }
             
+            console.log('solCount:', solCount);
             if (solCount > 0) {
                 totalElasticsPerDay += solCount;
                 details.push(`Sol: ${solCount} lastik`);
+                console.log('Added solCount to totalElasticsPerDay:', totalElasticsPerDay);
             }
         }
         
@@ -4215,18 +4218,28 @@ function calculateElasticNeed() {
                 }
             }
             
+            console.log('ortaCount:', ortaCount);
             if (ortaCount > 0) {
                 totalElasticsPerDay += ortaCount;
                 details.push(`Orta: ${ortaCount} lastik`);
+                console.log('Added ortaCount to totalElasticsPerDay:', totalElasticsPerDay);
             }
         }
     }
     
     const totalNeed = totalElasticsPerDay * totalDays;
     
+    console.log('=== CALCULATION SUMMARY ===');
+    console.log('totalElasticsPerDay:', totalElasticsPerDay);
+    console.log('totalDays:', totalDays);
+    console.log('totalNeed:', totalNeed);
+    console.log('details:', details);
+    console.log('=========================');
+    
     let resultHTML = '';
     
     if (totalElasticsPerDay === 0) {
+        console.log('No elastics per day - showing no selection message');
         resultHTML = '<p class="no-selection">Sonraki seans için lastik seçimi yapılmadı</p>';
     } else {
         // Detayları /gün formatında düzenle
