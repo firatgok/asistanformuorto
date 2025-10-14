@@ -264,6 +264,12 @@ function initializeCheckboxListeners() {
         button.addEventListener('click', handleOptionButtonClick);
     });
 
+    // Initialize option buttons for tel tedavisi
+    const telButtons = document.querySelectorAll('#tel-tedavisi .option-btn');
+    telButtons.forEach(button => {
+        button.addEventListener('click', handleTelOptionButtonClick);
+    });
+
     // Initialize number buttons (old system) - DISABLED: using unified system instead
     // const numberButtons = document.querySelectorAll('#seffaf-plak .number-btn');
     // numberButtons.forEach(button => {
@@ -276,10 +282,17 @@ function initializeCheckboxListeners() {
         button.addEventListener('click', handleUnifiedNumberButtonClick);
     });
     
-    // Initialize clear buttons
+    // Initialize clear buttons for both tabs
     const clearButtons = document.querySelectorAll('.clear-btn');
     clearButtons.forEach(button => {
-        button.addEventListener('click', handleClearButtonClick);
+        button.addEventListener('click', function(event) {
+            const question = button.dataset.question;
+            if (question === 'tel-asistan') {
+                handleTelClearButtonClick(event);
+            } else {
+                handleClearButtonClick(event);
+            }
+        });
     });
 
     // Initialize randevu buttons
@@ -311,6 +324,35 @@ function handleOptionButtonClick(event) {
     
     // Update the output
     updateSeffafOutput();
+}
+
+function handleTelOptionButtonClick(event) {
+    const button = event.target;
+    const question = button.dataset.question;
+    const value = button.dataset.value;
+    
+    // Find all buttons in the same question group
+    const questionGroup = button.closest('.question-group');
+    const allButtons = questionGroup.querySelectorAll('.option-btn');
+    
+    // Remove selected class from all buttons in this question
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Add selected class to clicked button
+    button.classList.add('selected');
+    
+    // Tel asistan seçimi özel işlem
+    if (question === 'tel-asistan') {
+        answers[question] = value;
+        // Display güncellemesi
+        const display = document.getElementById('tel-asistan-display');
+        if (display) {
+            display.textContent = value;
+        }
+    }
+    
+    // Update the output
+    updateTelOutput();
 }
 
 function handleNumberButtonClick(event) {
@@ -406,7 +448,18 @@ function updateSeffafOutput() {
     selectedButtons.forEach(button => {
         const question = button.dataset.question;
         const value = button.dataset.value;
-        tempAnswers[question] = value;
+        
+        // Asistan seçimi özel işlem
+        if (question === 'asistan') {
+            tempAnswers[question] = value;
+            // Display güncellemesi
+            const display = document.getElementById('asistan-display');
+            if (display) {
+                display.textContent = value;
+            }
+        } else {
+            tempAnswers[question] = value;
+        }
     });
     
     // Handle unified number inputs
@@ -658,6 +711,11 @@ function generateSeffafReport(answers) {
 
     let report = 'ŞEFFAF PLAK TEDAVİSİ KONTROL RAPORU\n';
     report += '=============================================\n\n';
+    
+    // Asistan bilgisi en üstte
+    if (answers['asistan']) {
+        report += `Kontroller ${answers['asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n\n`;
+    }
     
     // RUTİN KONTROLLER bölümü
     if (Object.keys(answers).some(key => ['onceki-seans', 'mevcut-plak', 'plak-gun', 'verilecek-plak', 'plak-degisim', 'sonraki-randevu', 'adaptasyon', 'atasmanlar', 'ipr-yok', 'bu-seans-ipr-yok'].includes(key)) || selectedInterdentalSpaces.size > 0) {
@@ -1907,6 +1965,44 @@ function handleClearButtonClick(event) {
     
     if (!question) return;
     
+    // Option button clear işlemi (asistan - şeffaf plak)
+    if (question === 'asistan') {
+        // Option button'ların seçimini kaldır
+        const questionGroup = button.closest('.question-group');
+        const optionButtons = questionGroup.querySelectorAll('.option-btn');
+        optionButtons.forEach(btn => btn.classList.remove('selected'));
+        
+        // Manuel input'u temizle ve alanı kapat
+        const manuelInput = document.getElementById('asistan-manual-input');
+        if (manuelInput) {
+            manuelInput.value = '';
+        }
+        
+        const manualGroup = document.getElementById('manual-asistan-group');
+        const toggleBtn = document.querySelector('#seffaf-plak .toggle-manual-btn');
+        if (manualGroup && manualGroup.style.display !== 'none') {
+            manualGroup.style.display = 'none';
+            toggleBtn.classList.remove('active');
+            toggleBtn.textContent = 'Manuel Giriş';
+        }
+        
+        // Display'i sıfırla
+        const display = document.getElementById('asistan-display');
+        if (display) {
+            display.textContent = 'Henüz seçilmedi';
+        }
+        
+        // Answers'tan kaldır
+        delete answers[question];
+        
+        // Update output
+        updateSeffafOutput();
+        return;
+    }
+    
+
+    
+    // Number input clear işlemi (mevcut sistem)
     // Clear the input
     numberInputs[question] = '';
     
@@ -1915,6 +2011,46 @@ function handleClearButtonClick(event) {
     
     // Update output
     updateSeffafOutput();
+}
+
+function handleTelClearButtonClick(event) {
+    const button = event.target;
+    const question = button.dataset.question;
+    
+    if (question === 'tel-asistan') {
+        // Option button'ların seçimini kaldır
+        const questionGroup = button.closest('.question-group');
+        const optionButtons = questionGroup.querySelectorAll('.option-btn');
+        optionButtons.forEach(btn => btn.classList.remove('selected'));
+        
+        // Manuel input'u temizle ve alanı kapat
+        const manuelInput = document.getElementById('tel-asistan-manual-input');
+        if (manuelInput) {
+            manuelInput.value = '';
+        }
+        
+        const manualGroup = document.getElementById('tel-manual-asistan-group');
+        const toggleBtn = document.querySelector('#tel-tedavisi .toggle-manual-btn');
+        if (manualGroup && manualGroup.style.display !== 'none') {
+            manualGroup.style.display = 'none';
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+                toggleBtn.textContent = 'Manuel Giriş';
+            }
+        }
+        
+        // Display'i sıfırla
+        const display = document.getElementById('tel-asistan-display');
+        if (display) {
+            display.textContent = 'Henüz seçilmedi';
+        }
+        
+        // Answers'tan kaldır
+        delete answers[question];
+        
+        // Update output
+        updateTelOutput();
+    }
 }
 
 // Update unified number displays
@@ -2343,75 +2479,7 @@ function updateElasticReport() {
     updateSeffafOutput();
 }
 
-function updateTelOutput() {
-    const telOutput = document.getElementById('tel-output');
-    if (!telOutput) return;
-
-    let report = [];
-    
-    // Check elastic status
-    const elasticStatusSelected = document.querySelector('.elastic-status-btn.selected');
-    if (elasticStatusSelected) {
-        const status = elasticStatusSelected.dataset.status;
-        report.push(status === 'evet' ? '• Hasta lastiklerini takmıştır' : '• Hasta lastiklerini takmamıştır');
-        report.push(''); // Boş satır ekle
-    }
-    
-    // Tel tedavisi sekmesinden seçilen tüm seçenekleri topla
-    const telTab = document.getElementById('tel-tedavisi');
-    if (!telTab) return;
-    
-    // Checkbox'ları kontrol et
-    const checkboxes = telTab.querySelectorAll('input[type="checkbox"]:checked');
-    checkboxes.forEach(checkbox => {
-        const label = checkbox.closest('label');
-        if (label) {
-            const text = label.textContent.trim();
-            if (text && text !== checkbox.value) {
-                report.push(text);
-            }
-        }
-    });
-    
-    // Radio button'ları kontrol et
-    const radioButtons = telTab.querySelectorAll('input[type="radio"]:checked');
-    radioButtons.forEach(radio => {
-        const label = radio.closest('label');
-        if (label) {
-            const text = label.textContent.trim();
-            if (text && text !== radio.value) {
-                report.push(text);
-            }
-        }
-    });
-    
-    // Seçili option button'ları kontrol et
-    const optionButtons = telTab.querySelectorAll('.option-btn.selected');
-    optionButtons.forEach(btn => {
-        const questionGroup = btn.closest('.question-group');
-        if (questionGroup) {
-            const questionTitle = questionGroup.querySelector('h4');
-            if (questionTitle) {
-                report.push(`${questionTitle.textContent.trim()}: ${btn.textContent.trim()}`);
-            }
-        }
-    });
-    
-    // Seçili score button'ları kontrol et
-    const scoreButtons = telTab.querySelectorAll('.score-btn.selected');
-    scoreButtons.forEach(btn => {
-        const questionGroup = btn.closest('.question-group');
-        if (questionGroup) {
-            const questionTitle = questionGroup.querySelector('h4');
-            if (questionTitle) {
-                report.push(`${questionTitle.textContent.trim()}: ${btn.textContent.trim()}`);
-            }
-        }
-    });
-    
-    // Raporu güncelle
-    telOutput.value = report.join('\n\n');
-}
+// Bu fonksiyon duplicate olduğu için silindi - Asıl updateTelOutput() aşağıda 3794. satırda
 
 // Randevu Button Functions
 function initializeRandevuButtons() {
@@ -3324,6 +3392,7 @@ function selectWeeks(section, weeks) {
     
     // Lastik ihtiyacı hesaplamasını güncelle (sadece tel bölümü için)
     if (section === 'tel') {
+        console.log('selectWeeks: Calling updateElasticCalculation()');
         updateElasticCalculation();
     }
     
@@ -3597,16 +3666,19 @@ function selectElasticStatus(section, status) {
 
 // Aynı lastiklere devam fonksiyonu
 function continueCurrentElastics(currentSection, side) {
+    console.log(`continueCurrentElastics called: section=${currentSection}, side=${side}`);
     const continueBtn = document.querySelector(`#${currentSection}-next-${side}-section .continue-elastic-btn`);
     
     if (continueBtn.classList.contains('selected')) {
         // Seçimi kaldır
         continueBtn.classList.remove('selected');
         nextElasticUsage[`${currentSection}-next`][side].continuesCurrent = false;
+        console.log(`Continue elastics DISABLED for ${side}`);
     } else {
         // Seçimi ekle
         continueBtn.classList.add('selected');
         nextElasticUsage[`${currentSection}-next`][side].continuesCurrent = true;
+        console.log(`Continue elastics ENABLED for ${side}`);
         
         // Diğer seçimleri temizle
         const typeButtons = document.querySelectorAll(`#${currentSection}-next-${side}-section .elastic-type-btn`);
@@ -3634,7 +3706,9 @@ function continueCurrentElastics(currentSection, side) {
         }
     }
     
-    updateTelOutput();
+    // Hem hesaplamayı hem de raporu güncelle
+    console.log('continueCurrentElastics: Calling updateElasticCalculation()');
+    updateElasticCalculation();
 }
 
 // Lastik bölümü açma/kapama
@@ -3688,6 +3762,7 @@ function toggleElasticSection(section, side) {
 
 // Lastik tipi seçimi (çoklu seçim)
 function selectElasticType(section, side, type) {
+    console.log(`selectElasticType called: section=${section}, side=${side}, type=${type}`);
     const selectedBtn = document.querySelector(`#${section}-${side}-section .elastic-type-btn[onclick="selectElasticType('${section}', '${side}', '${type}')"]`);
     const usageObject = section.includes('next') ? nextElasticUsage : currentElasticUsage;
     
@@ -3730,13 +3805,16 @@ function selectElasticType(section, side, type) {
     }
     
     // Lastik hesaplamasını güncelle
+    console.log('selectElasticType: Calling updateElasticCalculation()');
     updateElasticCalculation();
     
+    console.log('selectElasticType: Calling updateTelOutput()');
     updateTelOutput();
 }
 
 // Lastik saat seçimi
 function selectElasticHours(section, side, type, hours) {
+    console.log(`selectElasticHours called: section=${section}, side=${side}, type=${type}, hours=${hours}`);
     const usageObject = section.includes('next') ? nextElasticUsage : currentElasticUsage;
     
     // Bu tip için önceki saat seçimini temizle
@@ -3756,14 +3834,21 @@ function selectElasticHours(section, side, type, hours) {
     usageObject[section][side][type].hours = hours;
     
     // Lastik hesaplamasını güncelle
+    console.log('selectElasticHours: Calling updateElasticCalculation()');
     updateElasticCalculation();
     
+    console.log('selectElasticHours: Calling updateTelOutput()');
     updateTelOutput();
 }
 
 // Tel tedavisi çıktısını güncelleme fonksiyonu
 function updateTelOutput() {
     let output = '';
+    
+    // Asistan bilgisini en üste ekle
+    if (answers['tel-asistan']) {
+        output += `Kontroller ${answers['tel-asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n\n`;
+    }
     
     // Randevu bilgisini ekle
     if (selectedAppointment.tel && selectedAppointment.tel > 0) {
@@ -3932,7 +4017,18 @@ function updateTelOutput() {
         });
     }
 
-    if (bendInfo.length > 0 || interbendInfo.length > 0) {
+    // Tüm ark bükümleri - bağımsız kontrol
+    const fullArchInfo = [];
+    if (fullArchBends.ust) {
+        const bendText = getFullArchBendText(fullArchBends.ust);
+        fullArchInfo.push(`Üst çene telinde "${bendText}" bükümü mevcut`);
+    }
+    if (fullArchBends.alt) {
+        const bendText = getFullArchBendText(fullArchBends.alt);
+        fullArchInfo.push(`Alt çene telinde "${bendText}" bükümü mevcut`);
+    }
+
+    if (bendInfo.length > 0 || interbendInfo.length > 0 || fullArchInfo.length > 0) {
         output += '\nTEL BÜKÜMLERİ:\n';
         output += '-------------\n';
         
@@ -3955,6 +4051,19 @@ function updateTelOutput() {
                 output += `• ${info}\n`;
             });
         }
+        
+        // Tüm ark bükümleri
+        if (fullArchInfo.length > 0) {
+            if (bendInfo.length > 0 || interbendInfo.length > 0) {
+                output += '\nTüm ark teli bükümleri:\n';
+            } else {
+                output += 'Tüm ark teli bükümleri:\n';
+            }
+            fullArchInfo.forEach(info => {
+                output += `• ${info}\n`;
+            });
+        }
+        
         output += '\n';
     }
 
@@ -4094,9 +4203,9 @@ function getElasticTypeText(type) {
 // Sonraki seans lastik seçimlerinden ihtiyacı hesapla
 function calculateElasticNeed() {
     const resultContainer = document.getElementById('elastic-calculation-result');
-    console.log('calculateElasticNeed called');
-    console.log('selectedAppointment:', selectedAppointment);
-    console.log('nextElasticUsage:', nextElasticUsage);
+    console.log('🧮 calculateElasticNeed STARTED');
+    console.log('📅 selectedAppointment:', selectedAppointment);
+    console.log('🔮 nextElasticUsage:', nextElasticUsage);
     
     if (!resultContainer) {
         console.error('Result container not found!');
@@ -4142,10 +4251,12 @@ function calculateElasticNeed() {
                 });
             } else {
                 // Manuel seçimleri kontrol et
+                console.log('Sağ taraf manuel seçimler kontrol ediliyor');
                 for (const type in sagElastics) {
-                    console.log(`Checking sag type ${type}:`, sagElastics[type]);
-                    if (sagElastics[type].selected && sagElastics[type].hours) {
+                    console.log(`Checking manual sag ${type}:`, sagElastics[type]);
+                    if (type !== 'continuesCurrent' && sagElastics[type].selected && sagElastics[type].hours) {
                         sagCount++;
+                        console.log(`Sağ ${type} manuel lastik sayıldı - sagCount: ${sagCount}`);
                     }
                 }
             }
@@ -4178,9 +4289,12 @@ function calculateElasticNeed() {
                 });
             } else {
                 // Manuel seçimleri kontrol et
+                console.log('Sol taraf manuel seçimler kontrol ediliyor');
                 for (const type in solElastics) {
-                    if (solElastics[type].selected && solElastics[type].hours) {
+                    console.log(`Checking manual sol ${type}:`, solElastics[type]);
+                    if (type !== 'continuesCurrent' && solElastics[type].selected && solElastics[type].hours) {
                         solCount++;
+                        console.log(`Sol ${type} manuel lastik sayıldı - solCount: ${solCount}`);
                     }
                 }
             }
@@ -4211,9 +4325,12 @@ function calculateElasticNeed() {
                 });
             } else {
                 // Manuel seçimleri kontrol et
+                console.log('Orta taraf manuel seçimler kontrol ediliyor');
                 for (const type in ortaElastics) {
-                    if (ortaElastics[type].selected && ortaElastics[type].hours) {
+                    console.log(`Checking manual orta ${type}:`, ortaElastics[type]);
+                    if (type !== 'continuesCurrent' && ortaElastics[type].selected && ortaElastics[type].hours) {
                         ortaCount++;
+                        console.log(`Orta ${type} manuel lastik sayıldı - ortaCount: ${ortaCount}`);
                     }
                 }
             }
@@ -4264,9 +4381,15 @@ function calculateElasticNeed() {
 
 // Lastik seçimi değiştiğinde hesaplamayı güncelle
 function updateElasticCalculation() {
-    console.log('updateElasticCalculation called');
+    console.log('🔄 updateElasticCalculation called');
+    console.log('📅 selectedAppointment:', selectedAppointment);
+    console.log('📦 currentElasticUsage:', currentElasticUsage);
+    console.log('🔮 nextElasticUsage:', nextElasticUsage);
+    
     calculateElasticNeed();
     updateTelOutput(); // Raporu da güncelle
+    
+    console.log('✅ updateElasticCalculation completed');
 }
 
 // Lastik tipi metnini dönüştürme yardımcı fonksiyonu
@@ -4822,3 +4945,246 @@ window.openInterbendPopup = openInterbendPopup;
 window.closeInterbendPopup = closeInterbendPopup;
 window.selectInterbendType = selectInterbendType;
 window.clearInterbendSelection = clearInterbendSelection;
+
+// Full Arch Bend Popup Functions
+let currentFullArchJaw = '';
+let fullArchBends = {
+    ust: null,
+    alt: null
+};
+
+function openFullArchPopup(jaw) {
+    currentFullArchJaw = jaw;
+    const popup = document.getElementById('full-arch-popup');
+    const overlay = document.getElementById('full-arch-popup-overlay');
+    const title = document.getElementById('full-arch-popup-title');
+    
+    title.textContent = jaw === 'ust' ? 'Üst Çene Tüm Ark Bükümü Seçin' : 'Alt Çene Tüm Ark Bükümü Seçin';
+    
+    // Event listener'ları temizle ve yeniden ekle
+    const buttons = popup.querySelectorAll('.bend-type-btn');
+    buttons.forEach(btn => {
+        btn.classList.remove('selected');
+        // Eski event listener'ı kaldır
+        btn.replaceWith(btn.cloneNode(true));
+    });
+    
+    // Yeni butonları al ve event listener ekle
+    const newButtons = popup.querySelectorAll('.bend-type-btn');
+    newButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const bendType = this.getAttribute('data-bend');
+            selectFullArchBend(bendType);
+        });
+    });
+    
+    // Mevcut seçimi göster
+    const currentBend = fullArchBends[jaw];
+    if (currentBend) {
+        const selectedButton = popup.querySelector(`[data-bend="${currentBend}"]`);
+        if (selectedButton) {
+            selectedButton.classList.add('selected');
+        }
+    }
+    
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+}
+
+function closeFullArchPopup() {
+    const popup = document.getElementById('full-arch-popup');
+    const overlay = document.getElementById('full-arch-popup-overlay');
+    
+    popup.style.display = 'none';
+    overlay.style.display = 'none';
+    currentFullArchJaw = '';
+    
+    // Popup'taki seçimleri temizle
+    const buttons = popup.querySelectorAll('.bend-type-btn');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+}
+
+function clearFullArchSelection() {
+    if (!currentFullArchJaw) return;
+    
+    // Seçimi temizle
+    delete fullArchBends[currentFullArchJaw];
+    
+    // Popup'taki seçimi kaldır
+    const popup = document.getElementById('full-arch-popup');
+    const buttons = popup.querySelectorAll('.bend-type-btn');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    
+    console.log(`Full arch selection cleared for: ${currentFullArchJaw}`);
+    
+    // Çıktıyı güncelle
+    updateTelOutput();
+}
+
+function selectFullArchBend(bendType) {
+    if (!currentFullArchJaw) return;
+    
+    // Popup'taki tüm butonlardan seçimi kaldır
+    const popup = document.getElementById('full-arch-popup');
+    const buttons = popup.querySelectorAll('.bend-type-btn');
+    buttons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Seçilen butonu işaretle
+    const selectedButton = popup.querySelector(`[data-bend="${bendType}"]`);
+    if (selectedButton) {
+        selectedButton.classList.add('selected');
+    }
+    
+    // Seçimi kaydet
+    fullArchBends[currentFullArchJaw] = bendType;
+    
+    // Tel output'unu güncelle
+    updateTelOutput();
+    
+    // Popup'ı otomatik kapat
+    closeFullArchPopup();
+}
+
+function getFullArchBendText(bendType) {
+    switch (bendType) {
+        case 'torklu-konsolidasyon':
+            return 'Torklu Konsolidasyon Arkı';
+        case 'anterior-intruzyon':
+            return 'Anterior İntrüzyonlu Torklu Konsolidasyon Arkı';
+        case 'anterior-tork':
+            return 'Anterior Tork Arkı';
+        default:
+            return '';
+    }
+}
+
+// Global fonksiyon atamaları - Full arch popup fonksiyonları
+window.openFullArchPopup = openFullArchPopup;
+window.closeFullArchPopup = closeFullArchPopup;
+window.selectFullArchBend = selectFullArchBend;
+window.clearFullArchSelection = clearFullArchSelection;
+
+// Full arch butonlarını düzelt - Sadece IPR FDI'sını atla
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        // Şeffaf plak sekmesindeki IPR FDI'sı hariç, tüm "Alt Çene" h5 elementlerini "Tüm Alt Çene" butonuyla değiştir
+        const allJawTitles = document.querySelectorAll('h5.jaw-title');
+        allJawTitles.forEach(title => {
+            if (title.textContent === 'Alt Çene') {
+                // IPR FDI'sında mı kontrol et
+                const parentChart = title.closest('.fdi-dental-chart');
+                if (parentChart) {
+                    const parentGroup = parentChart.closest('.question-group');
+                    if (parentGroup) {
+                        const headerText = parentGroup.querySelector('h4')?.textContent || '';
+                        // Sadece IPR/Stripping içeren başlıklarda h5 olarak bırak
+                        if (headerText.includes('IPR') || headerText.includes('Stripping')) {
+                            return; // IPR FDI'sında h5 olarak bırak
+                        }
+                    }
+                }
+                // Diğer tüm durumlarda butona çevir
+                title.outerHTML = '<button class="full-arch-btn" onclick="openFullArchPopup(\'alt\')">Tüm Alt Çene</button>';
+            }
+        });
+        console.log('✅ IPR FDI hariç tüm alt çene h5 elementleri butonlarla değiştirildi');
+    }, 100);
+});
+
+// Manuel giriş alanını toggle etme fonksiyonu
+function toggleManualAsistanInput(tab = 'seffaf') {
+    const prefix = tab === 'tel' ? 'tel-' : '';
+    const manualGroup = document.getElementById(`${prefix}manual-asistan-group`);
+    const toggleBtn = tab === 'tel' ? 
+        document.querySelector('#tel-tedavisi .toggle-manual-btn') :
+        document.querySelector('#seffaf-plak .toggle-manual-btn');
+    
+    if (manualGroup.style.display === 'none' || !manualGroup.style.display) {
+        // Manuel giriş alanını aç
+        manualGroup.style.display = 'block';
+        toggleBtn.classList.add('active');
+        toggleBtn.textContent = 'Manuel Girişi Kapat';
+        
+        // Input'a odaklan
+        const input = document.getElementById(`${prefix}asistan-manual-input`);
+        if (input) {
+            setTimeout(() => input.focus(), 100);
+        }
+    } else {
+        // Manuel giriş alanını kapat
+        manualGroup.style.display = 'none';
+        toggleBtn.classList.remove('active');
+        toggleBtn.textContent = 'Manuel Giriş';
+        
+        // Input'u temizle
+        const input = document.getElementById(`${prefix}asistan-manual-input`);
+        if (input) {
+            input.value = '';
+        }
+    }
+}
+
+// Manuel asistan ismi uygulama fonksiyonu
+function applyManualAsistan(tab = 'seffaf') {
+    const prefix = tab === 'tel' ? 'tel-' : '';
+    const input = document.getElementById(`${prefix}asistan-manual-input`);
+    const value = input.value.trim();
+    
+    if (!value) {
+        alert('Lütfen bir asistan adı girin!');
+        return;
+    }
+    
+    // Tüm option butonlarının seçimini kaldır
+    const tabContainer = tab === 'tel' ? document.getElementById('tel-tedavisi') : document.getElementById('seffaf-plak');
+    const optionButtons = tabContainer.querySelectorAll(`[data-question="${prefix}asistan"].option-btn`);
+    optionButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Manuel girilen değeri kaydet
+    const questionKey = tab === 'tel' ? 'tel-asistan' : 'asistan';
+    answers[questionKey] = value;
+    
+    // Display'i güncelle
+    const display = document.getElementById(`${prefix}asistan-display`);
+    if (display) {
+        display.textContent = value;
+    }
+    
+    // Input'u temizle ve manuel giriş alanını kapat
+    input.value = '';
+    toggleManualAsistanInput(tab);
+    
+    // Output'u güncelle
+    if (tab === 'tel') {
+        updateTelOutput();
+    } else {
+        updateSeffafOutput();
+    }
+    
+    console.log(`✅ ${tab} Manuel asistan ismi uygulandı:`, value);
+}
+
+// Enter tuşu desteği için event listener ekle
+document.addEventListener('DOMContentLoaded', function() {
+    const manuelInput = document.getElementById('asistan-manual-input');
+    if (manuelInput) {
+        manuelInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyManualAsistan();
+            }
+        });
+    }
+    
+    const telManuelInput = document.getElementById('tel-asistan-manual-input');
+    if (telManuelInput) {
+        telManuelInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                applyManualAsistan('tel');
+            }
+        });
+    }
+});
+
+// Global olarak erişilebilir yap
+window.toggleManualAsistanInput = toggleManualAsistanInput;
+window.applyManualAsistan = applyManualAsistan;

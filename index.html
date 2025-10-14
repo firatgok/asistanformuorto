@@ -42,6 +42,31 @@
             <div id="seffaf-plak" class="tab-content active">
                 <div class="form-container">
                     <div class="form-left">
+                        <!-- Asistan Seçimi -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Kontrolü yapan asistan</h4>
+                                <div class="selected-display">
+                                    <span>Seçilen: </span>
+                                    <span id="asistan-display" class="selection-display">Henüz seçilmedi</span>
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="asistan" data-value="Melike">Melike</button>
+                                <button type="button" class="option-btn" data-question="asistan" data-value="Zeynep">Zeynep</button>
+                                <button type="button" class="option-btn" data-question="asistan" data-value="Rabia">Rabia</button>
+                                <button type="button" class="toggle-manual-btn" onclick="toggleManualAsistanInput()">Manuel Giriş</button>
+                                <button type="button" class="clear-btn" data-question="asistan">Sıfırla</button>
+                            </div>
+                            <div class="manual-input-group" id="manual-asistan-group" style="display: none;">
+                                <label for="asistan-manual-input">Manuel asistan adı:</label>
+                                <div class="input-with-button">
+                                    <input type="text" id="asistan-manual-input" placeholder="Asistan adını yazın..." maxlength="30">
+                                    <button type="button" class="apply-btn" onclick="applyManualAsistan()">Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <h3>RUTİN KONTROLLER</h3>
                         
 
@@ -882,6 +907,31 @@
             <div id="tel-tedavisi" class="tab-content">
                 <div class="form-container">
                     <div class="form-left">
+                        <!-- Asistan Seçimi - Tel -->
+                        <div class="question-group">
+                            <div class="question-header">
+                                <h4>Kontrolü yapan asistan</h4>
+                                <div class="selected-display">
+                                    <span>Seçilen: </span>
+                                    <span id="tel-asistan-display" class="selection-display">Henüz seçilmedi</span>
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Melike">Melike</button>
+                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Zeynep">Zeynep</button>
+                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Rabia">Rabia</button>
+                                <button type="button" class="toggle-manual-btn" onclick="toggleManualAsistanInput('tel')">Manuel Giriş</button>
+                                <button type="button" class="clear-btn" data-question="tel-asistan">Sıfırla</button>
+                            </div>
+                            <div class="manual-input-group" id="tel-manual-asistan-group" style="display: none;">
+                                <label for="tel-asistan-manual-input">Manuel asistan adı:</label>
+                                <div class="input-with-button">
+                                    <input type="text" id="tel-asistan-manual-input" placeholder="Asistan adını yazın..." maxlength="30">
+                                    <button type="button" class="apply-btn" onclick="applyManualAsistan('tel')">Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <h3>Randevu Planlama</h3>
                         <div class="question-group">
                             <div class="question-title">Bir sonraki randevu kaç hafta sonra?</div>
@@ -1325,7 +1375,7 @@
                                                         <div class="jaw-container">
                                                             <!-- Üst Çene -->
                                                             <div class="jaw-section upper-jaw-section">
-                                                                <h5 class="jaw-title">Üst Çene</h5>
+                                                                <button id="alt-upper-arch-btn" class="full-arch-btn" onclick="openFullArchPopup('ust')">Tüm Üst Çene</button>
                                                                 <div class="upper-jaw">
                                                                     <!-- Üst Sağ Kadran (1) -->
                                                                     <div class="quadrant upper-right">
@@ -1522,7 +1572,7 @@
                                                         <div class="jaw-container">
                                                             <!-- Üst Çene -->
                                                             <div class="jaw-section upper-jaw-section">
-                                                                <h5 class="jaw-title">Üst Çene</h5>
+                                                                <button id="ust-upper-arch-btn" class="full-arch-btn" onclick="openFullArchPopup('ust')">Tüm Üst Çene</button>
                                                                 <div class="upper-jaw">
                                                                     <!-- Üst Sağ Kadran (1) -->
                                                                     <div class="quadrant upper-right">
@@ -1793,9 +1843,51 @@
         </div>
     </div>
 
+    <!-- Full Arch Popup -->
+    <div id="full-arch-popup" class="full-arch-popup" style="display: none;">
+        <div class="full-arch-popup-content">
+            <div class="full-arch-popup-header">
+                <h6 id="full-arch-popup-title">Hangi tüm ark bükümü mevcut?</h6>
+                <button class="close-popup-btn" onclick="closeFullArchPopup()">×</button>
+            </div>
+            <div class="full-arch-popup-body">
+                <div class="bend-grid">
+                    <button type="button" class="bend-type-btn" data-bend="torklu-konsolidasyon">
+                        <div class="bend-icon">🔄</div>
+                        <div class="bend-info">
+                            <div class="bend-title">Torklu Konsolidasyon Arkı</div>
+                            <div class="bend-description">Tam ark tork uygulaması</div>
+                        </div>
+                    </button>
+                    
+                    <button type="button" class="bend-type-btn" data-bend="anterior-intruzyon">
+                        <div class="bend-icon">⬇️</div>
+                        <div class="bend-info">
+                            <div class="bend-title">Anterior İntrüzyonlu Torklu Konsolidasyon Arkı</div>
+                            <div class="bend-description">Anterior intrüzyon + tork kombinasyonu</div>
+                        </div>
+                    </button>
+                    
+                    <button type="button" class="bend-type-btn" data-bend="anterior-tork">
+                        <div class="bend-icon">↪️</div>
+                        <div class="bend-info">
+                            <div class="bend-title">Anterior Tork Arkı</div>
+                            <div class="bend-description">Sadece anterior tork uygulaması</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="full-arch-popup-footer">
+                <button class="popup-clear-btn" onclick="clearFullArchSelection()">Temizle</button>
+                <button class="popup-close-btn" onclick="closeFullArchPopup()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Popup Overlay -->
     <div id="popup-overlay" class="popup-overlay" style="display: none;" onclick="closeBendPopup()"></div>
     <div id="interbend-popup-overlay" class="popup-overlay" style="display: none;" onclick="closeInterbendPopup()"></div>
+    <div id="full-arch-popup-overlay" class="full-arch-popup-overlay" style="display: none;" onclick="closeFullArchPopup()"></div>
 
 </body>
 </html>
