@@ -35,3 +35,6 @@ Söküm
 20 Yaş Çekimi 
 
 Raporu hangi asistan giriyor?
+
+Torqing Spring
+Chain

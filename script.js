@@ -1073,6 +1073,13 @@ function generateSeffafReport(answers) {
         report += '• Plak adaptasyonu kontrol edilmeli, gerekirse yeniden alınmalı\n';
     }
     
+    // Özel not ekle
+    if (answers['special-note']) {
+        report += '\nÖZEL NOT:\n';
+        report += '----------\n';
+        report += `• ${answers['special-note']}\n`;
+    }
+    
     report += '\n' + getCurrentDate();
     
     return report;
@@ -4171,6 +4178,12 @@ function updateTelOutput() {
         }
     }
     
+    // Rutin dışı uygulamalar bilgisini ekle
+    const proceduresOutput = updateTelProceduresOutput();
+    if (proceduresOutput) {
+        output += proceduresOutput;
+    }
+    
     // Çıktıyı güncelle
     const outputTextarea = document.getElementById('tel-output');
     if (outputTextarea) {
@@ -5185,6 +5198,250 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Özel not temizleme fonksiyonu
+function clearSpecialNote() {
+    const noteInput = document.getElementById('special-note-input');
+    const charCount = document.getElementById('note-char-count');
+    const counter = document.querySelector('.char-counter');
+    
+    if (noteInput) {
+        noteInput.value = '';
+        charCount.textContent = '0';
+        counter.classList.remove('near-limit', 'at-limit');
+        
+        // Answers'tan da kaldır
+        delete answers['special-note'];
+        
+        // Output'u güncelle
+        updateSeffafOutput();
+    }
+}
+
+// Özel not karakter sayacı ve event listener
+document.addEventListener('DOMContentLoaded', function() {
+    const noteInput = document.getElementById('special-note-input');
+    const charCount = document.getElementById('note-char-count');
+    const counter = document.querySelector('.char-counter');
+    
+    if (noteInput && charCount) {
+        noteInput.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = length;
+            
+            // Renk değişimleri
+            counter.classList.remove('near-limit', 'at-limit');
+            if (length >= 450) {
+                counter.classList.add('at-limit');
+            } else if (length >= 350) {
+                counter.classList.add('near-limit');
+            }
+            
+            // Answers'a kaydet
+            if (this.value.trim()) {
+                answers['special-note'] = this.value.trim();
+            } else {
+                delete answers['special-note'];
+            }
+            
+            // Output'u güncelle
+            updateSeffafOutput();
+        });
+    }
+});
+
 // Global olarak erişilebilir yap
 window.toggleManualAsistanInput = toggleManualAsistanInput;
 window.applyManualAsistan = applyManualAsistan;
+window.clearSpecialNote = clearSpecialNote;
+
+// Tel Procedures - Diş Arası ve Dişlere Rutin Dışı Uygulamalar
+let telProcedures = {
+    gaps: {},     // Diş araları: gap -> procedure
+    teeth: {}     // Dişler: tooth -> procedure
+};
+
+let currentProcedureSelection = {
+    type: null,   // 'gap' or 'tooth'
+    target: null, // gap id or tooth number
+    procedure: null
+};
+
+// FDI diş ve gap butonlarına event listener ekle
+document.addEventListener('DOMContentLoaded', function() {
+    // Tel procedures için FDI butonları
+    const telToothBtns = document.querySelectorAll('[data-question="tel-procedures"][data-tooth]');
+    const telGapBtns = document.querySelectorAll('[data-question="tel-procedures"][data-gap]');
+    
+    telToothBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tooth = this.getAttribute('data-tooth');
+            openTelProceduresPopup('tooth', tooth);
+        });
+    });
+    
+    telGapBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const gap = this.getAttribute('data-gap');
+            openTelProceduresPopup('gap', gap);
+        });
+    });
+});
+
+function openTelProceduresPopup(type, target) {
+    const popup = document.getElementById('tel-procedures-popup');
+    const overlay = document.getElementById('tel-procedures-popup-overlay');
+    const title = document.getElementById('tel-procedures-popup-title');
+    const gapOptions = document.getElementById('gap-procedures');
+    const toothOptions = document.getElementById('tooth-procedures');
+    
+    currentProcedureSelection = {
+        type: type,
+        target: target,
+        procedure: null
+    };
+    
+    // Popup title ve options'ı ayarla
+    if (type === 'gap') {
+        title.textContent = `${target} Diş Arası İşlem Seçin`;
+        gapOptions.style.display = 'block';
+        toothOptions.style.display = 'none';
+    } else {
+        title.textContent = `${target} Nolu Diş İşlem Seçin`;
+        gapOptions.style.display = 'none';
+        toothOptions.style.display = 'block';
+    }
+    
+    // Mevcut seçimi göster
+    const currentProcedure = type === 'gap' ? telProcedures.gaps[target] : telProcedures.teeth[target];
+    document.querySelectorAll('.procedure-btn').forEach(btn => {
+        btn.classList.remove('selected');
+        if (btn.getAttribute('data-procedure') === currentProcedure) {
+            btn.classList.add('selected');
+        }
+    });
+    
+    popup.style.display = 'block';
+    overlay.style.display = 'block';
+}
+
+function selectTelProcedure(procedure) {
+    currentProcedureSelection.procedure = procedure;
+    
+    // Görsel feedback
+    document.querySelectorAll('.procedure-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    document.querySelector(`[data-procedure="${procedure}"]`).classList.add('selected');
+    
+    // Seçimi kaydet
+    if (currentProcedureSelection.type === 'gap') {
+        telProcedures.gaps[currentProcedureSelection.target] = procedure;
+    } else {
+        telProcedures.teeth[currentProcedureSelection.target] = procedure;
+    }
+    
+    // FDI butonunu güncelle
+    updateTelProcedureButton(currentProcedureSelection.type, currentProcedureSelection.target, procedure);
+    
+    // Output'u güncelle
+    updateTelOutput();
+    
+    // Popup'ı kapat
+    setTimeout(() => {
+        closeTelProceduresPopup();
+    }, 300);
+}
+
+function updateTelProcedureButton(type, target, procedure) {
+    const selector = type === 'gap' ? 
+        `[data-question="tel-procedures"][data-gap="${target}"]` : 
+        `[data-question="tel-procedures"][data-tooth="${target}"]`;
+    
+    const button = document.querySelector(selector);
+    if (button) {
+        button.classList.add('selected');
+    }
+}
+
+function clearTelProcedureSelection() {
+    if (currentProcedureSelection.type && currentProcedureSelection.target) {
+        if (currentProcedureSelection.type === 'gap') {
+            delete telProcedures.gaps[currentProcedureSelection.target];
+        } else {
+            delete telProcedures.teeth[currentProcedureSelection.target];
+        }
+        
+        // FDI butonunu güncelle
+        const selector = currentProcedureSelection.type === 'gap' ? 
+            `[data-question="tel-procedures"][data-gap="${currentProcedureSelection.target}"]` : 
+            `[data-question="tel-procedures"][data-tooth="${currentProcedureSelection.target}"]`;
+        
+        const button = document.querySelector(selector);
+        if (button) {
+            button.classList.remove('selected');
+        }
+        
+        // Output'u güncelle
+        updateTelOutput();
+    }
+    
+    closeTelProceduresPopup();
+}
+
+function closeTelProceduresPopup() {
+    document.getElementById('tel-procedures-popup').style.display = 'none';
+    document.getElementById('tel-procedures-popup-overlay').style.display = 'none';
+    currentProcedureSelection = { type: null, target: null, procedure: null };
+}
+
+function clearTelProcedures() {
+    telProcedures = { gaps: {}, teeth: {} };
+    
+    // Tüm seçili butonları temizle
+    document.querySelectorAll('[data-question="tel-procedures"]').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // Output'u güncelle
+    updateTelOutput();
+}
+
+// Tel output'u güncellerken procedures'ı da ekle
+function updateTelProceduresOutput() {
+    let output = "";
+    
+    // Diş arası işlemler
+    const gapProcedures = Object.entries(telProcedures.gaps);
+    if (gapProcedures.length > 0) {
+        output += "\n--- RUTİN DIŞI UYGULAMALAR ---\n";
+        gapProcedures.forEach(([gap, procedure]) => {
+            if (procedure === 'minivida') {
+                output += `${gap} diş arasına minivida yapılmıştır.\n`;
+            }
+        });
+    }
+    
+    // Diş üstü işlemler
+    const toothProcedures = Object.entries(telProcedures.teeth);
+    if (toothProcedures.length > 0) {
+        if (output === "") {
+            output += "\n--- RUTİN DIŞI UYGULAMALAR ---\n";
+        }
+        toothProcedures.forEach(([tooth, procedure]) => {
+            if (procedure === 'braket-yapistirilmasi') {
+                output += `${tooth} nolu dişin kırılan braketi yeniden yapıştırılmıştır.\n`;
+            } else if (procedure === 'braket-kirik-yapistirlamadi') {
+                output += `${tooth} nolu dişin braketi kırılmış ancak yapıştırılmadı.\n`;
+            }
+        });
+    }
+    
+    return output;
+}
+
+// Global fonksiyonları tanımla
+window.openTelProceduresPopup = openTelProceduresPopup;
+window.selectTelProcedure = selectTelProcedure;
+window.clearTelProcedureSelection = clearTelProcedureSelection;
+window.closeTelProceduresPopup = closeTelProceduresPopup;
+window.clearTelProcedures = clearTelProcedures;

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Button Test</title>
+    <style>
+        .elastic-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .photo-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .photo-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .elastic-type-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Button Test</h1>
+    
+    <div class="elastic-header">
+        <button type="button" class="elastic-type-btn">Sınıf II</button>
+        <button type="button" class="photo-btn" onclick="alert('Photo button clicked!')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+    </div>
+
+    <div class="elastic-header">
+        <button type="button" class="elastic-type-btn">Sınıf III</button>
+        <button type="button" class="photo-btn" onclick="alert('Photo button clicked!')" title="Sınıf III Lastik nasıl takılır?">📷</button>
+    </div>
+
+    <div class="elastic-header">
+        <button type="button" class="elastic-type-btn">Çapraz</button>
+        <button type="button" class="photo-btn" onclick="alert('Photo button clicked!')" title="Çapraz Lastik nasıl takılır?">📷</button>
+    </div>
+
+</body>
+</html>

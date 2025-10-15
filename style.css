@@ -1027,6 +1027,12 @@ header h1 {
     border-color: var(--gray-500);
 }
 
+.elastic-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .elastic-type-btn {
     background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
     border: 1.5px solid var(--gray-500);
@@ -1037,7 +1043,7 @@ header h1 {
     font-size: 14px;
     font-weight: 500;
     transition: all 0.25s ease;
-    width: 100%;
+    flex: 1;
     text-align: center;
     margin-bottom: 8px;
     display: block;
@@ -1326,6 +1332,77 @@ header h1 {
     background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
     color: white;
     border-color: var(--primary-400);
+}
+
+/* Özel Not Alanı */
+.special-note-container {
+    margin-top: 10px;
+}
+
+.note-info {
+    margin-top: 5px;
+}
+
+.note-info small {
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-style: italic;
+}
+
+#special-note-input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 14px;
+    font-family: var(--font-primary);
+    background: var(--input-bg);
+    backdrop-filter: blur(10px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--input-text);
+    box-shadow: var(--shadow-sm);
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+}
+
+#special-note-input:focus {
+    outline: none;
+    border-color: var(--primary-400);
+    background: linear-gradient(135deg, var(--primary-50), var(--input-bg));
+    box-shadow: var(--shadow-md), 0 0 0 3px rgba(12, 140, 233, 0.1);
+}
+
+#special-note-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.note-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding: 0 4px;
+}
+
+.char-counter {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+#note-char-count {
+    color: var(--primary-600);
+    font-weight: 600;
+}
+
+.char-counter.near-limit #note-char-count {
+    color: var(--warning-600);
+}
+
+.char-counter.at-limit #note-char-count {
+    color: var(--error-600);
 }
 
 .manuel-input-group {
@@ -3189,30 +3266,38 @@ header h1 {
     }
 }
 
-/* Photo Button & Modal Styles */
-.photo-btn {
-    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
-    border: 2px solid var(--primary-400);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(10px);
+/* Photo Button & Modal Styles - Beautiful Turquoise */
+.photo-btn,
+button.photo-btn,
+.elastic-header .photo-btn,
+.elastic-title-container .photo-btn,
+#sag-next-options .photo-btn,
+#sol-next-options .photo-btn,
+#on-next-options .photo-btn {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%) !important;
+    border: 2px solid #0891b2 !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    color: white !important;
+    font-size: 18px !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    z-index: 999 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-left: 8px !important;
+    box-shadow: 0 4px 8px rgba(34, 211, 238, 0.3) !important;
+    transition: all 0.2s ease !important;
 }
 
 .photo-btn:hover {
-    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
-    border-color: var(--primary-300);
-    transform: scale(1.1);
-    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%) !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 12px rgba(34, 211, 238, 0.4) !important;
 }
 
 .elastic-title-container {
@@ -3220,12 +3305,17 @@ header h1 {
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 10px;
+    gap: 10px;
 }
 
 .elastic-title-container h5 {
     margin: 0;
     font-weight: 600;
     color: var(--gray-700);
+}
+
+.elastic-title-container .photo-btn {
+    margin-left: 0 !important;
 }
 
 /* Image Modal */
@@ -5021,4 +5111,172 @@ input::placeholder, textarea::placeholder {
     background: var(--primary-800);
     border-color: var(--primary-600);
     color: var(--primary-300);
+}
+
+/* Tel Procedures Popup Styles */
+.procedures-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white !important;
+    border-radius: 12px;
+    box-shadow: var(--shadow-xl);
+    z-index: 10000;
+    max-width: 400px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid #e5e7eb;
+}
+
+.procedures-popup-content {
+    padding: 0;
+}
+
+.procedures-popup-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc !important;
+    border-radius: 12px 12px 0 0;
+}
+
+.procedures-popup-header h6 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.procedures-popup-body {
+    padding: 20px;
+    background: white !important;
+}
+
+.procedure-options {
+    margin-bottom: 20px;
+}
+
+.procedure-options h5 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.procedure-btn {
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: white !important;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.procedure-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-400);
+    color: var(--primary-700);
+}
+
+.procedure-btn.selected {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+.procedures-popup-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    background: #f8fafc !important;
+    border-radius: 0 0 12px 12px;
+}
+
+.gap-btn {
+    background: var(--primary-100);
+    border: 2px solid var(--primary-300);
+    color: var(--primary-700);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+}
+
+.gap-btn:hover {
+    background: var(--primary-200);
+    border-color: var(--primary-400);
+    transform: scale(1.05);
+}
+
+.gap-btn.selected {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+/* Dark mode styles for procedures popup - Force white background */
+[data-theme="dark"] .procedures-popup {
+    background: white !important;
+    border: 2px solid #e5e7eb !important;
+}
+
+[data-theme="dark"] .procedures-popup-header {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+[data-theme="dark"] .procedures-popup-header h6 {
+    color: #111827 !important;
+}
+
+[data-theme="dark"] .procedures-popup-body {
+    background: white !important;
+}
+
+[data-theme="dark"] .procedure-btn {
+    background: white !important;
+    border-color: #d1d5db !important;
+    color: #374151 !important;
+}
+
+[data-theme="dark"] .procedure-btn:hover {
+    background: #f3f4f6 !important;
+    border-color: #22d3ee !important;
+    color: #0891b2 !important;
+}
+
+[data-theme="dark"] .procedures-popup-footer {
+    background: #f8fafc !important;
+    border-top: 1px solid #e5e7eb !important;
+}
+
+[data-theme="dark"] .gap-btn {
+    background: var(--primary-900);
+    border-color: var(--primary-700);
+    color: var(--primary-300);
+}
+
+[data-theme="dark"] .gap-btn:hover {
+    background: var(--primary-800);
+    border-color: var(--primary-600);
 }
