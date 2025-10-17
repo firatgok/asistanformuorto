@@ -764,7 +764,7 @@ function generateSeffafReport(answers) {
         }
         
         if (answers['randevu-duration']) {
-            report += `• Bir sonraki randevu süresi: ${answers['randevu-duration']} dakika (${answers['duration-source']})\n`;
+            report += `• Bir sonraki randevu süresi: ${answers['randevu-duration']} (${answers['duration-source']})\n`;
         }
         
         if (answers['adaptasyon']) {
@@ -1562,9 +1562,13 @@ function clearRutinKontroller() {
         durationContainer.style.display = 'none';
     }
     
-    const manualDurationInput = document.getElementById('manual-duration-input');
-    if (manualDurationInput) {
-        manualDurationInput.value = '';
+    const manualAssistantInput = document.getElementById('manual-assistant-duration');
+    const manualDoctorInput = document.getElementById('manual-doctor-duration');
+    if (manualAssistantInput) {
+        manualAssistantInput.value = '';
+    }
+    if (manualDoctorInput) {
+        manualDoctorInput.value = '';
     }
     
     const durationResult = document.getElementById('duration-result');
@@ -2999,16 +3003,26 @@ function updateDurationResult() {
         answers['duration-source'] = 'Standart randevu süresi';
     } else if (method === 'manual') {
         // Use manual input
-        const manualInput = document.getElementById('manual-duration-input');
-        const duration = parseInt(manualInput.value) || 0;
+        const assistantInput = document.getElementById('manual-assistant-duration');
+        const doctorInput = document.getElementById('manual-doctor-duration');
+        const assistantDuration = parseInt(assistantInput.value) || 0;
+        const doctorDuration = parseInt(doctorInput.value) || 0;
         
-        if (duration > 0) {
-            resultDisplay.textContent = `Manuel: ${duration} dakika`;
-            answers['randevu-duration'] = `${duration} dakika`;
+        if (assistantDuration > 0 || doctorDuration > 0) {
+            const parts = [];
+            if (assistantDuration > 0) {
+                parts.push(`${assistantDuration} dk AR`);
+            }
+            if (doctorDuration > 0) {
+                parts.push(`${doctorDuration} dk RD`);
+            }
+            const durationText = parts.join(' ve ');
+            resultDisplay.textContent = `Manuel: ${durationText}`;
+            answers['randevu-duration'] = durationText;
             answers['duration-method'] = 'manual';
             answers['duration-source'] = 'Manuel giriş';
         } else {
-            resultDisplay.textContent = 'Süre girin (5-120 dakika)';
+            resultDisplay.textContent = 'Asistan ve/veya Doktor süresi girin';
             delete answers['randevu-duration'];
             delete answers['duration-method'];
             delete answers['duration-source'];
@@ -3026,7 +3040,8 @@ function initializeDurationMethod() {
     // Duration method buttons
     const methodButtons = document.querySelectorAll('.duration-method-btn');
     const manualContainer = document.querySelector('.duration-input-container');
-    const manualInput = document.getElementById('manual-duration-input');
+    const assistantInput = document.getElementById('manual-assistant-duration');
+    const doctorInput = document.getElementById('manual-doctor-duration');
     
     methodButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -3041,11 +3056,12 @@ function initializeDurationMethod() {
             if (method === 'manual') {
                 // Show manual input
                 manualContainer.style.display = 'block';
-                setTimeout(() => manualInput.focus(), 100);
+                setTimeout(() => assistantInput.focus(), 100);
             } else {
                 // Hide manual input
                 manualContainer.style.display = 'none';
-                manualInput.value = '';
+                assistantInput.value = '';
+                doctorInput.value = '';
             }
             
             // Update result display
@@ -3053,18 +3069,35 @@ function initializeDurationMethod() {
         });
     });
     
-    // Manual duration input
-    if (manualInput) {
-        manualInput.addEventListener('input', function() {
+    // Manual duration inputs
+    if (assistantInput) {
+        assistantInput.addEventListener('input', function() {
             updateDurationResult();
         });
         
-        manualInput.addEventListener('change', function() {
+        assistantInput.addEventListener('change', function() {
             updateDurationResult();
         });
         
         // Prevent negative values
-        manualInput.addEventListener('keydown', function(e) {
+        assistantInput.addEventListener('keydown', function(e) {
+            if (e.key === '-' || e.key === '+') {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    if (doctorInput) {
+        doctorInput.addEventListener('input', function() {
+            updateDurationResult();
+        });
+        
+        doctorInput.addEventListener('change', function() {
+            updateDurationResult();
+        });
+        
+        // Prevent negative values
+        doctorInput.addEventListener('keydown', function(e) {
             if (e.key === '-' || e.key === '+') {
                 e.preventDefault();
             }
@@ -3318,9 +3351,25 @@ let selectedDuration = {
     tel: {
         type: null,
         doctor: null,
+        doctor2: null,
         assistant: null
     }
 };
+
+// Sonraki seans söküm seçimi için global değişken
+let selectedSokum = null;
+
+// 7'leri dahil etme seçimleri için global değişken
+let yediDahilSelection = {
+    ust: false,
+    alt: false
+};
+
+// Planlanan işlemler metni için global değişken
+let plannedProceduresText = '';
+
+// Tel özel not metni için global değişken
+let telSpecialNoteText = '';
 
 // Lastik durumu seçimi için global değişken
 let elasticStatus = {
@@ -3541,6 +3590,7 @@ function selectDuration(section, type) {
     // Seçimi kaydet
     selectedDuration[section].type = type;
     selectedDuration[section].doctor = null;
+    selectedDuration[section].doctor2 = null;
     selectedDuration[section].assistant = null;
     
     // Manuel input'u gizle
@@ -3584,13 +3634,16 @@ function showDurationManualInput(section) {
 // Manuel randevu süresi gerçek zamanlı güncelleme
 function updateManualDurationRealTime(section) {
     const doctorInput = document.getElementById(`${section}-manual-doctor`);
+    const doctor2Input = document.getElementById(`${section}-manual-doctor2`);
     const assistantInput = document.getElementById(`${section}-manual-assistant`);
     
     const doctorMinutes = parseInt(doctorInput.value);
+    const doctor2Minutes = parseInt(doctor2Input ? doctor2Input.value : 0);
     const assistantMinutes = parseInt(assistantInput.value);
     
     // Değerleri kaydet
     selectedDuration[section].doctor = (doctorMinutes && doctorMinutes > 0) ? doctorMinutes : null;
+    selectedDuration[section].doctor2 = (doctor2Minutes && doctor2Minutes > 0) ? doctor2Minutes : null;
     selectedDuration[section].assistant = (assistantMinutes && assistantMinutes > 0) ? assistantMinutes : null;
     
     // Raporu güncelle
@@ -3618,8 +3671,10 @@ function confirmManualDuration(section) {
     
     // Input'ları temizle
     const doctorInput = document.getElementById(`${section}-manual-doctor`);
+    const doctor2Input = document.getElementById(`${section}-manual-doctor2`);
     const assistantInput = document.getElementById(`${section}-manual-assistant`);
     if (doctorInput) doctorInput.value = '';
+    if (doctor2Input) doctor2Input.value = '';
     if (assistantInput) assistantInput.value = '';
 }
 
@@ -3633,8 +3688,10 @@ function cancelManualDuration(section) {
     
     // Input'ları temizle
     const doctorInput = document.getElementById(`${section}-manual-doctor`);
+    const doctor2Input = document.getElementById(`${section}-manual-doctor2`);
     const assistantInput = document.getElementById(`${section}-manual-assistant`);
     if (doctorInput) doctorInput.value = '';
+    if (doctor2Input) doctor2Input.value = '';
     if (assistantInput) assistantInput.value = '';
     
     // Manuel buton seçimini kaldır
@@ -3646,6 +3703,7 @@ function cancelManualDuration(section) {
     // Seçimi temizle
     selectedDuration[section].type = null;
     selectedDuration[section].doctor = null;
+    selectedDuration[section].doctor2 = null;
     selectedDuration[section].assistant = null;
     
     // Raporu güncelle
@@ -3857,9 +3915,12 @@ function updateTelOutput() {
         output += `Kontroller ${answers['tel-asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n\n`;
     }
     
+    // Randevu planlama başlığı ve bilgileri
+    let randevuPlanlama = '';
+    
     // Randevu bilgisini ekle
     if (selectedAppointment.tel && selectedAppointment.tel > 0) {
-        output += `Bir sonraki randevu ${selectedAppointment.tel} hafta sonra verilecektir.\n`;
+        randevuPlanlama += `• Bir sonraki randevu ${selectedAppointment.tel} hafta sonra verilecektir.\n`;
     }
     
     // Randevu süresi bilgisini ekle
@@ -3876,10 +3937,16 @@ function updateTelOutput() {
             case 'uzun':
                 durationText = '30 dakika RD';
                 break;
+            case 'sokum':
+                durationText = 'Sonraki seans söküm yapılacak 40dk rd, 50dk rutin';
+                break;
             case 'manuel':
                 const parts = [];
                 if (selectedDuration.tel.doctor && selectedDuration.tel.doctor > 0) {
                     parts.push(`${selectedDuration.tel.doctor} dk RD`);
+                }
+                if (selectedDuration.tel.doctor2 && selectedDuration.tel.doctor2 > 0) {
+                    parts.push(`${selectedDuration.tel.doctor2} dk Rutin`);
                 }
                 if (selectedDuration.tel.assistant && selectedDuration.tel.assistant > 0) {
                     parts.push(`${selectedDuration.tel.assistant} dk AR`);
@@ -3891,8 +3958,19 @@ function updateTelOutput() {
         }
         
         if (durationText) {
-            output += `Bir sonraki randevu ${durationText}.\n`;
+            if (selectedDuration.tel.type === 'sokum') {
+                randevuPlanlama += `• ${durationText}.\n`;
+            } else {
+                randevuPlanlama += `• Bir sonraki randevu ${durationText}.\n`;
+            }
         }
+    }
+    
+    // Randevu planlama bilgileri varsa başlık ile birlikte ekle
+    if (randevuPlanlama) {
+        output += '\nRANDEVU PLANLAMA:\n';
+        output += '----------------\n';
+        output += randevuPlanlama;
     }
     
     // Lastik durumu bilgisini ekle
@@ -3968,7 +4046,7 @@ function updateTelOutput() {
     }
 
     if (wireInfo.length > 0) {
-        output += '\nMEVCUT TAKILI TEL BİLGİSİ:\n';
+        output += '\nBU SEANS TAKILAN TELLER:\n';
         output += '-------------------------\n';
         wireInfo.forEach(info => {
             output += `• ${info}\n`;
@@ -3987,7 +4065,7 @@ function updateTelOutput() {
             if (bends && bends.length > 0) {
                 bends.forEach(bendType => {
                     const bendText = getBendTypeText(bendType);
-                    bendInfo.push(`${tooth} nolu dişte "${bendText}" bükümü mevcut`);
+                    bendInfo.push(`${tooth} nolu dişte "${bendText}" bükümü yapıldı`);
                 });
             }
         });
@@ -4000,7 +4078,7 @@ function updateTelOutput() {
             if (bends && bends.length > 0) {
                 bends.forEach(bendType => {
                     const bendText = getBendTypeText(bendType);
-                    bendInfo.push(`${tooth} nolu dişte "${bendText}" bükümü mevcut`);
+                    bendInfo.push(`${tooth} nolu dişte "${bendText}" bükümü yapıldı`);
                 });
             }
         });
@@ -4011,7 +4089,7 @@ function updateTelOutput() {
         Object.keys(interbendData.ust).forEach(position => {
             const bendType = interbendData.ust[position];
             const bendText = getInterbendTypeText(bendType);
-            interbendInfo.push(`${position} nolu dişler arasında "${bendText}" bükümü mevcut`);
+            interbendInfo.push(`${position} nolu dişler arasında "${bendText}" bükümü yapıldı`);
         });
     }
     
@@ -4020,7 +4098,7 @@ function updateTelOutput() {
         Object.keys(interbendData.alt).forEach(position => {
             const bendType = interbendData.alt[position];
             const bendText = getInterbendTypeText(bendType);
-            interbendInfo.push(`${position} nolu dişler arasında "${bendText}" bükümü mevcut`);
+            interbendInfo.push(`${position} nolu dişler arasında "${bendText}" bükümü yapıldı`);
         });
     }
 
@@ -4028,11 +4106,11 @@ function updateTelOutput() {
     const fullArchInfo = [];
     if (fullArchBends.ust) {
         const bendText = getFullArchBendText(fullArchBends.ust);
-        fullArchInfo.push(`Üst çene telinde "${bendText}" bükümü mevcut`);
+        fullArchInfo.push(`Üst çene telinde "${bendText}" bükümü yapıldı`);
     }
     if (fullArchBends.alt) {
         const bendText = getFullArchBendText(fullArchBends.alt);
-        fullArchInfo.push(`Alt çene telinde "${bendText}" bükümü mevcut`);
+        fullArchInfo.push(`Alt çene telinde "${bendText}" bükümü yapıldı`);
     }
 
     if (bendInfo.length > 0 || interbendInfo.length > 0 || fullArchInfo.length > 0) {
@@ -4182,6 +4260,50 @@ function updateTelOutput() {
     const proceduresOutput = updateTelProceduresOutput();
     if (proceduresOutput) {
         output += proceduresOutput;
+    }
+    
+    // Çoklu diş işlemlerini ekle
+    if (multiToothSelection.sentToReport.length > 0) {
+        output += "\n--- ÇOKLU DİŞ İŞLEMLERİ ---\n";
+        multiToothSelection.sentToReport.forEach((procedure, index) => {
+            output += `${index + 1}) ${procedure}.\n`;
+        });
+    }
+    
+    // Sonraki seans söküm bilgisini ekle
+    if (selectedSokum) {
+        const sokumTexts = {
+            'alt-ust': 'Alt-Üst',
+            'ust': 'Üst',
+            'alt': 'Alt'
+        };
+        output += `\nSonraki seans ${sokumTexts[selectedSokum]} söküm yapılacak.\n`;
+    }
+    
+    // Planlanan işlemler bilgisini ekle
+    if (plannedProceduresText || yediDahilSelection.ust || yediDahilSelection.alt) {
+        output += "\nSONRAKİ SEANS YAPILMASI PLANLANANLAR:\n";
+        output += "---------------------------------------\n";
+        
+        // 7'leri dahil etme bilgilerini ekle
+        if (yediDahilSelection.ust) {
+            output += "Üst 7'leri dahil edilecek.\n";
+        }
+        if (yediDahilSelection.alt) {
+            output += "Alt 7'leri dahil edilecek.\n";
+        }
+        
+        // Diğer planlanan işlemleri ekle
+        if (plannedProceduresText) {
+            output += `${plannedProceduresText}\n`;
+        }
+    }
+    
+    // Özel not bilgisini ekle
+    if (telSpecialNoteText) {
+        output += "\nÖZEL NOT:\n";
+        output += "---------\n";
+        output += `${telSpecialNoteText}\n`;
     }
     
     // Çıktıyı güncelle
@@ -4471,7 +4593,7 @@ window.selectElasticHours = selectElasticHours;
 window.continueCurrentElastics = continueCurrentElastics;
 
 // ==============================================
-// MEVCUT TAKILI TELLER FONKSİYONLARI
+// BU SEANS TAKILAN TELLER FONKSİYONLARI
 // ==============================================
 
 // Tel bölümü açma/kapama
@@ -5417,6 +5539,10 @@ function updateTelProceduresOutput() {
         gapProcedures.forEach(([gap, procedure]) => {
             if (procedure === 'minivida') {
                 output += `${gap} diş arasına minivida yapılmıştır.\n`;
+            } else if (procedure === 'open-coil') {
+                output += `${gap} arasına open coil takıldı.\n`;
+            } else if (procedure === 'distal-jig') {
+                output += `${gap} arasına distal jig yerleştirilmiştir.\n`;
             }
         });
     }
@@ -5432,6 +5558,8 @@ function updateTelProceduresOutput() {
                 output += `${tooth} nolu dişin kırılan braketi yeniden yapıştırılmıştır.\n`;
             } else if (procedure === 'braket-kirik-yapistirlamadi') {
                 output += `${tooth} nolu dişin braketi kırılmış ancak yapıştırılmadı.\n`;
+            } else if (procedure === 'tork-springi') {
+                output += `${tooth} nolu dişe tork springi (killroy) yerleştirilmiştir.\n`;
             }
         });
     }
@@ -5445,3 +5573,278 @@ window.selectTelProcedure = selectTelProcedure;
 window.clearTelProcedureSelection = clearTelProcedureSelection;
 window.closeTelProceduresPopup = closeTelProceduresPopup;
 window.clearTelProcedures = clearTelProcedures;
+
+// Multi Tooth Selection System
+let multiToothSelection = {
+    selectedTeeth: [],
+    procedures: [],
+    sentToReport: []  // Rapora gönderilen işlemler
+};
+
+function toggleToothSelection(tooth) {
+    const button = document.querySelector(`[data-tooth="${tooth}"].multi-select`);
+    const index = multiToothSelection.selectedTeeth.indexOf(tooth);
+    
+    if (index === -1) {
+        // Diş seçilmedi, ekle
+        multiToothSelection.selectedTeeth.push(tooth);
+        button.classList.add('selected');
+    } else {
+        // Diş zaten seçili, çıkar
+        multiToothSelection.selectedTeeth.splice(index, 1);
+        button.classList.remove('selected');
+    }
+    
+    updateSelectedTeethDisplay();
+    updateProcedureButtonsState();
+}
+
+function updateSelectedTeethDisplay() {
+    const display = document.getElementById('selected-teeth-list');
+    
+    if (multiToothSelection.selectedTeeth.length === 0) {
+        display.textContent = 'Henüz diş seçilmedi';
+        display.style.color = 'var(--gray-500)';
+    } else {
+        display.textContent = multiToothSelection.selectedTeeth.join(', ');
+        display.style.color = 'var(--primary-600)';
+    }
+}
+
+function updateProcedureButtonsState() {
+    const memoryChainBtn = document.getElementById('memory-chain-btn');
+    const ligaturBtn = document.getElementById('ligatur-btn');
+    const canPerformProcedure = multiToothSelection.selectedTeeth.length >= 2;
+    
+    memoryChainBtn.disabled = !canPerformProcedure;
+    ligaturBtn.disabled = !canPerformProcedure;
+}
+
+function clearToothSelection() {
+    multiToothSelection.selectedTeeth = [];
+    
+    // Tüm seçili butonları temizle
+    document.querySelectorAll('.tooth-btn-fdi.multi-select.selected').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    updateSelectedTeethDisplay();
+    updateProcedureButtonsState();
+}
+
+function addMultiToothProcedure(procedureType) {
+    if (multiToothSelection.selectedTeeth.length < 2) {
+        alert('En az 2 diş seçmelisiniz!');
+        return;
+    }
+    
+    const firstTooth = multiToothSelection.selectedTeeth[0];
+    const lastTooth = multiToothSelection.selectedTeeth[multiToothSelection.selectedTeeth.length - 1];
+    
+    let procedureText = '';
+    
+    if (procedureType === 'memory-chain') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan memory chain takıldı`;
+    } else if (procedureType === 'ligatur') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan 8 ligatür takıldı`;
+    }
+    
+    // Procedure'ı listeye ekle
+    const procedure = {
+        id: Date.now(),
+        text: procedureText,
+        teeth: [...multiToothSelection.selectedTeeth],
+        type: procedureType
+    };
+    
+    multiToothSelection.procedures.push(procedure);
+    
+    // Listeyi güncelle
+    updateProcedureList();
+    
+    // Seçimi temizle
+    clearToothSelection();
+    
+    // Rapora gönder butonunu aktif et
+    updateSendToReportButtonState();
+}
+
+function updateProcedureList() {
+    const listContainer = document.getElementById('multi-procedure-list');
+    
+    if (multiToothSelection.procedures.length === 0) {
+        listContainer.innerHTML = '<div class="no-procedures">Henüz işlem eklenmedi</div>';
+        return;
+    }
+    
+    listContainer.innerHTML = '';
+    
+    multiToothSelection.procedures.forEach(procedure => {
+        const item = document.createElement('div');
+        item.className = 'procedure-item';
+        item.innerHTML = `
+            <span class="procedure-text">${procedure.text}</span>
+            <button class="remove-procedure-btn" onclick="removeProcedure(${procedure.id})" title="Kaldır">×</button>
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+function removeProcedure(procedureId) {
+    multiToothSelection.procedures = multiToothSelection.procedures.filter(p => p.id !== procedureId);
+    updateProcedureList();
+    updateSendToReportButtonState();
+}
+
+function updateSendToReportButtonState() {
+    const sendBtn = document.getElementById('send-report-btn');
+    sendBtn.disabled = multiToothSelection.procedures.length === 0;
+}
+
+function sendMultiProceduresToReport() {
+    if (multiToothSelection.procedures.length === 0) {
+        return;
+    }
+    
+    // Yeni procedures'ları sentToReport'a ekle
+    multiToothSelection.procedures.forEach(procedure => {
+        multiToothSelection.sentToReport.push(procedure.text);
+    });
+    
+    // Procedures listesini temizle
+    multiToothSelection.procedures = [];
+    updateProcedureList();
+    updateSendToReportButtonState();
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+function clearMultiProcedures() {
+    multiToothSelection.procedures = [];
+    multiToothSelection.sentToReport = [];  // Rapora gönderilenleri de temizle
+    updateProcedureList();
+    updateSendToReportButtonState();
+    clearToothSelection();
+    updateTelOutput();  // Raporu güncelle
+}
+
+// Global fonksiyonları tanımla
+window.toggleToothSelection = toggleToothSelection;
+window.clearToothSelection = clearToothSelection;
+window.addMultiToothProcedure = addMultiToothProcedure;
+window.removeProcedure = removeProcedure;
+window.sendMultiProceduresToReport = sendMultiProceduresToReport;
+window.clearMultiProcedures = clearMultiProcedures;
+
+// ==============================================
+// SONRAKI SEANS SÖKÜM FONKSİYONLARI
+// ==============================================
+
+// Söküm seçeneklerini aç/kapat
+function toggleSokumOptions() {
+    const options = document.getElementById('sokum-options');
+    const button = document.querySelector('.sokum-main-btn');
+    
+    if (options.style.display === 'none') {
+        options.style.display = 'block';
+        button.classList.add('expanded');
+    } else {
+        options.style.display = 'none';
+        button.classList.remove('expanded');
+    }
+}
+
+// Söküm seçimi yap
+function selectSokum(type) {
+    // Önceki seçimi temizle
+    document.querySelectorAll('.sokum-option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // Yeni seçimi işaretle
+    const selectedBtn = document.querySelector(`[data-sokum="${type}"]`);
+    if (selectedBtn) {
+        selectedBtn.classList.add('selected');
+    }
+    
+    // Seçimi kaydet
+    selectedSokum = type;
+    
+    // Display'i güncelle
+    const display = document.getElementById('selected-sokum');
+    const sokumTexts = {
+        'alt-ust': 'Alt-Üst Söküm',
+        'ust': 'Üst Söküm',
+        'alt': 'Alt Söküm'
+    };
+    display.textContent = sokumTexts[type] || 'Henüz seçim yapılmadı';
+    
+    // Seçenekleri kapat
+    document.getElementById('sokum-options').style.display = 'none';
+    document.querySelector('.sokum-main-btn').classList.remove('expanded');
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// Söküm seçimini temizle
+function clearSokumSelection() {
+    selectedSokum = null;
+    
+    // Buton seçimlerini temizle
+    document.querySelectorAll('.sokum-option-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // Display'i temizle
+    document.getElementById('selected-sokum').textContent = 'Henüz seçim yapılmadı';
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// Planlanan işlemler metnini güncelle
+function updatePlannedProcedures() {
+    const textarea = document.getElementById('planned-procedures-text');
+    plannedProceduresText = textarea.value.trim();
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// 7'leri dahil etme seçimi toggle
+function toggleYediDahil(jaw) {
+    // Seçimi tersine çevir
+    yediDahilSelection[jaw] = !yediDahilSelection[jaw];
+    
+    // Buton görünümünü güncelle
+    const button = document.querySelector(`[data-jaw="${jaw}"]`);
+    if (button) {
+        if (yediDahilSelection[jaw]) {
+            button.classList.add('selected');
+        } else {
+            button.classList.remove('selected');
+        }
+    }
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// Tel özel not metnini güncelle
+function updateTelSpecialNote() {
+    const textarea = document.getElementById('tel-special-note');
+    telSpecialNoteText = textarea.value.trim();
+    
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// Global fonksiyonları tanımla
+window.toggleSokumOptions = toggleSokumOptions;
+window.selectSokum = selectSokum;
+window.clearSokumSelection = clearSokumSelection;
+window.updatePlannedProcedures = updatePlannedProcedures;
+window.toggleYediDahil = toggleYediDahil;
+window.updateTelSpecialNote = updateTelSpecialNote;

@@ -2289,24 +2289,22 @@ header h1 {
 }
 
 .clear-selection-btn {
-    background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
-    color: white;
-    border: 2px solid var(--gray-300);
+    background: #6B7280 !important;
+    color: white !important;
+    border: none !important;
     padding: 10px 18px;
     border-radius: 10px;
     font-size: 12px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 }
 
 .clear-selection-btn:hover {
-    background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
-    border-color: var(--gray-200);
+    background: #14B8A6 !important; /* Turkuaz */
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* Lastik Bölümü Stilleri */
@@ -3921,6 +3919,10 @@ input::placeholder, textarea::placeholder {
     border-color: var(--border) !important;
 }
 
+[data-theme="dark"] .duration-input-group label {
+    color: #E38400 !important;
+}
+
 [data-theme="dark"] #duration-result {
     color: white !important;
     font-weight: 700 !important;
@@ -5279,4 +5281,597 @@ input::placeholder, textarea::placeholder {
 [data-theme="dark"] .gap-btn:hover {
     background: var(--primary-800);
     border-color: var(--primary-600);
+}
+
+/* Sonraki Seans Ekstra İşlemler Styles */
+.extra-procedures-section {
+    margin-bottom: 20px;
+}
+
+.extra-procedures-section h4 {
+    color: var(--primary-600);
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sokum-container {
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    padding: 15px;
+    background: var(--gray-50);
+}
+
+.sokum-main-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.sokum-main-btn:hover {
+    background: var(--primary-600);
+}
+
+.sokum-main-btn .arrow {
+    transition: transform 0.2s ease;
+}
+
+.sokum-main-btn.expanded .arrow {
+    transform: rotate(180deg);
+}
+
+.sokum-options {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sokum-option-btn {
+    padding: 10px 14px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    color: var(--gray-700);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.sokum-option-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+    color: var(--primary-700);
+}
+
+.sokum-option-btn.selected {
+    background: var(--primary-100);
+    border-color: var(--primary-500);
+    color: var(--primary-700);
+    font-weight: 500;
+}
+
+.sokum-selection-display {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.clear-sokum-btn {
+    background: var(--red-500);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-sokum-btn:hover {
+    background: var(--red-600);
+}
+
+.planned-procedures-section {
+    margin-top: 20px;
+}
+
+.planned-procedures-section h4 {
+    color: var(--primary-600);
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.yedi-dahil-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.yedi-dahil-btn {
+    padding: 8px 16px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    color: var(--gray-700);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.yedi-dahil-btn:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-300);
+    color: var(--primary-700);
+}
+
+.yedi-dahil-btn.selected {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+#planned-procedures-text {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+#planned-procedures-text:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+#planned-procedures-text::placeholder {
+    color: var(--gray-400);
+}
+
+/* Özel Not Styles */
+.special-note-section {
+    margin-bottom: 20px;
+}
+
+#tel-special-note {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+    background: white;
+}
+
+#tel-special-note:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+#tel-special-note::placeholder {
+    color: var(--gray-400);
+}
+
+/* Multi Tooth Selection Styles */
+.multi-tooth-selection {
+    margin-bottom: 20px;
+}
+
+.selection-info {
+    margin-bottom: 15px;
+}
+
+.selection-info h4 {
+    color: var(--primary-600);
+    margin-bottom: 8px;
+}
+
+.selected-teeth-display {
+    background: var(--gray-50);
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.selected-teeth-display span:first-child {
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+#selected-teeth-list {
+    color: var(--primary-600);
+    font-weight: 500;
+    flex: 1;
+}
+
+.clear-selection-btn {
+    background: #6B7280 !important;
+    color: white !important;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-selection-btn:hover {
+    background: #14B8A6 !important; /* Turkuaz */
+}
+
+.tooth-btn-fdi.multi-select {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tooth-btn-fdi.multi-select:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-400);
+    transform: scale(1.05);
+}
+
+.tooth-btn-fdi.multi-select.selected {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+    font-weight: 600;
+}
+
+.procedure-selection {
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+}
+
+.procedure-selection h4 {
+    color: var(--primary-600);
+    margin-bottom: 8px;
+}
+
+.procedure-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.procedure-action-btn {
+    background: #3B82F6 !important;
+    border: 2px solid #2563EB !important;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600 !important;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.procedure-action-btn:hover:not(:disabled) {
+    background: #2563EB !important;
+    border-color: #1D4ED8 !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+.procedure-action-btn:disabled {
+    background: #9CA3AF !important;
+    border-color: #6B7280 !important;
+    color: #F3F4F6 !important;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none !important;
+}
+
+.procedure-list-container {
+    margin-top: 20px;
+}
+
+.procedure-list-container h4 {
+    color: var(--primary-600);
+    margin-bottom: 12px;
+}
+
+.procedure-list {
+    background: var(--white);
+    border: 2px solid var(--gray-200);
+    border-radius: 8px;
+    min-height: 100px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.no-procedures {
+    color: var(--gray-500);
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+.procedure-item {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.procedure-text {
+    color: var(--gray-700);
+    font-size: 14px;
+}
+
+.remove-procedure-btn {
+    background: #DC2626 !important;
+    color: white !important;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.remove-procedure-btn:hover {
+    background: #B91C1C !important;
+    transform: scale(1.1);
+}
+
+.procedure-list-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.send-to-report-btn {
+    background: #6B7280 !important;
+    color: white !important;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.send-to-report-btn:hover:not(:disabled) {
+    background: #10B981 !important;
+}
+
+.send-to-report-btn:disabled {
+    background: #9CA3AF !important;
+    color: white !important;
+    cursor: not-allowed;
+}
+
+.clear-procedures-btn {
+    background: #6B7280 !important;
+    color: white !important;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.clear-procedures-btn:hover {
+    background: #DC2626 !important;
+}
+
+/* Dark mode styles for multi tooth selection */
+[data-theme="dark"] .selected-teeth-display {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .selected-teeth-display span:first-child {
+    color: var(--dark-text-secondary);
+}
+
+[data-theme="dark"] .procedure-selection {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .procedure-action-btn {
+    background: #3B82F6 !important;
+    border-color: #2563EB !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .procedure-action-btn:hover:not(:disabled) {
+    background: #2563EB !important;
+    border-color: #1D4ED8 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .procedure-action-btn:disabled {
+    background: #4B5563 !important;
+    border-color: #374151 !important;
+    color: #D1D5DB !important;
+}
+
+[data-theme="dark"] .procedure-list {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .procedure-item {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--dark-border);
+}
+
+[data-theme="dark"] .procedure-text {
+    color: var(--dark-text-secondary);
+}
+
+/* Dark mode için buton renkleri */
+[data-theme="dark"] .clear-selection-btn {
+    background: #6B7280 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .clear-selection-btn:hover {
+    background: #14B8A6 !important; /* Turkuaz */
+}
+
+[data-theme="dark"] .send-to-report-btn {
+    background: #DC2626 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .send-to-report-btn:hover:not(:disabled) {
+    background: #B91C1C !important;
+}
+
+[data-theme="dark"] .send-to-report-btn:disabled {
+    background: var(--gray-600) !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .clear-procedures-btn {
+    background: var(--red-500) !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .clear-procedures-btn:hover {
+    background: var(--red-600) !important;
+}
+
+/* Dark Mode - Sonraki Seans Ekstra İşlemler */
+[data-theme="dark"] .sokum-container {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .sokum-main-btn {
+    background: var(--primary-600);
+}
+
+[data-theme="dark"] .sokum-main-btn:hover {
+    background: var(--primary-700);
+}
+
+[data-theme="dark"] .sokum-option-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .sokum-option-btn:hover {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+[data-theme="dark"] .sokum-option-btn.selected {
+    background: var(--primary-600);
+    border-color: var(--primary-700);
+    color: white;
+}
+
+[data-theme="dark"] .sokum-selection-display {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] #planned-procedures-text {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] #planned-procedures-text:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(224, 131, 0, 0.1);
+}
+
+[data-theme="dark"] #planned-procedures-text::placeholder {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .extra-procedures-section h4,
+[data-theme="dark"] .planned-procedures-section h4 {
+    color: #E38400;
+}
+
+[data-theme="dark"] .yedi-dahil-btn {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .yedi-dahil-btn:hover {
+    background: var(--primary-500);
+    border-color: var(--primary-600);
+    color: white;
+}
+
+[data-theme="dark"] .yedi-dahil-btn.selected {
+    background: var(--primary-600);
+    border-color: var(--primary-700);
+    color: white;
+}
+
+/* Dark Mode - Özel Not */
+[data-theme="dark"] #tel-special-note {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] #tel-special-note:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(224, 131, 0, 0.1);
+}
+
+[data-theme="dark"] #tel-special-note::placeholder {
+    color: var(--text-secondary);
 }

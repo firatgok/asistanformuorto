@@ -248,7 +248,13 @@
                             </div>
                             <div class="duration-input-container" style="display: none;">
                                 <div class="duration-input-group">
-                                    <input type="number" id="manual-duration-input" placeholder="Süre (dakika)" min="5" max="120" maxlength="3">
+                                    <label>Asistan Süresi:</label>
+                                    <input type="number" id="manual-assistant-duration" placeholder="Dakika" min="5" max="120" maxlength="3">
+                                    <span class="duration-unit">dakika</span>
+                                </div>
+                                <div class="duration-input-group">
+                                    <label>Doktor Süresi:</label>
+                                    <input type="number" id="manual-doctor-duration" placeholder="Dakika" min="5" max="120" maxlength="3">
                                     <span class="duration-unit">dakika</span>
                                 </div>
                             </div>
@@ -966,12 +972,17 @@
                                 <button type="button" class="duration-btn" data-duration="standart" onclick="selectDuration('tel', 'standart')">Standart Randevu <span class="duration-info">(20dk)</span></button>
                                 <button type="button" class="duration-btn" data-duration="uzun" onclick="selectDuration('tel', 'uzun')">Uzun Randevu <span class="duration-info">(30dk)</span></button>
                                 <button type="button" class="duration-btn" data-duration="kisa" onclick="selectDuration('tel', 'kisa')">Kısa Randevu <span class="duration-info">(10dk)</span></button>
+                                <button type="button" class="duration-btn" data-duration="sokum" onclick="selectDuration('tel', 'sokum')">Söküm Randevusu <span class="duration-info">(40dk rd, 50dk rutin)</span></button>
                                 <button type="button" class="duration-btn manual-btn" onclick="showDurationManualInput('tel')">Manuel Gir</button>
                             </div>
                             <div id="tel-duration-manual-input" class="manual-duration-container" style="display: none;">
                                 <div class="duration-input-group">
-                                    <label>Doktor:</label>
+                                    <label>Doktor 1:</label>
                                     <input type="number" id="tel-manual-doctor" placeholder="Dakika" min="5" max="120" onkeydown="handleDurationInputKeydown(event, 'tel')" oninput="updateManualDurationRealTime('tel')">
+                                </div>
+                                <div class="duration-input-group">
+                                    <label>Doktor 2:</label>
+                                    <input type="number" id="tel-manual-doctor2" placeholder="Dakika" min="5" max="120" onkeydown="handleDurationInputKeydown(event, 'tel')" oninput="updateManualDurationRealTime('tel')">
                                 </div>
                                 <div class="duration-input-group">
                                     <label>Asistan:</label>
@@ -1306,9 +1317,9 @@
                             </div>
                         </div>
                         
-                        <!-- Mevcut Takılı Teller Bölümü -->
+                        <!-- Bu Seans Takılan Teller Bölümü -->
                         <div class="question-group">
-                            <h3 class="section-title">MEVCUT TAKILI TELLER</h3>
+                            <h3 class="section-title">BU SEANS TAKILAN TELLER</h3>
                             
                             <!-- Alt Çene -->
                             <div class="wire-section">
@@ -1814,6 +1825,152 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Sonraki Seans Ekstra İşlemler -->
+                        <div class="question-group">
+                            <h3 class="section-title">SONRAKİ SEANS YAPILACAK EKSTRA İŞLEMLER</h3>
+                            
+                            <!-- Söküm Bölümü -->
+                            <div class="extra-procedures-section">
+                                <h4>Söküm İşlemi</h4>
+                                <div class="sokum-container">
+                                    <button type="button" class="sokum-main-btn" onclick="toggleSokumOptions()">
+                                        <span>Söküm Seçenekleri</span>
+                                        <span class="arrow">▼</span>
+                                    </button>
+                                    <div id="sokum-options" class="sokum-options" style="display: none;">
+                                        <button type="button" class="sokum-option-btn" data-sokum="alt-ust" onclick="selectSokum('alt-ust')">1. Alt-Üst</button>
+                                        <button type="button" class="sokum-option-btn" data-sokum="ust" onclick="selectSokum('ust')">2. Üst</button>
+                                        <button type="button" class="sokum-option-btn" data-sokum="alt" onclick="selectSokum('alt')">3. Alt</button>
+                                    </div>
+                                    <div class="sokum-selection-display">
+                                        <span id="selected-sokum">Henüz seçim yapılmadı</span>
+                                        <button type="button" class="clear-sokum-btn" onclick="clearSokumSelection()">Temizle</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Planlanan İşlemler Text Kutusu -->
+                            <div class="planned-procedures-section">
+                                <h4>Diğer Planlanan İşlemler</h4>
+                                <div class="yedi-dahil-buttons">
+                                    <button type="button" class="yedi-dahil-btn" data-jaw="ust" onclick="toggleYediDahil('ust')">Üst 7'leri Dahil Et</button>
+                                    <button type="button" class="yedi-dahil-btn" data-jaw="alt" onclick="toggleYediDahil('alt')">Alt 7'leri Dahil Et</button>
+                                </div>
+                                <textarea id="planned-procedures-text" 
+                                         placeholder="Sonraki seans için planlanan diğer işlemleri buraya yazın..." 
+                                         rows="4" 
+                                         onchange="updatePlannedProcedures()"
+                                         oninput="updatePlannedProcedures()"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Çoklu Diş Seçimi ve İşlem Listesi -->
+                        <div class="question-group">
+                            <h3 class="section-title">ÇOKLU DİŞ İŞLEMLERİ</h3>
+                            
+                            <!-- Diş Seçim Alanı -->
+                            <div class="multi-tooth-selection">
+                                <div class="selection-info">
+                                    <h4>1. Diş Seçimi</h4>
+                                    <p>İşlem yapmak istediğiniz dişleri sırasıyla seçin:</p>
+                                    <div class="selected-teeth-display">
+                                        <span>Seçilen Dişler: </span>
+                                        <span id="selected-teeth-list">Henüz diş seçilmedi</span>
+                                        <button type="button" class="clear-selection-btn" onclick="clearToothSelection()">Seçimi Temizle</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- FDI Tooth Chart for Multi Selection -->
+                                <div class="fdi-chart-container">
+                                    <div class="fdi-tooth-chart" id="multi-tooth-chart">
+                                        <div class="jaw-container">
+                                            <!-- Üst Çene -->
+                                            <div class="jaw-section">
+                                                <div class="jaw-label">Üst Çene</div>
+                                                <div class="upper-jaw-container">
+                                                    <div class="quadrant upper-right">
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="17" onclick="toggleToothSelection('17')">17</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="16" onclick="toggleToothSelection('16')">16</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="15" onclick="toggleToothSelection('15')">15</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="14" onclick="toggleToothSelection('14')">14</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="13" onclick="toggleToothSelection('13')">13</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="12" onclick="toggleToothSelection('12')">12</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="11" onclick="toggleToothSelection('11')">11</div>
+                                                    </div>
+                                                    <div class="quadrant upper-left">
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="21" onclick="toggleToothSelection('21')">21</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="22" onclick="toggleToothSelection('22')">22</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="23" onclick="toggleToothSelection('23')">23</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="24" onclick="toggleToothSelection('24')">24</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="25" onclick="toggleToothSelection('25')">25</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="26" onclick="toggleToothSelection('26')">26</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="27" onclick="toggleToothSelection('27')">27</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Alt Çene -->
+                                            <div class="jaw-section">
+                                                <div class="jaw-label">Alt Çene</div>
+                                                <div class="lower-jaw-container">
+                                                    <div class="quadrant lower-right">
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="47" onclick="toggleToothSelection('47')">47</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="46" onclick="toggleToothSelection('46')">46</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="45" onclick="toggleToothSelection('45')">45</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="44" onclick="toggleToothSelection('44')">44</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="43" onclick="toggleToothSelection('43')">43</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="42" onclick="toggleToothSelection('42')">42</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="41" onclick="toggleToothSelection('41')">41</div>
+                                                    </div>
+                                                    <div class="quadrant lower-left">
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="31" onclick="toggleToothSelection('31')">31</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="32" onclick="toggleToothSelection('32')">32</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="33" onclick="toggleToothSelection('33')">33</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="34" onclick="toggleToothSelection('34')">34</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="35" onclick="toggleToothSelection('35')">35</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="36" onclick="toggleToothSelection('36')">36</div>
+                                                        <div class="tooth-btn-fdi multi-select" data-tooth="37" onclick="toggleToothSelection('37')">37</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- İşlem Seçimi -->
+                            <div class="procedure-selection">
+                                <h4>2. İşlem Seçimi</h4>
+                                <p>Seçilen dişlere uygulanacak işlemi seçin:</p>
+                                <div class="procedure-buttons">
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('memory-chain')" disabled id="memory-chain-btn">
+                                        1) Memory Chain
+                                    </button>
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('ligatur')" disabled id="ligatur-btn">
+                                        2) 8 Ligatür
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- İşlem Listesi -->
+                            <div class="procedure-list-container">
+                                <h4>3. İşlem Listesi</h4>
+                                <div class="procedure-list" id="multi-procedure-list">
+                                    <div class="no-procedures">Henüz işlem eklenmedi</div>
+                                </div>
+                                
+                                <!-- Kontrol Butonları -->
+                                <div class="procedure-list-controls">
+                                    <button type="button" class="send-to-report-btn" onclick="sendMultiProceduresToReport()" disabled id="send-report-btn">
+                                        📋 Rapora Gönder
+                                    </button>
+                                    <button type="button" class="clear-procedures-btn" onclick="clearMultiProcedures()">
+                                        🗑️ Tümünü Temizle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-right">
@@ -1832,6 +1989,19 @@
                                 <button class="theme-btn" id="dark-btn-2" onclick="setTheme('dark')" title="Dark Mode">🌙</button>
                             </div>
                         </div>
+                        
+                        <!-- Özel Not Bölümü -->
+                        <div class="question-group">
+                            <h3 class="section-title">ÖZEL NOT</h3>
+                            <div class="special-note-section">
+                                <textarea id="tel-special-note" 
+                                         placeholder="Özel notlarınızı buraya yazın..." 
+                                         rows="4" 
+                                         onchange="updateTelSpecialNote()"
+                                         oninput="updateTelSpecialNote()"></textarea>
+                            </div>
+                        </div>
+                        
                         <div class="output-container">
                             <textarea id="tel-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
                             <div class="output-buttons">
@@ -2020,11 +2190,14 @@
                 <div id="gap-procedures" class="procedure-options" style="display: none;">
                     <h5>Diş Arası İşlemler</h5>
                     <button class="procedure-btn" data-procedure="minivida" onclick="selectTelProcedure('minivida')">1. Minivida</button>
+                    <button class="procedure-btn" data-procedure="open-coil" onclick="selectTelProcedure('open-coil')">2. Open Coil</button>
+                    <button class="procedure-btn" data-procedure="distal-jig" onclick="selectTelProcedure('distal-jig')">3. Distal Jig</button>
                 </div>
                 <div id="tooth-procedures" class="procedure-options" style="display: none;">
                     <h5>Diş Üstü İşlemler</h5>
                     <button class="procedure-btn" data-procedure="braket-yapistirilmasi" onclick="selectTelProcedure('braket-yapistirilmasi')">1. Kırılan Braketin Yapıştırılması</button>
                     <button class="procedure-btn" data-procedure="braket-kirik-yapistirlamadi" onclick="selectTelProcedure('braket-kirik-yapistirlamadi')">2. Braket Kırık, Yapıştırılmadı</button>
+                    <button class="procedure-btn" data-procedure="tork-springi" onclick="selectTelProcedure('tork-springi')">3. Tork Springi (Killroy)</button>
                 </div>
             </div>
             <div class="procedures-popup-footer">
