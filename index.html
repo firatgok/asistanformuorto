@@ -377,8 +377,8 @@
                         <div class="question-group">
                             <h4>Hastamız şu an lastiklerini taktı mı?</h4>
                             <div class="elastic-status-container">
-                                <button type="button" class="option-btn elastic-status-btn" data-status="evet">Evet</button>
-                                <button type="button" class="option-btn elastic-status-btn" data-status="hayir">Hayır</button>
+                                <button type="button" class="option-btn elastic-status-btn" data-status="evet" onclick="selectElasticStatus('seffaf', 'evet')">Evet</button>
+                                <button type="button" class="option-btn elastic-status-btn" data-status="hayir" onclick="selectElasticStatus('seffaf', 'hayir')">Hayır</button>
                             </div>
                             <div class="elastic-status-note">
                                 <p><strong>Not:</strong> Mevcut lastik kullanımını değerlendirmek için şimdi hastamıza lastiklerini taktıralım!</p>
@@ -971,7 +971,8 @@
                             <div class="button-group">
                                 <button type="button" class="duration-btn" data-duration="standart" onclick="selectDuration('tel', 'standart')">Standart Randevu <span class="duration-info">(20dk)</span></button>
                                 <button type="button" class="duration-btn" data-duration="uzun" onclick="selectDuration('tel', 'uzun')">Uzun Randevu <span class="duration-info">(30dk)</span></button>
-                                <button type="button" class="duration-btn" data-duration="kisa" onclick="selectDuration('tel', 'kisa')">Kısa Randevu <span class="duration-info">(10dk)</span></button>
+                                <button type="button" class="duration-btn" data-duration="kisa-15" onclick="selectDuration('tel', 'kisa-15')">Kısa Randevu <span class="duration-info">(15dk)</span></button>
+                                <button type="button" class="duration-btn" data-duration="cok-kisa" onclick="selectDuration('tel', 'cok-kisa')">Çok Kısa Randevu <span class="duration-info">(10dk)</span></button>
                                 <button type="button" class="duration-btn" data-duration="sokum" onclick="selectDuration('tel', 'sokum')">Söküm Randevusu <span class="duration-info">(40dk rd, 50dk rutin)</span></button>
                                 <button type="button" class="duration-btn manual-btn" onclick="showDurationManualInput('tel')">Manuel Gir</button>
                             </div>
@@ -1184,7 +1185,10 @@
                                     
                                     <!-- Sınıf II -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif2')">Sınıf II</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif2')">Sınıf II</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('sinif2')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sag-sinif2-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif2', 24)">24 Saat</button>
@@ -1196,7 +1200,10 @@
                                     
                                     <!-- Sınıf III -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif3')">Sınıf III</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'sinif3')">Sınıf III</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('sinif3')" title="Sınıf III Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sag-sinif3-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'sinif3', 24)">24 Saat</button>
@@ -1208,7 +1215,10 @@
                                     
                                     <!-- Cross -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'cross')">Cross</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'cross')">Cross</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('cross')" title="Cross Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sag-cross-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'cross', 24)">24 Saat</button>
@@ -1238,7 +1248,10 @@
                                     
                                     <!-- Sınıf II -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif2')">Sınıf II</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif2')">Sınıf II</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('sinif2')" title="Sınıf II Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sol-sinif2-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif2', 24)">24 Saat</button>
@@ -1250,7 +1263,10 @@
                                     
                                     <!-- Sınıf III -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif3')">Sınıf III</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'sinif3')">Sınıf III</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('sinif3')" title="Sınıf III Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sol-sinif3-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'sinif3', 24)">24 Saat</button>
@@ -1262,7 +1278,10 @@
                                     
                                     <!-- Cross -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'cross')">Cross</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'cross')">Cross</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('cross')" title="Cross Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-sol-cross-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 24)">24 Saat</button>
@@ -1292,7 +1311,10 @@
                                     
                                     <!-- 13-33 Oblik -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik1333')">13-33 Oblik</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik1333')">13-33 Oblik</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('on-oblik')" title="Ön Oblik Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-orta-oblik1333-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik1333', 24)">24 Saat</button>
@@ -1304,7 +1326,10 @@
                                     
                                     <!-- 23-43 Oblik -->
                                     <div class="elastic-type-item">
-                                        <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik2343')">23-43 Oblik</button>
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik2343')">23-43 Oblik</button>
+                                            <button type="button" class="photo-btn" onclick="openImageModal('on-oblik')" title="Ön Oblik Lastik nasıl takılır?">📷</button>
+                                        </div>
                                         <div id="tel-next-orta-oblik2343-hours" class="elastic-hours-container" style="display: none;">
                                             <div class="elastic-hours-buttons">
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'orta', 'oblik2343', 24)">24 Saat</button>
@@ -1778,6 +1803,10 @@
                                                     <div class="tooth-btn-fdi" data-tooth="27" data-question="tel-procedures">27</div>
                                                 </div>
                                             </div>
+                                            <!-- Üst çene midline gap button -->
+                                            <div class="midline-container">
+                                                <div class="gap-btn midline-btn" data-gap="11-21" data-question="tel-procedures">+</div>
+                                            </div>
                                         </div>
                                         
                                         <!-- Alt Çene Bölümü -->
@@ -1815,6 +1844,10 @@
                                                     <div class="tooth-btn-fdi" data-tooth="37" data-question="tel-procedures">37</div>
                                                 </div>
                                             </div>
+                                            <!-- Alt çene midline gap button -->
+                                            <div class="midline-container">
+                                                <div class="gap-btn midline-btn" data-gap="41-31" data-question="tel-procedures">+</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1828,35 +1861,75 @@
 
                         <!-- Sonraki Seans Ekstra İşlemler -->
                         <div class="question-group">
-                            <h3 class="section-title">SONRAKİ SEANS YAPILACAK EKSTRA İŞLEMLER</h3>
+                            <h3 class="section-title">SONRAKİ SEANS YAPILACAK İŞLEMLER</h3>
                             
                             <!-- Söküm Bölümü -->
                             <div class="extra-procedures-section">
-                                <h4>Söküm İşlemi</h4>
-                                <div class="sokum-container">
-                                    <button type="button" class="sokum-main-btn" onclick="toggleSokumOptions()">
-                                        <span>Söküm Seçenekleri</span>
-                                        <span class="arrow">▼</span>
-                                    </button>
-                                    <div id="sokum-options" class="sokum-options" style="display: none;">
-                                        <button type="button" class="sokum-option-btn" data-sokum="alt-ust" onclick="selectSokum('alt-ust')">1. Alt-Üst</button>
-                                        <button type="button" class="sokum-option-btn" data-sokum="ust" onclick="selectSokum('ust')">2. Üst</button>
-                                        <button type="button" class="sokum-option-btn" data-sokum="alt" onclick="selectSokum('alt')">3. Alt</button>
+                                <h4>Tel Söküm İşlemi</h4>
+                                <div class="sokum-direct-buttons">
+                                    <button type="button" class="sokum-option-btn" data-sokum="alt-ust" onclick="selectSokum('alt-ust')">Alt-Üst</button>
+                                    <button type="button" class="sokum-option-btn" data-sokum="ust" onclick="selectSokum('ust')">Üst</button>
+                                    <button type="button" class="sokum-option-btn" data-sokum="alt" onclick="selectSokum('alt')">Alt</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Minivida Sökülecek -->
+                            <div class="extra-procedures-section">
+                                <h4>Minivida Sökülecek</h4>
+                                <div class="minivida-removal-section">
+                                    <div class="tooth-range-input">
+                                        <label>Diş Aralığı:</label>
+                                        <input type="number" 
+                                               id="minivida-start-tooth" 
+                                               placeholder="Başlangıç (ör: 14)" 
+                                               min="11" 
+                                               max="48"
+                                               oninput="updateMinividaInputState()" />
+                                        <span class="separator">-</span>
+                                        <input type="number" 
+                                               id="minivida-end-tooth" 
+                                               placeholder="Bitiş (ör: 24)" 
+                                               min="11" 
+                                               max="48"
+                                               oninput="updateMinividaInputState()" />
                                     </div>
-                                    <div class="sokum-selection-display">
-                                        <span id="selected-sokum">Henüz seçim yapılmadı</span>
-                                        <button type="button" class="clear-sokum-btn" onclick="clearSokumSelection()">Temizle</button>
+                                    <div class="minivida-send-btn-container">
+                                        <button type="button" 
+                                                class="send-minivida-btn" 
+                                                id="send-minivida-btn"
+                                                onclick="sendMinividaToReport()" 
+                                                disabled>
+                                            📋 Rapora Gönder
+                                        </button>
                                     </div>
+                                    
+                                    <!-- Minivida Removal List -->
+                                    <div class="minivida-list-container">
+                                        <h5>Eklenmiş Vida Sökümler:</h5>
+                                        <div class="minivida-removal-list" id="minivida-removal-list">
+                                            <div class="no-minivida">Henüz vida sökümü eklenmedi</div>
+                                        </div>
+                                        <button type="button" 
+                                                class="clear-all-minivida-btn" 
+                                                onclick="clearAllMinividaRemovals()">
+                                            🗑️ Tümünü Temizle
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 7'ler Dahil Edilecek -->
+                            <div class="extra-procedures-section">
+                                <h4>7'ler Dahil Edilecek</h4>
+                                <div class="yedi-dahil-buttons">
+                                    <button type="button" class="yedi-dahil-btn" data-jaw="ust" onclick="toggleYediDahil('ust')">Üst 7'leri Dahil Et</button>
+                                    <button type="button" class="yedi-dahil-btn" data-jaw="alt" onclick="toggleYediDahil('alt')">Alt 7'leri Dahil Et</button>
                                 </div>
                             </div>
                             
                             <!-- Planlanan İşlemler Text Kutusu -->
                             <div class="planned-procedures-section">
                                 <h4>Diğer Planlanan İşlemler</h4>
-                                <div class="yedi-dahil-buttons">
-                                    <button type="button" class="yedi-dahil-btn" data-jaw="ust" onclick="toggleYediDahil('ust')">Üst 7'leri Dahil Et</button>
-                                    <button type="button" class="yedi-dahil-btn" data-jaw="alt" onclick="toggleYediDahil('alt')">Alt 7'leri Dahil Et</button>
-                                </div>
                                 <textarea id="planned-procedures-text" 
                                          placeholder="Sonraki seans için planlanan diğer işlemleri buraya yazın..." 
                                          rows="4" 
@@ -1949,6 +2022,18 @@
                                     </button>
                                     <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('ligatur')" disabled id="ligatur-btn">
                                         2) 8 Ligatür
+                                    </button>
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('open-coil')" disabled id="open-coil-btn">
+                                        3) Open Coil
+                                    </button>
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('koruyucu-boru')" disabled id="koruyucu-boru-btn">
+                                        4) Koruyucu Boru
+                                    </button>
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('close-coil')" disabled id="close-coil-btn">
+                                        5) Close Coil
+                                    </button>
+                                    <button type="button" class="procedure-action-btn" onclick="addMultiToothProcedure('tel-kompozit')" disabled id="tel-kompozit-btn">
+                                        6) Telin Kompozitle Kaplanması
                                     </button>
                                 </div>
                             </div>
@@ -2190,14 +2275,14 @@
                 <div id="gap-procedures" class="procedure-options" style="display: none;">
                     <h5>Diş Arası İşlemler</h5>
                     <button class="procedure-btn" data-procedure="minivida" onclick="selectTelProcedure('minivida')">1. Minivida</button>
-                    <button class="procedure-btn" data-procedure="open-coil" onclick="selectTelProcedure('open-coil')">2. Open Coil</button>
-                    <button class="procedure-btn" data-procedure="distal-jig" onclick="selectTelProcedure('distal-jig')">3. Distal Jig</button>
+                    <button class="procedure-btn" data-procedure="distal-jig" onclick="selectTelProcedure('distal-jig')">2. Distal Jig</button>
                 </div>
                 <div id="tooth-procedures" class="procedure-options" style="display: none;">
                     <h5>Diş Üstü İşlemler</h5>
                     <button class="procedure-btn" data-procedure="braket-yapistirilmasi" onclick="selectTelProcedure('braket-yapistirilmasi')">1. Kırılan Braketin Yapıştırılması</button>
                     <button class="procedure-btn" data-procedure="braket-kirik-yapistirlamadi" onclick="selectTelProcedure('braket-kirik-yapistirlamadi')">2. Braket Kırık, Yapıştırılmadı</button>
                     <button class="procedure-btn" data-procedure="tork-springi" onclick="selectTelProcedure('tork-springi')">3. Tork Springi (Killroy)</button>
+                    <button class="procedure-btn" data-procedure="izc-vida" onclick="selectTelProcedure('izc-vida')">4. IZC Vidası</button>
                 </div>
             </div>
             <div class="procedures-popup-footer">

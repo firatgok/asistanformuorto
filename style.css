@@ -955,7 +955,7 @@ header h1 {
     padding: 15px 20px;
     background: transparent;
     border: none;
-    color: var(--gray-100);
+    color: white !important;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -1027,26 +1027,35 @@ header h1 {
     border-color: var(--gray-500);
 }
 
+.elastic-type-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
 .elastic-header {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 8px;
+    margin-bottom: 8px;
 }
 
 .elastic-type-btn {
     background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
     border: 1.5px solid var(--gray-500);
-    color: var(--gray-100);
+    color: white !important;
     padding: 12px 18px;
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.25s ease;
-    flex: 1;
+    flex: 0 1 auto;
     text-align: center;
-    margin-bottom: 8px;
-    display: block;
+    display: inline-block;
 }
 
 .elastic-type-btn:hover {
@@ -2324,9 +2333,9 @@ header h1 {
 }
 
 .elastic-main-btn {
-    background-color: #e9ecef;
-    color: #495057;
-    border: 2px solid #dee2e6;
+    background-color: #189ea7; /* Kullanıcının istediği renk */
+    color: white !important;
+    border: 2px solid #189ea7;
     border-radius: 8px;
     padding: 15px 30px;
     font-size: 18px;
@@ -2339,17 +2348,18 @@ header h1 {
 }
 
 .elastic-main-btn:hover {
-    background-color: #dee2e6;
+    background-color: #148b92; /* Biraz daha koyu */
+    border-color: #148b92;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(20, 139, 146, 0.25);
 }
 
 .elastic-main-btn.active {
-    background-color: var(--primary);
+    background-color: #0f6d73; /* Aktif durumda daha koyu */
     color: white;
-    border-color: var(--primary-hover);
+    border-color: #0f6d73;
     transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(225, 100, 40, 0.3);
+    box-shadow: 0 6px 12px rgba(15, 109, 115, 0.25);
 }
 
 .elastic-sub-container {
@@ -2385,7 +2395,7 @@ header h1 {
 
 .elastic-sub-btn {
     background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    color: white !important;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px 15px;
@@ -2448,7 +2458,7 @@ header h1 {
 
 .elastic-type-btn {
     background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    color: white !important;
     border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 10px 15px;
@@ -2479,7 +2489,7 @@ header h1 {
 
 .elastic-duration-btn {
     background-color: var(--bg-secondary);
-    color: var(--text-primary);
+    color: white !important;
     border: 1px solid var(--border-color);
     border-radius: 0px;
     padding: 12px 20px;
@@ -2517,27 +2527,27 @@ header h1 {
     border-color: #1e7e34;
 }
 
-/* Sonraki Seans Butonları - Kırmızı Tema */
+/* Sonraki Seans Butonları - Pembe Tema */
 .elastic-main-btn.next-session {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
+    background-color: #EC4899; /* Koyu pembe */
+    color: white !important;
+    border-color: #DB2777;
 }
 
 .elastic-main-btn.next-session:hover {
-    background-color: #f1b0b7;
-    border-color: #f5c6cb;
+    background-color: #DB2777; /* Daha koyu pembe */
+    border-color: #BE185D;
 }
 
 .elastic-main-btn.next-session.active {
-    background-color: #dc3545;
-    color: white;
-    border-color: #bd2130;
+    background-color: #BE185D; /* En koyu pembe */
+    color: white !important;
+    border-color: #9F1239;
 }
 
 .elastic-type-btn.next-session {
     background-color: #f8d7da;
-    color: #721c24;
+    color: white !important;
     border-color: #f5c6cb;
 }
 
@@ -2554,7 +2564,7 @@ header h1 {
 
 .elastic-duration-btn.next-session {
     background-color: #fff5f5;
-    color: #721c24;
+    color: white !important;
     border-color: #f5c6cb;
 }
 
@@ -2603,9 +2613,9 @@ header h1 {
 
 /* AYNI LASTİKLERLE DEVAM Butonu */
 .same-elastic-btn {
-    background-color: #fff3cd;
-    color: #856404;
-    border: 1px solid #ffeaa7;
+    background-color: #F59E0B; /* Koyu turuncu */
+    color: white !important;
+    border: 2px solid #D97706;
     border-radius: 6px;
     padding: 8px 15px;
     font-size: 12px;
@@ -2618,14 +2628,14 @@ header h1 {
 }
 
 .same-elastic-btn:hover {
-    background-color: #ffeaa7;
-    border-color: #ffdd57;
+    background-color: #D97706; /* Daha koyu turuncu */
+    border-color: #B45309;
 }
 
 .same-elastic-btn.active {
-    background-color: #ffc107;
-    color: #212529;
-    border-color: #ffca2c;
+    background-color: #B45309; /* En koyu turuncu */
+    color: white !important;
+    border-color: #92400E;
     transform: scale(1.05);
 }
 
@@ -2873,6 +2883,11 @@ header h1 {
     position: relative;
 }
 
+/* Reverse vertical order for left-side quadrants so numbers run top->bottom as expected */
+.quadrant.upper-left,
+.quadrant.lower-left {
+    flex-direction: column-reverse;
+}
 .upper-right {
     margin-right: 8px;
 }
@@ -2988,9 +3003,13 @@ header h1 {
 
 
 .midline-container {
-    display: flex;
+    display: flex !important;
     justify-content: center;
     margin: 3px 0;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative;
+    z-index: 10;
 }
 
 .midline-btn {
@@ -3001,6 +3020,9 @@ header h1 {
     width: 32px !important;
     height: 32px !important;
     font-size: 18px !important;
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .midline-btn:hover {
@@ -5374,6 +5396,12 @@ input::placeholder, textarea::placeholder {
     font-size: 14px;
 }
 
+.sokum-direct-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
 .clear-sokum-btn {
     background: var(--red-500);
     color: white;
@@ -5387,6 +5415,187 @@ input::placeholder, textarea::placeholder {
 
 .clear-sokum-btn:hover {
     background: var(--red-600);
+}
+
+/* Minivida Removal Styles */
+.minivida-removal-section {
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    padding: 15px;
+    background: var(--gray-50);
+}
+
+.tooth-range-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.tooth-range-input label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-700);
+    min-width: 90px;
+}
+
+.tooth-range-input input[type="number"] {
+    width: 100px;
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.tooth-range-input input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tooth-range-input .separator {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gray-500);
+}
+
+.minivida-send-btn-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.send-minivida-btn {
+    background: #6B7280 !important;
+    color: white !important;
+    border: 2px solid #4B5563 !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    white-space: nowrap;
+}
+
+.send-minivida-btn:hover:not(:disabled) {
+    background: #10B981 !important;
+    border-color: #059669 !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+}
+
+.send-minivida-btn:disabled {
+    background: #D1D5DB !important;
+    border-color: #9CA3AF !important;
+    color: #6B7280 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+}
+
+.minivida-list-container {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--gray-300);
+}
+
+.minivida-list-container h5 {
+    color: var(--primary-600);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.minivida-removal-list {
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    min-height: 50px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.no-minivida {
+    color: var(--gray-500);
+    font-size: 13px;
+    text-align: center;
+    padding: 15px;
+    font-style: italic;
+}
+
+.minivida-removal-item {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.minivida-removal-item:last-child {
+    margin-bottom: 0;
+}
+
+.minivida-removal-item:hover {
+    background: var(--gray-100);
+}
+
+.minivida-removal-text {
+    color: var(--gray-700);
+    font-size: 14px;
+    flex: 1;
+}
+
+.remove-minivida-btn {
+    background: var(--red-500) !important;
+    color: white !important;
+    border: none !important;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.remove-minivida-btn:hover {
+    background: var(--red-600) !important;
+    transform: scale(1.1);
+}
+
+.clear-all-minivida-btn {
+    background: #4B5563 !important;
+    color: white !important;
+    border: 2px solid #374151 !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.clear-all-minivida-btn:hover {
+    background: #374151 !important;
+    border-color: #1F2937 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
 }
 
 .planned-procedures-section {
@@ -5403,7 +5612,7 @@ input::placeholder, textarea::placeholder {
 .yedi-dahil-buttons {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 0px; /* 7'ler bölümü artık ayrı bir section olduğu için bottom margin kaldırıldı */
 }
 
 .yedi-dahil-btn {
@@ -5567,6 +5776,8 @@ input::placeholder, textarea::placeholder {
     display: flex;
     gap: 12px;
     margin-top: 10px;
+    flex-wrap: wrap; /* allow buttons to wrap onto multiple rows */
+    align-items: flex-start;
 }
 
 .procedure-action-btn {
@@ -5580,6 +5791,9 @@ input::placeholder, textarea::placeholder {
     font-weight: 600 !important;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    white-space: nowrap; /* keep label on one line */
+    flex: 0 0 auto; /* don't stretch, allow wrapping by container */
+    margin-bottom: 8px; /* space between wrapped rows */
 }
 
 .procedure-action-btn:hover:not(:disabled) {
@@ -5860,6 +6074,83 @@ input::placeholder, textarea::placeholder {
     color: white;
 }
 
+/* Dark Mode - Minivida Removal */
+[data-theme="dark"] .minivida-removal-section {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .tooth-range-input label {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .tooth-range-input input[type="number"] {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .tooth-range-input input[type="number"]:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(224, 131, 0, 0.1);
+}
+
+[data-theme="dark"] .send-minivida-btn {
+    background: #6B7280 !important;
+    border-color: #4B5563 !important;
+}
+
+[data-theme="dark"] .send-minivida-btn:hover:not(:disabled) {
+    background: #10B981 !important;
+    border-color: #059669 !important;
+}
+
+[data-theme="dark"] .send-minivida-btn:disabled {
+    background: #4B5563 !important;
+    border-color: #374151 !important;
+    color: #9CA3AF !important;
+}
+
+[data-theme="dark"] .minivida-list-container {
+    border-top-color: var(--border);
+}
+
+[data-theme="dark"] .minivida-list-container h5 {
+    color: #E38400;
+}
+
+[data-theme="dark"] .minivida-removal-list {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .no-minivida {
+    color: var(--text-secondary);
+}
+
+[data-theme="dark"] .minivida-removal-item {
+    background: var(--dark-bg-tertiary);
+    border-color: var(--border);
+}
+
+[data-theme="dark"] .minivida-removal-item:hover {
+    background: var(--dark-bg-secondary);
+}
+
+[data-theme="dark"] .minivida-removal-text {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .clear-all-minivida-btn {
+    background: #4B5563 !important;
+    border-color: #374151 !important;
+}
+
+[data-theme="dark"] .clear-all-minivida-btn:hover {
+    background: #374151 !important;
+    border-color: #1F2937 !important;
+}
+
 /* Dark Mode - Özel Not */
 [data-theme="dark"] #tel-special-note {
     background: var(--surface);
@@ -5874,4 +6165,65 @@ input::placeholder, textarea::placeholder {
 
 [data-theme="dark"] #tel-special-note::placeholder {
     color: var(--text-secondary);
+}
+
+/* Dark Mode - Midline Buttons */
+[data-theme="dark"] .midline-btn {
+    background-color: #ffc107 !important;
+    border-color: #ffb300 !important;
+    color: #000 !important;
+}
+
+[data-theme="dark"] .midline-btn:hover {
+    background-color: #ffca28 !important;
+    border-color: #ff8f00 !important;
+}
+
+[data-theme="dark"] .midline-btn.selected {
+    background-color: #ff5722 !important;
+    border-color: #e64a19 !important;
+    color: #fff !important;
+}
+
+/* Ensure midline buttons are always visible */
+.midline-container {
+    display: flex !important;
+    justify-content: center !important;
+    visibility: visible !important;
+    margin: 8px 0 !important;
+}
+
+.midline-btn {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Dark Mode - Lastik butonları için koyu renkler */
+[data-theme="dark"] .elastic-main-btn {
+    background-color: #1E40AF !important; /* Koyu mavi */
+    border-color: #1E3A8A !important;
+}
+
+[data-theme="dark"] .elastic-main-btn:hover {
+    background-color: #1E3A8A !important;
+}
+
+[data-theme="dark"] .elastic-main-btn.next-session {
+    background-color: #DB2777 !important; /* Koyu pembe */
+    border-color: #BE185D !important;
+}
+
+[data-theme="dark"] .elastic-main-btn.next-session:hover {
+    background-color: #BE185D !important;
+}
+
+[data-theme="dark"] .same-elastic-btn {
+    background-color: #D97706 !important; /* Koyu turuncu */
+    border-color: #B45309 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .same-elastic-btn:hover {
+    background-color: #B45309 !important;
 }

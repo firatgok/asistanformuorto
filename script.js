@@ -2178,6 +2178,23 @@ function toggleElasticDirection(direction, buttonElement) {
         }
     } else {
         // Mevcut sistem (değişiklik yok)
+        
+        // Mevcut lastik kullanımı için hasta lastiklerini takıp takmadığını kontrol et
+        // Hangi sekmede olduğumuzu belirle - butonun parent container'ına bakarak
+        const buttonElement = document.querySelector(`[data-direction="${direction}"]`);
+        let currentSection = 'seffaf'; // varsayılan
+        if (buttonElement) {
+            const telContainer = buttonElement.closest('#tel-tedavisi');
+            if (telContainer) {
+                currentSection = 'tel';
+            }
+        }
+        
+        if (!elasticStatus[currentSection] || elasticStatus[currentSection] !== 'evet') {
+            alert('Hasta lastiklerini takmadan mevcut lastik kullanımı seçimi yapılamaz');
+            return;
+        }
+        
         if (!direction || !elasticSelections[direction]) {
             console.error('Direction is undefined or not found in elasticSelections:', direction);
             return;
@@ -3359,6 +3376,9 @@ let selectedDuration = {
 // Sonraki seans söküm seçimi için global değişken
 let selectedSokum = null;
 
+// Minivida söküm listesi için global değişken
+let minividaRemovals = [];
+
 // 7'leri dahil etme seçimleri için global değişken
 let yediDahilSelection = {
     ust: false,
@@ -3712,12 +3732,22 @@ function cancelManualDuration(section) {
 
 // Lastik durumu seçimi fonksiyonu
 function selectElasticStatus(section, status) {
+    // Doğru container'ı bul - Şeffaf Plak için farklı, Tel için farklı
+    let containerSelector;
+    if (section === 'seffaf') {
+        // Şeffaf Plak için - doğrudan sınıf seçici kullan
+        containerSelector = '.elastic-status-container';
+    } else {
+        // Tel için - ID ile seç
+        containerSelector = `#${section}-tedavisi`;
+    }
+    
     // Önceki seçimi temizle
-    const buttons = document.querySelectorAll(`#${section}-tedavisi .elastic-status-btn`);
+    const buttons = document.querySelectorAll(`${containerSelector} .elastic-status-btn`);
     buttons.forEach(btn => btn.classList.remove('selected'));
     
     // Yeni seçimi işaretle
-    const selectedBtn = document.querySelector(`#${section}-tedavisi .elastic-status-btn[data-status="${status}"]`);
+    const selectedBtn = document.querySelector(`${containerSelector} .elastic-status-btn[data-status="${status}"]`);
     if (selectedBtn) {
         selectedBtn.classList.add('selected');
     }
@@ -3725,8 +3755,12 @@ function selectElasticStatus(section, status) {
     // Seçimi kaydet
     elasticStatus[section] = status;
     
-    // Raporu güncelle
-    updateTelOutput();
+    // Raporu güncelle - section'a göre doğru fonksiyonu çağır
+    if (section === 'seffaf') {
+        updateSeffafOutput();
+    } else if (section === 'tel') {
+        updateTelOutput();
+    }
 }
 
 // Aynı lastiklere devam fonksiyonu
@@ -3828,6 +3862,16 @@ function toggleElasticSection(section, side) {
 // Lastik tipi seçimi (çoklu seçim)
 function selectElasticType(section, side, type) {
     console.log(`selectElasticType called: section=${section}, side=${side}, type=${type}`);
+    
+    // Mevcut lastik kullanımı için hasta lastiklerini takıp takmadığını kontrol et
+    if (!section.includes('next')) {
+        const currentSection = section; // 'tel' veya 'seffaf'
+        if (!elasticStatus[currentSection] || elasticStatus[currentSection] !== 'evet') {
+            alert('Hasta lastiklerini takmadan mevcut lastik kullanımı seçimi yapılamaz');
+            return;
+        }
+    }
+    
     const selectedBtn = document.querySelector(`#${section}-${side}-section .elastic-type-btn[onclick="selectElasticType('${section}', '${side}', '${type}')"]`);
     const usageObject = section.includes('next') ? nextElasticUsage : currentElasticUsage;
     
@@ -3931,6 +3975,12 @@ function updateTelOutput() {
             case 'standart':
                 durationText = '20 dakika RD';
                 break;
+            case 'kisa-15':
+                durationText = '15 dakika RD';
+                break;
+            case 'cok-kisa':
+                durationText = '10 dakika RD';
+                break;
             case 'kisa':
                 durationText = '10 dakika RD';
                 break;
@@ -3938,7 +3988,7 @@ function updateTelOutput() {
                 durationText = '30 dakika RD';
                 break;
             case 'sokum':
-                durationText = 'Sonraki seans söküm yapılacak 40dk rd, 50dk rutin';
+                durationText = 'Bir sonraki randevu söküm yapılacak 40 dk RD, 50 dk Rutin';
                 break;
             case 'manuel':
                 const parts = [];
@@ -3973,12 +4023,14 @@ function updateTelOutput() {
         output += randevuPlanlama;
     }
     
-    // Lastik durumu bilgisini ekle
+    // Lastik durumu bilgisini ayrı başlık altında ekle
     if (elasticStatus.tel) {
+        output += '\nHASTA LASTİKLERİNİ TAKTI MI?\n';
+        output += '----------------------------\n';
         if (elasticStatus.tel === 'evet') {
-            output += `Hasta lastiklerini takarak randevuya geldi.\n`;
+            output += `• Evet\n`;
         } else if (elasticStatus.tel === 'hayir') {
-            output += `Hasta lastiklerini takmadan randevuya geldi.\n`;
+            output += `• Hayır\n`;
         }
     }
     
@@ -4266,36 +4318,47 @@ function updateTelOutput() {
     if (multiToothSelection.sentToReport.length > 0) {
         output += "\n--- ÇOKLU DİŞ İŞLEMLERİ ---\n";
         multiToothSelection.sentToReport.forEach((procedure, index) => {
-            output += `${index + 1}) ${procedure}.\n`;
+            output += `• ${index + 1}) ${procedure}.\n`;
         });
     }
     
-    // Sonraki seans söküm bilgisini ekle
-    if (selectedSokum) {
-        const sokumTexts = {
-            'alt-ust': 'Alt-Üst',
-            'ust': 'Üst',
-            'alt': 'Alt'
-        };
-        output += `\nSonraki seans ${sokumTexts[selectedSokum]} söküm yapılacak.\n`;
-    }
-    
-    // Planlanan işlemler bilgisini ekle
-    if (plannedProceduresText || yediDahilSelection.ust || yediDahilSelection.alt) {
-        output += "\nSONRAKİ SEANS YAPILMASI PLANLANANLAR:\n";
-        output += "---------------------------------------\n";
+    // Planlanan işlemler bilgisini ekle (söküm ve minivida dahil)
+    if (selectedSokum || minividaRemovals.length > 0 || plannedProceduresText || yediDahilSelection.ust || yediDahilSelection.alt) {
+        output += "\nSONRAKİ SEANS YAPILACAK İŞLEMLER:\n";
+        output += "----------------------------------\n";
+        
+        // Tel söküm bilgisini ekle
+        if (selectedSokum) {
+            const sokumTexts = {
+                'alt-ust': 'Alt-Üst',
+                'ust': 'Üst',
+                'alt': 'Alt'
+            };
+            output += `• ${sokumTexts[selectedSokum]} tel söküm yapılacak.\n`;
+        }
+        
+        // Minivida söküm bilgilerini ekle
+        if (minividaRemovals.length > 0) {
+            minividaRemovals.forEach(removal => {
+                output += `• ${removal.text}.\n`;
+            });
+        }
         
         // 7'leri dahil etme bilgilerini ekle
         if (yediDahilSelection.ust) {
-            output += "Üst 7'leri dahil edilecek.\n";
+            output += "• Üst 7'leri dahil edilecek.\n";
         }
         if (yediDahilSelection.alt) {
-            output += "Alt 7'leri dahil edilecek.\n";
+            output += "• Alt 7'leri dahil edilecek.\n";
         }
         
         // Diğer planlanan işlemleri ekle
         if (plannedProceduresText) {
-            output += `${plannedProceduresText}\n`;
+            // Planlanan işlemleri satırlara böl ve her birine bullet ekle
+            const plannedLines = plannedProceduresText.split('\n').filter(line => line.trim());
+            plannedLines.forEach(line => {
+                output += `• ${line.trim()}\n`;
+            });
         }
     }
     
@@ -4303,7 +4366,11 @@ function updateTelOutput() {
     if (telSpecialNoteText) {
         output += "\nÖZEL NOT:\n";
         output += "---------\n";
-        output += `${telSpecialNoteText}\n`;
+        // Özel notu satırlara böl ve her birine bullet ekle
+        const noteLines = telSpecialNoteText.split('\n').filter(line => line.trim());
+        noteLines.forEach(line => {
+            output += `• ${line.trim()}\n`;
+        });
     }
     
     // Çıktıyı güncelle
@@ -5535,14 +5602,15 @@ function updateTelProceduresOutput() {
     // Diş arası işlemler
     const gapProcedures = Object.entries(telProcedures.gaps);
     if (gapProcedures.length > 0) {
-        output += "\n--- RUTİN DIŞI UYGULAMALAR ---\n";
+        output += "\nDİŞ ARASI VE DİŞLERE RUTİN DIŞI UYGULAMALAR:\n";
+        output += "---------------------------------------------\n";
         gapProcedures.forEach(([gap, procedure]) => {
             if (procedure === 'minivida') {
-                output += `${gap} diş arasına minivida yapılmıştır.\n`;
+                output += `• ${gap} diş arasına minivida yapılmıştır.\n`;
             } else if (procedure === 'open-coil') {
-                output += `${gap} arasına open coil takıldı.\n`;
+                output += `• ${gap} arasına open coil takıldı.\n`;
             } else if (procedure === 'distal-jig') {
-                output += `${gap} arasına distal jig yerleştirilmiştir.\n`;
+                output += `• ${gap} arasına distal jig yerleştirilmiştir.\n`;
             }
         });
     }
@@ -5551,15 +5619,18 @@ function updateTelProceduresOutput() {
     const toothProcedures = Object.entries(telProcedures.teeth);
     if (toothProcedures.length > 0) {
         if (output === "") {
-            output += "\n--- RUTİN DIŞI UYGULAMALAR ---\n";
+            output += "\nDİŞ ARASI VE DİŞLERE RUTİN DIŞI UYGULAMALAR:\n";
+            output += "---------------------------------------------\n";
         }
         toothProcedures.forEach(([tooth, procedure]) => {
             if (procedure === 'braket-yapistirilmasi') {
-                output += `${tooth} nolu dişin kırılan braketi yeniden yapıştırılmıştır.\n`;
+                output += `• ${tooth} nolu dişin kırılan braketi yeniden yapıştırılmıştır.\n`;
             } else if (procedure === 'braket-kirik-yapistirlamadi') {
-                output += `${tooth} nolu dişin braketi kırılmış ancak yapıştırılmadı.\n`;
+                output += `• ${tooth} nolu dişin braketi kırılmış ancak yapıştırılmadı.\n`;
             } else if (procedure === 'tork-springi') {
-                output += `${tooth} nolu dişe tork springi (killroy) yerleştirilmiştir.\n`;
+                output += `• ${tooth} nolu dişe tork springi (killroy) yerleştirilmiştir.\n`;
+            } else if (procedure === 'izc-vida') {
+                output += `• ${tooth} nolu dişin hizasına IZC Vidası yerleştirilmiştir.\n`;
             }
         });
     }
@@ -5614,10 +5685,18 @@ function updateSelectedTeethDisplay() {
 function updateProcedureButtonsState() {
     const memoryChainBtn = document.getElementById('memory-chain-btn');
     const ligaturBtn = document.getElementById('ligatur-btn');
+    const openCoilBtn = document.getElementById('open-coil-btn');
+    const koruyucuBoruBtn = document.getElementById('koruyucu-boru-btn');
+    const closeCoilBtn = document.getElementById('close-coil-btn');
+    const telKompozitBtn = document.getElementById('tel-kompozit-btn');
     const canPerformProcedure = multiToothSelection.selectedTeeth.length >= 2;
     
     memoryChainBtn.disabled = !canPerformProcedure;
     ligaturBtn.disabled = !canPerformProcedure;
+    openCoilBtn.disabled = !canPerformProcedure;
+    koruyucuBoruBtn.disabled = !canPerformProcedure;
+    closeCoilBtn.disabled = !canPerformProcedure;
+    telKompozitBtn.disabled = !canPerformProcedure;
 }
 
 function clearToothSelection() {
@@ -5647,6 +5726,14 @@ function addMultiToothProcedure(procedureType) {
         procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan memory chain takıldı`;
     } else if (procedureType === 'ligatur') {
         procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan 8 ligatür takıldı`;
+    } else if (procedureType === 'open-coil') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan open coil takıldı`;
+    } else if (procedureType === 'koruyucu-boru') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan koruyucu boru takıldı`;
+    } else if (procedureType === 'close-coil') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan close coil takıldı`;
+    } else if (procedureType === 'tel-kompozit') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan tel kompozitle kaplandı`;
     }
     
     // Procedure'ı listeye ekle
@@ -5741,29 +5828,26 @@ window.clearMultiProcedures = clearMultiProcedures;
 // SONRAKI SEANS SÖKÜM FONKSİYONLARI
 // ==============================================
 
-// Söküm seçeneklerini aç/kapat
-function toggleSokumOptions() {
-    const options = document.getElementById('sokum-options');
-    const button = document.querySelector('.sokum-main-btn');
-    
-    if (options.style.display === 'none') {
-        options.style.display = 'block';
-        button.classList.add('expanded');
-    } else {
-        options.style.display = 'none';
-        button.classList.remove('expanded');
-    }
-}
-
-// Söküm seçimi yap
+// Söküm seçimi yap (ikinci tıklamada seçimi kaldır)
 function selectSokum(type) {
+    const selectedBtn = document.querySelector(`[data-sokum="${type}"]`);
+    
+    // Eğer zaten seçiliyse, seçimi kaldır
+    if (selectedSokum === type) {
+        selectedSokum = null;
+        if (selectedBtn) {
+            selectedBtn.classList.remove('selected');
+        }
+        updateTelOutput();
+        return;
+    }
+    
     // Önceki seçimi temizle
     document.querySelectorAll('.sokum-option-btn').forEach(btn => {
         btn.classList.remove('selected');
     });
     
     // Yeni seçimi işaretle
-    const selectedBtn = document.querySelector(`[data-sokum="${type}"]`);
     if (selectedBtn) {
         selectedBtn.classList.add('selected');
     }
@@ -5771,36 +5855,99 @@ function selectSokum(type) {
     // Seçimi kaydet
     selectedSokum = type;
     
-    // Display'i güncelle
-    const display = document.getElementById('selected-sokum');
-    const sokumTexts = {
-        'alt-ust': 'Alt-Üst Söküm',
-        'ust': 'Üst Söküm',
-        'alt': 'Alt Söküm'
-    };
-    display.textContent = sokumTexts[type] || 'Henüz seçim yapılmadı';
+    // Raporu güncelle
+    updateTelOutput();
+}
+
+// Minivida söküm bilgisini güncelle
+// Input değişikliğinde gönder butonunu güncelle
+function updateMinividaInputState() {
+    const startInput = document.getElementById('minivida-start-tooth');
+    const endInput = document.getElementById('minivida-end-tooth');
+    const sendBtn = document.getElementById('send-minivida-btn');
     
-    // Seçenekleri kapat
-    document.getElementById('sokum-options').style.display = 'none';
-    document.querySelector('.sokum-main-btn').classList.remove('expanded');
+    const startTooth = startInput.value.trim();
+    const endTooth = endInput.value.trim();
+    
+    // Her iki değer de girildiyse butonu aktif et
+    sendBtn.disabled = !(startTooth && endTooth);
+}
+
+// Minivida söküm bilgisini rapora gönder
+function sendMinividaToReport() {
+    const startInput = document.getElementById('minivida-start-tooth');
+    const endInput = document.getElementById('minivida-end-tooth');
+    
+    const startTooth = startInput.value.trim();
+    const endTooth = endInput.value.trim();
+    
+    if (!startTooth || !endTooth) {
+        alert('Lütfen her iki diş numarasını da girin!');
+        return;
+    }
+    
+    // Yeni minivida söküm kaydı oluştur
+    const removal = {
+        id: Date.now(),
+        startTooth: startTooth,
+        endTooth: endTooth,
+        text: `Sonraki seans ${startTooth}-${endTooth} dişleri arasındaki vida sökülecek`
+    };
+    
+    // Listeye ekle
+    minividaRemovals.push(removal);
+    
+    // Input'ları temizle
+    startInput.value = '';
+    endInput.value = '';
+    
+    // Gönder butonunu devre dışı bırak
+    document.getElementById('send-minivida-btn').disabled = true;
+    
+    // Listeyi güncelle
+    updateMinividaRemovalList();
     
     // Raporu güncelle
     updateTelOutput();
 }
 
-// Söküm seçimini temizle
-function clearSokumSelection() {
-    selectedSokum = null;
+// Minivida söküm listesini güncelle
+function updateMinividaRemovalList() {
+    const listContainer = document.getElementById('minivida-removal-list');
     
-    // Buton seçimlerini temizle
-    document.querySelectorAll('.sokum-option-btn').forEach(btn => {
-        btn.classList.remove('selected');
+    if (minividaRemovals.length === 0) {
+        listContainer.innerHTML = '<div class="no-minivida">Henüz vida sökümü eklenmedi</div>';
+        return;
+    }
+    
+    listContainer.innerHTML = '';
+    
+    minividaRemovals.forEach(removal => {
+        const item = document.createElement('div');
+        item.className = 'minivida-removal-item';
+        item.innerHTML = `
+            <span class="minivida-removal-text">${removal.text}</span>
+            <button class="remove-minivida-btn" onclick="removeMinividaRemoval(${removal.id})" title="Kaldır">×</button>
+        `;
+        listContainer.appendChild(item);
     });
+}
+
+// Tek bir minivida söküm kaydını sil
+function removeMinividaRemoval(removalId) {
+    minividaRemovals = minividaRemovals.filter(r => r.id !== removalId);
+    updateMinividaRemovalList();
+    updateTelOutput();
+}
+
+// Tüm minivida söküm kayıtlarını temizle
+function clearAllMinividaRemovals() {
+    if (minividaRemovals.length === 0) {
+        return;
+    }
     
-    // Display'i temizle
-    document.getElementById('selected-sokum').textContent = 'Henüz seçim yapılmadı';
-    
-    // Raporu güncelle
+    minividaRemovals = [];
+    updateMinividaRemovalList();
     updateTelOutput();
 }
 
@@ -5842,9 +5989,12 @@ function updateTelSpecialNote() {
 }
 
 // Global fonksiyonları tanımla
-window.toggleSokumOptions = toggleSokumOptions;
 window.selectSokum = selectSokum;
-window.clearSokumSelection = clearSokumSelection;
+window.selectElasticStatus = selectElasticStatus;
+window.updateMinividaInputState = updateMinividaInputState;
+window.sendMinividaToReport = sendMinividaToReport;
+window.removeMinividaRemoval = removeMinividaRemoval;
+window.clearAllMinividaRemovals = clearAllMinividaRemovals;
 window.updatePlannedProcedures = updatePlannedProcedures;
 window.toggleYediDahil = toggleYediDahil;
 window.updateTelSpecialNote = updateTelSpecialNote;
