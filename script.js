@@ -2,6 +2,9 @@
 console.log("Script.js loaded successfully!");
 let answers = {};
 
+// Animal selection tracking
+let animalSelections = {};
+
 // Debug: Global değişkenleri logla
 setTimeout(() => {
     console.log("Global variables after 1 second:");
@@ -512,6 +515,29 @@ function updateSeffafOutput() {
         }
     }
     
+    // Handle FDI tooth selections for adaptation and attachments
+    const adaptasyonTeeth = [];
+    const atasmanTeeth = [];
+    
+    document.querySelectorAll('#seffaf-plak .tooth-btn-fdi.selected').forEach(button => {
+        const tooth = button.dataset.tooth;
+        const question = button.dataset.question;
+        
+        if (question === 'adaptasyon') {
+            adaptasyonTeeth.push(tooth);
+        } else if (question === 'atasmanlar') {
+            atasmanTeeth.push(tooth);
+        }
+    });
+    
+    if (adaptasyonTeeth.length > 0) {
+        tempAnswers['adaptasyon'] = `Plak adaptasyonu eksik olan dişler: ${adaptasyonTeeth.join(', ')}`;
+    }
+    
+    if (atasmanTeeth.length > 0) {
+        tempAnswers['atasmanlar'] = `Eksik ataşman olan dişler: ${atasmanTeeth.join(', ')}`;
+    }
+    
     // Merge tempAnswers with global answers (keeping FDI tooth data and manual randevu)
     const manuelRandevu = answers['sonraki-randevu']; // Preserve manual randevu
     
@@ -710,11 +736,11 @@ function generateSeffafReport(answers) {
     }
 
     let report = 'ŞEFFAF PLAK TEDAVİSİ KONTROL RAPORU\n';
-    report += '=============================================\n\n';
+    report += '=============================================\n';
     
     // Asistan bilgisi en üstte
     if (answers['asistan']) {
-        report += `Kontroller ${answers['asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n\n`;
+        report += `Kontroller ${answers['asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n`;
     }
     
     // RUTİN KONTROLLER bölümü
@@ -798,7 +824,13 @@ function generateSeffafReport(answers) {
                         case 'sinif3': typeText = 'Sınıf III'; break;
                         case 'cross': typeText = 'Cross'; break;
                     }
-                    sagParts.push(`${typeText} lastik ${typeData.duration}`);
+                    
+                    // Hayvan bilgisini ekle
+                    const animalKey = `seffaf-sag-${type}`;
+                    const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                    const animalText = animalName ? ` ${animalName}` : '';
+                    
+                    sagParts.push(`${typeText} lastik ${typeData.duration}${animalText}`);
                 }
             });
             
@@ -824,7 +856,13 @@ function generateSeffafReport(answers) {
                         case 'sinif3': typeText = 'Sınıf III'; break;
                         case 'cross': typeText = 'Cross'; break;
                     }
-                    solParts.push(`${typeText} lastik ${typeData.duration}`);
+                    
+                    // Hayvan bilgisini ekle
+                    const animalKey = `seffaf-sol-${type}`;
+                    const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                    const animalText = animalName ? ` ${animalName}` : '';
+                    
+                    solParts.push(`${typeText} lastik ${typeData.duration}${animalText}`);
                 }
             });
             
@@ -840,8 +878,13 @@ function generateSeffafReport(answers) {
         // ÖN LASTİKLER
         const onSelection = elasticSelections['on'];
         if (onSelection.active && onSelection.tur && onSelection.sure) {
+            // Hayvan bilgisini ekle
+            const animalKey = 'seffaf-on-oblik';
+            const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+            const animalText = animalName ? ` ${animalName}` : '';
+            
             report += 'ÖN LASTİKLER:\n';
-            report += `• ${onSelection.tur} lastik ${onSelection.sure}\n`;
+            report += `• ${onSelection.tur} lastik ${onSelection.sure}${animalText}\n`;
             report += '\n';
         }
     }
@@ -876,7 +919,13 @@ function generateSeffafReport(answers) {
                                 case 'sinif3': typeText = 'Sınıf III'; break;
                                 case 'cross': typeText = 'Cross'; break;
                             }
-                            report += `• ${typeText} lastik ${typeData.duration} (devam)\n`;
+                            
+                            // Hayvan bilgisini ekle
+                            const animalKey = `seffaf-sag-${type}`;
+                            const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                            const animalText = animalName ? ` ${animalName}` : '';
+                            
+                            report += `• ${typeText} lastik ${typeData.duration}${animalText} (devam)\n`;
                             hasCurrentData = true;
                         }
                     });
@@ -899,7 +948,13 @@ function generateSeffafReport(answers) {
                             case 'sinif3': typeText = 'Sınıf III'; break;
                             case 'cross': typeText = 'Cross'; break;
                         }
-                        sagNextParts.push(`${typeText} lastik ${typeData.duration}`);
+                        
+                        // Hayvan bilgisini ekle
+                        const animalKey = `seffaf-next-sag-${type}`;
+                        const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                        const animalText = animalName ? ` ${animalName}` : '';
+                        
+                        sagNextParts.push(`${typeText} lastik ${typeData.duration}${animalText}`);
                     }
                 });
                 
@@ -931,7 +986,13 @@ function generateSeffafReport(answers) {
                                 case 'sinif3': typeText = 'Sınıf III'; break;
                                 case 'cross': typeText = 'Cross'; break;
                             }
-                            report += `• ${typeText} lastik ${typeData.duration} (devam)\n`;
+                            
+                            // Hayvan bilgisini ekle
+                            const animalKey = `seffaf-sol-${type}`;
+                            const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                            const animalText = animalName ? ` ${animalName}` : '';
+                            
+                            report += `• ${typeText} lastik ${typeData.duration}${animalText} (devam)\n`;
                             hasCurrentData = true;
                         }
                     });
@@ -954,7 +1015,13 @@ function generateSeffafReport(answers) {
                             case 'sinif3': typeText = 'Sınıf III'; break;
                             case 'cross': typeText = 'Cross'; break;
                         }
-                        solNextParts.push(`${typeText} lastik ${typeData.duration}`);
+                        
+                        // Hayvan bilgisini ekle
+                        const animalKey = `seffaf-next-sol-${type}`;
+                        const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                        const animalText = animalName ? ` ${animalName}` : '';
+                        
+                        solNextParts.push(`${typeText} lastik ${typeData.duration}${animalText}`);
                     }
                 });
                 
@@ -976,14 +1043,24 @@ function generateSeffafReport(answers) {
                 
                 // Mevcut lastik verilerini göster
                 if (onNextSelection.currentData && onNextSelection.currentData.tur && onNextSelection.currentData.sure) {
-                    report += `• ${onNextSelection.currentData.tur} lastik ${onNextSelection.currentData.sure} (devam)\n`;
+                    // Hayvan bilgisini ekle
+                    const animalKey = 'seffaf-on-oblik';
+                    const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                    const animalText = animalName ? ` ${animalName}` : '';
+                    
+                    report += `• ${onNextSelection.currentData.tur} lastik ${onNextSelection.currentData.sure}${animalText} (devam)\n`;
                 } else {
                     report += '• Aynı lastiklerle devam (mevcut seçim yok)\n';
                 }
                 report += '\n';
             } else if (onNextSelection.tur && onNextSelection.sure) {
+                // Hayvan bilgisini ekle
+                const animalKey = 'seffaf-next-on-oblik';
+                const animalName = animalSelections[animalKey] ? getAnimalName(animalSelections[animalKey]) : '';
+                const animalText = animalName ? ` ${animalName}` : '';
+                
                 report += 'ÖN LASTİKLER:\n';
-                report += `• ${onNextSelection.tur} lastik ${onNextSelection.sure}\n`;
+                report += `• ${onNextSelection.tur} lastik ${onNextSelection.sure}${animalText}\n`;
                 report += '\n';
             }
         }
@@ -1011,7 +1088,7 @@ function generateSeffafReport(answers) {
     }
     
     // MOTİVASYON VE UYUM DEĞERLENDİRMESİ bölümü
-    if (answers['lastik-aksama'] || answers['lastik-saat'] || answers['plak-aksama'] || answers['plak-saat'] || answers['plak-temizlik'] || answers['agiz-hijyen']) {
+    if (answers['lastik-aksama'] || answers['lastik-saat'] || answers['plak-aksama'] || answers['plak-saat'] || answers['plak-temizlik'] || answers['agiz-hijyen'] || answers['sakiz-sure'] || answers['sakiz-siklik'] || answers['sakiz-parcalanma']) {
         report += 'MOTİVASYON VE UYUM DEĞERLENDİRMESİ:\n';
         report += '-----------------------------------\n';
         
@@ -1045,42 +1122,58 @@ function generateSeffafReport(answers) {
             report += `• ${answers['agiz-hijyen']}\n`;
         }
         
+        // Sakız kullanımı değerlendirmesi
+        if (answers['sakiz-sure'] || answers['sakiz-siklik'] || answers['sakiz-parcalanma']) {
+            let sakizText = '• Sakız kullanımı: ';
+            const sakizParts = [];
+            
+            // Sıklık ve süreyi birleştirme
+            if (answers['sakiz-siklik'] && answers['sakiz-sure']) {
+                const siklik = answers['sakiz-siklik'];
+                const sure = answers['sakiz-sure'];
+                
+                // Sayısal sıklık kontrolü (1 kere, 2 kere, 3 kere ana öğünlerde)
+                if (siklik.includes('1 kere')) {
+                    sakizParts.push(`Günde 1 kere ${sure}`);
+                } else if (siklik.includes('2 kere')) {
+                    sakizParts.push(`Günde 2 kere ${sure}`);
+                } else if (siklik.includes('3 kere')) {
+                    sakizParts.push(`Günde 3 kere ${sure}`);
+                } else {
+                    // "Her çıkarıp taktığımda" veya "Hiç" durumu
+                    sakizParts.push(siklik);
+                    sakizParts.push(sure);
+                }
+            } else {
+                // Sadece biri seçilmişse ayrı ayrı ekle
+                if (answers['sakiz-siklik']) {
+                    sakizParts.push(answers['sakiz-siklik']);
+                }
+                
+                if (answers['sakiz-sure']) {
+                    sakizParts.push(answers['sakiz-sure']);
+                }
+            }
+            
+            // Parçalanma durumu
+            if (answers['sakiz-parcalanma']) {
+                sakizParts.push(answers['sakiz-parcalanma']);
+            }
+            
+            report += sakizText + sakizParts.join(', ') + '\n';
+        }
+        
         report += '\n';
-    }
-    
-    // Genel değerlendirme
-    report += 'GENEL DEĞERLENDİRME:\n';
-    report += '--------------------\n';
-    
-    // Otomatik öneriler
-    if (answers['plak-saat'] && answers['plak-saat'].includes('Yetersiz')) {
-        report += '• Hasta motivasyonu artırılmalı, plak kullanım süresi yetersiz\n';
-    }
-    
-    if (answers['plak-aksama'] && (answers['plak-aksama'].includes('ciddi aksama') || answers['plak-aksama'].includes('Kullanmıyor'))) {
-        report += '• Plak kullanım motivasyonu artırılmalı, hasta eğitimi tekrarlanmalı\n';
-    }
-    
-    if (answers['plak-temizlik'] && (answers['plak-temizlik'].includes('1/10') || answers['plak-temizlik'].includes('2/10') || answers['plak-temizlik'].includes('3/10'))) {
-        report += '• Plak temizlik eğitimi tekrarlanmalı\n';
-    }
-    
-    if (answers['agiz-hijyen'] && (answers['agiz-hijyen'].includes('1/10') || answers['agiz-hijyen'].includes('2/10') || answers['agiz-hijyen'].includes('3/10'))) {
-        report += '• Ağız hijyen eğitimi güçlendirilmeli\n';
-    }
-    
-    if (answers['adaptasyon'] && answers['adaptasyon'].includes('eksik')) {
-        report += '• Plak adaptasyonu kontrol edilmeli, gerekirse yeniden alınmalı\n';
     }
     
     // Özel not ekle
     if (answers['special-note']) {
-        report += '\nÖZEL NOT:\n';
+        report += 'ÖZEL NOT:\n';
         report += '----------\n';
-        report += `• ${answers['special-note']}\n`;
+        report += `• ${answers['special-note']}\n\n`;
     }
     
-    report += '\n' + getCurrentDate();
+    report += getCurrentDate();
     
     return report;
 }
@@ -1091,7 +1184,7 @@ function generateTelReport(selectedItems) {
     }
 
     let report = 'TEL TEDAVİSİ DEĞERLENDİRMESİ\n';
-    report += '=====================================\n\n';
+    report += '=====================================\n';
     report += 'Muayene Bulguları:\n';
     
     selectedItems.forEach((item, index) => {
@@ -3956,7 +4049,7 @@ function updateTelOutput() {
     
     // Asistan bilgisini en üste ekle
     if (answers['tel-asistan']) {
-        output += `Kontroller ${answers['tel-asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n\n`;
+        output += `Kontroller ${answers['tel-asistan'].toUpperCase()} Hanım tarafından yapılmıştır.\n`;
     }
     
     // Randevu planlama başlığı ve bilgileri
@@ -4044,7 +4137,10 @@ function updateTelOutput() {
     sagTypes.forEach(type => {
         if (currentElasticUsage.tel.sag[type].selected && currentElasticUsage.tel.sag[type].hours) {
             const typeText = getElasticTypeText(type);
-            sagElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sag[type].hours} saat`);
+            const animalKey = `tel-sag-${type}`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            sagElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sag[type].hours} saat${animalText}`);
         }
     });
     
@@ -4053,16 +4149,25 @@ function updateTelOutput() {
     solTypes.forEach(type => {
         if (currentElasticUsage.tel.sol[type].selected && currentElasticUsage.tel.sol[type].hours) {
             const typeText = getElasticTypeText(type);
-            solElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sol[type].hours} saat`);
+            const animalKey = `tel-sol-${type}`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            solElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sol[type].hours} saat${animalText}`);
         }
     });
     
     // Orta
     if (currentElasticUsage.tel.orta.oblik1333.selected && currentElasticUsage.tel.orta.oblik1333.hours) {
-        ortaElastics.push(`• 13-33 oblik lastik ${currentElasticUsage.tel.orta.oblik1333.hours} saat`);
+        const animalKey = `tel-orta-oblik1333`;
+        const animal = animalSelections[animalKey];
+        const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+        ortaElastics.push(`• 13-33 oblik lastik ${currentElasticUsage.tel.orta.oblik1333.hours} saat${animalText}`);
     }
     if (currentElasticUsage.tel.orta.oblik2343.selected && currentElasticUsage.tel.orta.oblik2343.hours) {
-        ortaElastics.push(`• 23-43 oblik lastik ${currentElasticUsage.tel.orta.oblik2343.hours} saat`);
+        const animalKey = `tel-orta-oblik2343`;
+        const animal = animalSelections[animalKey];
+        const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+        ortaElastics.push(`• 23-43 oblik lastik ${currentElasticUsage.tel.orta.oblik2343.hours} saat${animalText}`);
     }
     
     // Lastik kullanımı raporu oluştur
@@ -4072,12 +4177,12 @@ function updateTelOutput() {
         
         if (sagElastics.length > 0) {
             output += 'SAĞ LASTİKLER:\n';
-            output += sagElastics.join('\n') + '\n\n';
+            output += sagElastics.join('\n') + '\n';
         }
         
         if (solElastics.length > 0) {
             output += 'SOL LASTİKLER:\n';
-            output += solElastics.join('\n') + '\n\n';
+            output += solElastics.join('\n') + '\n';
         }
         
         if (ortaElastics.length > 0) {
@@ -4216,7 +4321,11 @@ function updateTelOutput() {
         sagTypes.forEach(type => {
             if (currentElasticUsage.tel.sag[type].selected && currentElasticUsage.tel.sag[type].hours) {
                 const typeText = getElasticTypeText(type);
-                nextSagElastics.push(`•• ${typeText} lastik ${currentElasticUsage.tel.sag[type].hours} saat (devam)`);
+                // Mevcut lastikteki hayvan ismini kullan
+                const animalKey = `tel-sag-${type}`;
+                const animal = animalSelections[animalKey];
+                const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+                nextSagElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sag[type].hours} saat${animalText} (devam)`);
             }
         });
     } else {
@@ -4225,7 +4334,10 @@ function updateTelOutput() {
         sagTypes.forEach(type => {
             if (nextElasticUsage['tel-next'].sag[type].selected && nextElasticUsage['tel-next'].sag[type].hours) {
                 const typeText = getElasticTypeText(type);
-                nextSagElastics.push(`•• ${typeText} lastik ${nextElasticUsage['tel-next'].sag[type].hours} saat`);
+                const animalKey = `tel-next-sag-${type}`;
+                const animal = animalSelections[animalKey];
+                const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+                nextSagElastics.push(`• ${typeText} lastik ${nextElasticUsage['tel-next'].sag[type].hours} saat${animalText}`);
             }
         });
     }
@@ -4237,7 +4349,11 @@ function updateTelOutput() {
         solTypes.forEach(type => {
             if (currentElasticUsage.tel.sol[type].selected && currentElasticUsage.tel.sol[type].hours) {
                 const typeText = getElasticTypeText(type);
-                nextSolElastics.push(`•• ${typeText} lastik ${currentElasticUsage.tel.sol[type].hours} saat (devam)`);
+                // Mevcut lastikteki hayvan ismini kullan
+                const animalKey = `tel-sol-${type}`;
+                const animal = animalSelections[animalKey];
+                const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+                nextSolElastics.push(`• ${typeText} lastik ${currentElasticUsage.tel.sol[type].hours} saat${animalText} (devam)`);
             }
         });
     } else {
@@ -4246,7 +4362,10 @@ function updateTelOutput() {
         solTypes.forEach(type => {
             if (nextElasticUsage['tel-next'].sol[type].selected && nextElasticUsage['tel-next'].sol[type].hours) {
                 const typeText = getElasticTypeText(type);
-                nextSolElastics.push(`•• ${typeText} lastik ${nextElasticUsage['tel-next'].sol[type].hours} saat`);
+                const animalKey = `tel-next-sol-${type}`;
+                const animal = animalSelections[animalKey];
+                const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+                nextSolElastics.push(`• ${typeText} lastik ${nextElasticUsage['tel-next'].sol[type].hours} saat${animalText}`);
             }
         });
     }
@@ -4255,18 +4374,32 @@ function updateTelOutput() {
     if (nextElasticUsage['tel-next'].orta.continuesCurrent) {
         // Mevcut lastikleri kopyala
         if (currentElasticUsage.tel.orta.oblik1333.selected && currentElasticUsage.tel.orta.oblik1333.hours) {
-            nextOrtaElastics.push(`•• 13-33 Oblik lastik ${currentElasticUsage.tel.orta.oblik1333.hours} saat (devam)`);
+            // Mevcut lastikteki hayvan ismini kullan
+            const animalKey = `tel-orta-oblik1333`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            nextOrtaElastics.push(`• 13-33 oblik lastik ${currentElasticUsage.tel.orta.oblik1333.hours} saat${animalText} (devam)`);
         }
         if (currentElasticUsage.tel.orta.oblik2343.selected && currentElasticUsage.tel.orta.oblik2343.hours) {
-            nextOrtaElastics.push(`•• 23-43 Oblik lastik ${currentElasticUsage.tel.orta.oblik2343.hours} saat (devam)`);
+            // Mevcut lastikteki hayvan ismini kullan
+            const animalKey = `tel-orta-oblik2343`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            nextOrtaElastics.push(`• 23-43 oblik lastik ${currentElasticUsage.tel.orta.oblik2343.hours} saat${animalText} (devam)`);
         }
     } else {
         // Manuel seçimler
         if (nextElasticUsage['tel-next'].orta.oblik1333.selected && nextElasticUsage['tel-next'].orta.oblik1333.hours) {
-            nextOrtaElastics.push(`•• 13-33 Oblik lastik ${nextElasticUsage['tel-next'].orta.oblik1333.hours} saat`);
+            const animalKey = `tel-next-orta-oblik1333`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            nextOrtaElastics.push(`• 13-33 oblik lastik ${nextElasticUsage['tel-next'].orta.oblik1333.hours} saat${animalText}`);
         }
         if (nextElasticUsage['tel-next'].orta.oblik2343.selected && nextElasticUsage['tel-next'].orta.oblik2343.hours) {
-            nextOrtaElastics.push(`•• 23-43 Oblik lastik ${nextElasticUsage['tel-next'].orta.oblik2343.hours} saat`);
+            const animalKey = `tel-next-orta-oblik2343`;
+            const animal = animalSelections[animalKey];
+            const animalText = animal ? ` ${getAnimalName(animal)}` : '';
+            nextOrtaElastics.push(`• 23-43 oblik lastik ${nextElasticUsage['tel-next'].orta.oblik2343.hours} saat${animalText}`);
         }
     }
     
@@ -4277,12 +4410,12 @@ function updateTelOutput() {
         
         if (nextSagElastics.length > 0) {
             output += 'SAĞ LASTİKLER:\n';
-            output += nextSagElastics.join('\n') + '\n\n';
+            output += nextSagElastics.join('\n') + '\n';
         }
         
         if (nextSolElastics.length > 0) {
             output += 'SOL LASTİKLER:\n';
-            output += nextSolElastics.join('\n') + '\n\n';
+            output += nextSolElastics.join('\n') + '\n';
         }
         
         if (nextOrtaElastics.length > 0) {
@@ -5652,22 +5785,61 @@ let multiToothSelection = {
     sentToReport: []  // Rapora gönderilen işlemler
 };
 
-function toggleToothSelection(tooth) {
-    const button = document.querySelector(`[data-tooth="${tooth}"].multi-select`);
-    const index = multiToothSelection.selectedTeeth.indexOf(tooth);
-    
-    if (index === -1) {
-        // Diş seçilmedi, ekle
-        multiToothSelection.selectedTeeth.push(tooth);
-        button.classList.add('selected');
-    } else {
-        // Diş zaten seçili, çıkar
-        multiToothSelection.selectedTeeth.splice(index, 1);
-        button.classList.remove('selected');
+function toggleToothSelection(buttonOrTooth) {
+    // Eğer button elementi geçilmişse
+    if (typeof buttonOrTooth === 'object' && buttonOrTooth.dataset) {
+        const button = buttonOrTooth;
+        const tooth = button.dataset.tooth;
+        const question = button.dataset.question;
+        
+        // Adaptasyon veya ataşman için
+        if (question === 'adaptasyon' || question === 'atasmanlar') {
+            button.classList.toggle('selected');
+            updateSeffafOutput();
+            return;
+        }
+        
+        // Multi-select için (Çoklu Diş İşlemleri)
+        if (button.classList.contains('multi-select')) {
+            const index = multiToothSelection.selectedTeeth.indexOf(tooth);
+            
+            if (index === -1) {
+                multiToothSelection.selectedTeeth.push(tooth);
+                button.classList.add('selected');
+            } else {
+                multiToothSelection.selectedTeeth.splice(index, 1);
+                button.classList.remove('selected');
+            }
+            
+            updateSelectedTeethDisplay();
+            updateProcedureButtonsState();
+            return;
+        }
     }
     
-    updateSelectedTeethDisplay();
-    updateProcedureButtonsState();
+    // Eğer tooth string'i geçilmişse (eski kullanım - multi-select için)
+    if (typeof buttonOrTooth === 'string') {
+        const tooth = buttonOrTooth;
+        const button = document.querySelector(`[data-tooth="${tooth}"].multi-select`);
+        
+        if (!button) {
+            console.warn('Button not found for tooth:', tooth);
+            return;
+        }
+        
+        const index = multiToothSelection.selectedTeeth.indexOf(tooth);
+        
+        if (index === -1) {
+            multiToothSelection.selectedTeeth.push(tooth);
+            button.classList.add('selected');
+        } else {
+            multiToothSelection.selectedTeeth.splice(index, 1);
+            button.classList.remove('selected');
+        }
+        
+        updateSelectedTeethDisplay();
+        updateProcedureButtonsState();
+    }
 }
 
 function updateSelectedTeethDisplay() {
@@ -5689,6 +5861,9 @@ function updateProcedureButtonsState() {
     const koruyucuBoruBtn = document.getElementById('koruyucu-boru-btn');
     const closeCoilBtn = document.getElementById('close-coil-btn');
     const telKompozitBtn = document.getElementById('tel-kompozit-btn');
+    const powerBarBtn = document.getElementById('power-bar-btn');
+    const coilAktivasyonBtn = document.getElementById('coil-aktivasyon-btn');
+    const loopAktivasyonBtn = document.getElementById('loop-aktivasyon-btn');
     const canPerformProcedure = multiToothSelection.selectedTeeth.length >= 2;
     
     memoryChainBtn.disabled = !canPerformProcedure;
@@ -5697,6 +5872,9 @@ function updateProcedureButtonsState() {
     koruyucuBoruBtn.disabled = !canPerformProcedure;
     closeCoilBtn.disabled = !canPerformProcedure;
     telKompozitBtn.disabled = !canPerformProcedure;
+    powerBarBtn.disabled = !canPerformProcedure;
+    coilAktivasyonBtn.disabled = !canPerformProcedure;
+    loopAktivasyonBtn.disabled = !canPerformProcedure;
 }
 
 function clearToothSelection() {
@@ -5734,6 +5912,12 @@ function addMultiToothProcedure(procedureType) {
         procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan close coil takıldı`;
     } else if (procedureType === 'tel-kompozit') {
         procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan tel kompozitle kaplandı`;
+    } else if (procedureType === 'power-bar') {
+        procedureText = `${firstTooth}'dan ${lastTooth}'ya uzanan power bar takıldı`;
+    } else if (procedureType === 'coil-aktivasyon') {
+        procedureText = `${firstTooth}-${lastTooth} dişleri arasındaki coil aktive edildi`;
+    } else if (procedureType === 'loop-aktivasyon') {
+        procedureText = `${firstTooth}-${lastTooth} dişleri arasındaki loop aktive edildi`;
     }
     
     // Procedure'ı listeye ekle
@@ -5988,6 +6172,40 @@ function updateTelSpecialNote() {
     updateTelOutput();
 }
 
+// Animal selection function
+function selectAnimal(section, side, elasticType, animal) {
+    const key = `${section}-${side}-${elasticType}`;
+    
+    // Clear previous selection for this elastic type
+    const allAnimalButtons = document.querySelectorAll(`[data-animal-key="${key}"]`);
+    allAnimalButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Select the clicked animal
+    const clickedButton = document.querySelector(`[data-animal-key="${key}"][data-animal="${animal}"]`);
+    if (clickedButton) {
+        clickedButton.classList.add('selected');
+        animalSelections[key] = animal;
+    }
+    
+    // Update output based on section
+    if (section === 'tel' || section === 'tel-next') {
+        updateTelOutput();
+    } else if (section === 'seffaf' || section === 'seffaf-next') {
+        updateSeffafOutput();
+    }
+}
+
+// Get animal name for display
+function getAnimalName(animal) {
+    const animalNames = {
+        'kartal': 'kartal',
+        'goril': 'goril', 
+        'ferret': 'ferret',
+        'kaplumbaga': 'kaplumbağa'
+    };
+    return animalNames[animal] || '';
+}
+
 // Global fonksiyonları tanımla
 window.selectSokum = selectSokum;
 window.selectElasticStatus = selectElasticStatus;
@@ -5995,6 +6213,7 @@ window.updateMinividaInputState = updateMinividaInputState;
 window.sendMinividaToReport = sendMinividaToReport;
 window.removeMinividaRemoval = removeMinividaRemoval;
 window.clearAllMinividaRemovals = clearAllMinividaRemovals;
+window.selectAnimal = selectAnimal;
 window.updatePlannedProcedures = updatePlannedProcedures;
 window.toggleYediDahil = toggleYediDahil;
 window.updateTelSpecialNote = updateTelSpecialNote;

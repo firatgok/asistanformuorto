@@ -1,40 +1,7 @@
-Mevcut tel
-
-Alt 
-
-Niti SS
-
-0.12 0.14 0.16 0.18 16x16 16x22 17x25 19x25 21x25
-
-ÜSt
-
-Niti SS
-
-0.12 0.14 0.16 0.18 16x16 16x22 17x25 19x25 21x25
-
 Sonraki seans tel değişecek mi?
-
-Sonraki seans süresi?
-
-Lastik Miktarı.
-
-Mevcut lastik kullanımı
-
-Sonraki seansa kadar lastik kullanımı
-
-Kırık braket
-
-Önümüz seansta yapılacak ekstra işlem
 
 Minivida
 
-Büküm
-
-Söküm
-
 20 Yaş Çekimi 
 
-Raporu hangi asistan giriyor?
-
-Torqing Spring
-Chain
+IPR

@@ -1043,6 +1043,30 @@ header h1 {
     margin-bottom: 8px;
 }
 
+/* Animal emoji button styles */
+.animal-btn {
+    background-color: #f8f8f8;
+    color: #333;
+    font-size: 16px;
+    min-width: 36px;
+    padding: 6px 8px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.animal-btn:hover {
+    background-color: #e8e8e8;
+    border-color: #189ea7;
+}
+
+.animal-btn.selected {
+    background-color: #189ea7;
+    color: white;
+    border-color: #147982;
+}
+
 .elastic-type-btn {
     background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
     border: 1.5px solid var(--gray-500);
@@ -3336,6 +3360,26 @@ button.photo-btn,
 
 .elastic-title-container .photo-btn {
     margin-left: 0 !important;
+}
+
+/* Animal button dark mode support */
+@media (prefers-color-scheme: dark) {
+    .animal-btn {
+        background-color: #2a2a2a;
+        color: #e0e0e0;
+        border-color: transparent;
+    }
+    
+    .animal-btn:hover {
+        background-color: #3a3a3a;
+        border-color: #189ea7;
+    }
+    
+    .animal-btn.selected {
+        background-color: #189ea7;
+        color: white;
+        border-color: #147982;
+    }
 }
 
 /* Image Modal */
