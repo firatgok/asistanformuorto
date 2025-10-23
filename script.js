@@ -1466,28 +1466,274 @@ function clearAllTelSelections() {
     
     // Clear all checkboxes in tel tedavisi tab
     const telTab = document.getElementById('tel-tedavisi');
-    const checkboxes = telTab.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-        checkbox.checked = false;
+    if (telTab) {
+        const checkboxes = telTab.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        
+        // Clear all radio buttons in tel tedavisi tab
+        const radioButtons = telTab.querySelectorAll('input[type="radio"]');
+        radioButtons.forEach(radio => {
+            radio.checked = false;
+        });
+        
+        // Clear all option buttons
+        const optionButtons = telTab.querySelectorAll('.option-btn.selected');
+        optionButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear all score buttons
+        const scoreButtons = telTab.querySelectorAll('.score-btn.selected');
+        scoreButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear time/week buttons
+        const timeButtons = telTab.querySelectorAll('.time-btn.selected');
+        timeButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear duration buttons
+        const durationButtons = telTab.querySelectorAll('.duration-btn.selected');
+        durationButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear elastic type buttons (current session)
+        const elasticTypeButtons = telTab.querySelectorAll('.elastic-type-btn.selected');
+        elasticTypeButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear elastic hour buttons
+        const elasticHourButtons = telTab.querySelectorAll('.elastic-hour-btn.selected');
+        elasticHourButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear animal buttons
+        const animalButtons = telTab.querySelectorAll('.animal-btn.selected');
+        animalButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear wire section buttons
+        const wireSectionButtons = telTab.querySelectorAll('.wire-section-btn.selected');
+        wireSectionButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear wire type buttons
+        const wireTypeButtons = telTab.querySelectorAll('.wire-type-btn.selected');
+        wireTypeButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear wire size buttons
+        const wireSizeButtons = telTab.querySelectorAll('.wire-size-btn.selected');
+        wireSizeButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear tooth selection for multi-tooth procedures
+        const multiToothButtons = telTab.querySelectorAll('.tooth-btn-fdi.selected');
+        multiToothButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear same elastic buttons
+        const sameElasticButtons = telTab.querySelectorAll('.same-elastic-btn.selected, .continue-elastic-btn.selected');
+        sameElasticButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Clear bend buttons
+        const bendButtons = telTab.querySelectorAll('.bend-btn.selected');
+        bendButtons.forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        
+        // Hide all open elastic hour containers
+        const hourContainers = telTab.querySelectorAll('.elastic-hours-container');
+        hourContainers.forEach(container => {
+            container.style.display = 'none';
+        });
+        
+        // Hide manual input containers
+        const manualInputs = telTab.querySelectorAll('.manual-input-container, .manuel-input-container');
+        manualInputs.forEach(input => {
+            input.style.display = 'none';
+        });
+    }
+    
+    // Clear global variables for Tel section
+    selectedAppointment.tel = null;
+    selectedDuration.tel = {
+        type: null,
+        doctor: null,
+        doctor2: null,
+        assistant: null
+    };
+    selectedSokum = null;
+    minividaRemovals = [];
+    yediDahilSelection = {
+        ust: false,
+        alt: false
+    };
+    plannedProceduresText = '';
+    telSpecialNoteText = '';
+    elasticStatus.tel = null;
+    
+    // Clear current elastic usage
+    currentElasticUsage.tel = {
+        sag: { 
+            sinif2: { selected: false, hours: null },
+            sinif3: { selected: false, hours: null },
+            cross: { selected: false, hours: null }
+        },
+        sol: { 
+            sinif2: { selected: false, hours: null },
+            sinif3: { selected: false, hours: null },
+            cross: { selected: false, hours: null }
+        },
+        orta: { 
+            oblik1333: { selected: false, hours: null },
+            oblik2343: { selected: false, hours: null }
+        }
+    };
+    
+    // Clear next elastic usage
+    nextElasticUsage['tel-next'] = {
+        sag: { 
+            continuesCurrent: false,
+            sinif2: { selected: false, hours: null },
+            sinif3: { selected: false, hours: null },
+            cross: { selected: false, hours: null }
+        },
+        sol: { 
+            continuesCurrent: false,
+            sinif2: { selected: false, hours: null },
+            sinif3: { selected: false, hours: null },
+            cross: { selected: false, hours: null }
+        },
+        orta: { 
+            continuesCurrent: false,
+            oblik1333: { selected: false, hours: null },
+            oblik2343: { selected: false, hours: null }
+        }
+    };
+    
+    // Clear wire bends
+    wireBends = {
+        alt: {},
+        ust: {}
+    };
+    
+    // Clear interbend data
+    if (typeof interbendData !== 'undefined') {
+        interbendData.alt = {};
+        interbendData.ust = {};
+    }
+    
+    // Clear full arch bends
+    if (typeof fullArchBends !== 'undefined') {
+        fullArchBends = {
+            ust: null,
+            alt: null
+        };
+    }
+    
+    // Clear current wires
+    currentWires = {
+        alt: {
+            selected: false,
+            type: null,
+            size: null
+        },
+        ust: {
+            selected: false,
+            type: null,
+            size: null
+        }
+    };
+    
+    // Clear multi-tooth selection
+    if (typeof multiToothSelection !== 'undefined') {
+        multiToothSelection.selectedTeeth = [];
+        multiToothSelection.procedures = [];
+        multiToothSelection.sentToReport = [];
+        
+        // Update the selected teeth list display (corrected ID)
+        const selectedTeethList = document.getElementById('selected-teeth-list');
+        if (selectedTeethList) {
+            selectedTeethList.textContent = 'Henüz diş seçilmedi';
+        }
+        
+        // Clear procedure list display
+        const procedureListContainer = document.getElementById('multi-procedure-list');
+        if (procedureListContainer) {
+            procedureListContainer.innerHTML = '<div class="no-procedures">Henüz işlem eklenmedi</div>';
+        }
+        
+        // Update procedure buttons state (disable all)
+        if (typeof updateProcedureButtonsState === 'function') {
+            updateProcedureButtonsState();
+        }
+        
+        // Update send to report button state
+        if (typeof updateSendToReportButtonState === 'function') {
+            updateSendToReportButtonState();
+        }
+    }
+    
+    // Clear elastic need calculation
+    elasticNeedCalculation = {
+        days: 0,
+        elasticsPerDay: 0,
+        totalNeed: 0,
+        details: []
+    };
+    
+    // Clear elastic calculation result display
+    const calculationResult = document.getElementById('elastic-calculation-result');
+    if (calculationResult) {
+        calculationResult.innerHTML = '<p class="no-selection">Önce randevu haftası ve lastik seçimi yapılmalıdır</p>';
+    }
+    
+    // Clear animal selections for tel section
+    Object.keys(animalSelections).forEach(key => {
+        if (key.startsWith('tel-') || key.startsWith('tel-next-')) {
+            delete animalSelections[key];
+        }
     });
     
-    // Clear all radio buttons in tel tedavisi tab
-    const radioButtons = telTab.querySelectorAll('input[type="radio"]');
-    radioButtons.forEach(radio => {
-        radio.checked = false;
+    // Clear tel-related answers
+    Object.keys(answers).forEach(key => {
+        if (key.startsWith('tel-') || key.includes('tel')) {
+            delete answers[key];
+        }
     });
     
-    // Clear all option buttons
-    const optionButtons = telTab.querySelectorAll('.option-btn.selected');
-    optionButtons.forEach(btn => {
-        btn.classList.remove('selected');
-    });
+    // Clear minivida removal display
+    const minividaList = document.getElementById('minivida-removal-list');
+    if (minividaList) {
+        minividaList.innerHTML = '';
+    }
     
-    // Clear all score buttons
-    const scoreButtons = telTab.querySelectorAll('.score-btn.selected');
-    scoreButtons.forEach(btn => {
-        btn.classList.remove('selected');
-    });
+    // Clear special note textarea
+    const telSpecialNote = document.getElementById('tel-special-note');
+    if (telSpecialNote) {
+        telSpecialNote.value = '';
+    }
+    
+    // Clear planned procedures textarea
+    const plannedProcedures = document.getElementById('tel-planned-procedures');
+    if (plannedProcedures) {
+        plannedProcedures.value = '';
+    }
     
     // Update output
     updateTelOutput();
@@ -1758,7 +2004,7 @@ function clearIPRDurationCalculations() {
 
 function clearMotivasyonAnswers() {
     // Clear motivasyon related answers that are set by option buttons
-    const motivasyonKeys = ['lastik-aksama', 'lastik-saat', 'plak-aksama', 'plak-saat', 'plak-temizlik', 'agiz-hijyen'];
+    const motivasyonKeys = ['lastik-aksama', 'lastik-saat', 'plak-aksama', 'plak-saat', 'plak-temizlik', 'agiz-hijyen', 'sakiz-ihtiyac', 'sakiz-sure', 'sakiz-siklik', 'sakiz-parcalanma'];
     
     motivasyonKeys.forEach(key => {
         delete answers[key];
