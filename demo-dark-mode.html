@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Demo - Ortodonti Form</title>
+    <script>
+    (function(){
+      try{
+        var s=localStorage.getItem('theme');
+        var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var t=s|| (prefersDark?'dark':'light');
+        if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+      }catch(e){}
+    })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+        .demo-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: var(--surface-2);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .demo-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid;
+        }
+        .alert-success {
+            background: var(--success-bg);
+            border-left-color: var(--success);
+            color: var(--success-text);
+        }
+        .alert-warning {
+            background: var(--warning-bg);
+            border-left-color: var(--warning);
+            color: var(--warning-text);
+        }
+        .alert-danger {
+            background: var(--danger-bg);
+            border-left-color: var(--danger);
+            color: var(--danger-text);
+        }
+        .alert-info {
+            background: var(--info-bg);
+            border-left-color: var(--info);
+            color: var(--info-text);
+        }
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .demo-table th,
+        .demo-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .demo-table th {
+            background: var(--surface-3);
+            font-weight: 600;
+        }
+        .demo-table tr:nth-child(even) {
+            background: var(--surface-1);
+        }
+        .demo-footer {
+            background: var(--surface-4);
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--input-bg);
+            color: var(--input-text);
+            font-size: 14px;
+        }
+        .form-control::placeholder {
+            color: var(--placeholder);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <header>
+            <div class="header-content">
+                <h1>Dark Mode Demo</h1>
+                <button id="theme-toggle" class="btn btn-outline theme-toggle-btn" aria-label="Tema değiştir">🌗</button>
+            </div>
+        </header>
+
+        <div class="demo-section">
+            <h3>Kartlar ve Linkler</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 15px;">
+                Bu bir örnek paragraftır. <a href="#" style="color: var(--link);">Bu bir link</a> ve 
+                <a href="#" style="color: var(--link-hover);">bu da hover renkli link</a> örnekleridir.
+            </p>
+            <div style="background: var(--surface-3); padding: 15px; border-radius: 8px; border: 1px solid var(--border);">
+                <strong style="color: var(--text-primary);">Kart İçeriği:</strong>
+                <span style="color: var(--text-secondary);">Bu bir kart içeriği örneğidir.</span>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Buton Örnekleri</h3>
+            <div class="demo-grid">
+                <button class="btn btn-primary">Primary Buton</button>
+                <button class="btn btn-secondary">Secondary Buton</button>
+                <button class="btn btn-outline">Outline Buton</button>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Form Elemanları</h3>
+            <div class="form-group">
+                <label for="demo-input">Örnek Input:</label>
+                <input type="text" id="demo-input" class="form-control" placeholder="Buraya bir şey yazın...">
+            </div>
+            <div class="form-group">
+                <label for="demo-textarea">Örnek Textarea:</label>
+                <textarea id="demo-textarea" class="form-control" rows="3" placeholder="Çok satırlı metin alanı..."></textarea>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Alert Örnekleri</h3>
+            <div class="alert alert-success">
+                <strong>Başarılı!</strong> İşlem başarıyla tamamlandı.
+            </div>
+            <div class="alert alert-warning">
+                <strong>Uyarı!</strong> Bu önemli bir bilgidir.
+            </div>
+            <div class="alert alert-danger">
+                <strong>Hata!</strong> Bir şeyler yanlış gitti.
+            </div>
+            <div class="alert alert-info">
+                <strong>Bilgi:</strong> Bu bilgilendirme mesajıdır.
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h3>Tablo Örneği</h3>
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Hasta Adı</th>
+                        <th>Tedavi Türü</th>
+                        <th>Durum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ahmet Yılmaz</td>
+                        <td>Şeffaf Plak</td>
+                        <td style="color: var(--success-text);">Aktif</td>
+                    </tr>
+                    <tr>
+                        <td>Elif Demir</td>
+                        <td>Tel Tedavisi</td>
+                        <td style="color: var(--warning-text);">Beklemede</td>
+                    </tr>
+                    <tr>
+                        <td>Can Özkan</td>
+                        <td>Retainer</td>
+                        <td style="color: var(--info-text);">Tamamlandı</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="demo-footer">
+            <p style="color: var(--text-secondary); margin: 0;">
+                © 2024 Ortodonti Hasta Formu - Dark Mode aktif: 
+                <span style="color: var(--primary);" id="theme-status">Algılanıyor...</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      // Theme toggle functionality
+      var el=document.getElementById('theme-toggle'); if(!el) return;
+      var statusEl = document.getElementById('theme-status');
+      
+      function updateThemeStatus() {
+        var isDark = document.documentElement.getAttribute('data-theme')==='dark';
+        statusEl.textContent = isDark ? 'Evet (Dark Mode)' : 'Hayır (Light Mode)';
+      }
+      
+      updateThemeStatus();
+      
+      el.addEventListener('click',function(){
+        var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+        if(isDark){ 
+          document.documentElement.removeAttribute('data-theme'); 
+          localStorage.setItem('theme','light'); 
+        }
+        else{ 
+          document.documentElement.setAttribute('data-theme','dark'); 
+          localStorage.setItem('theme','dark'); 
+        }
+        updateThemeStatus();
+      });
+    });
+    </script>
+</body>
+</html>

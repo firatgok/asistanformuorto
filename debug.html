@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+</head>
+<body>
+    <h1>Debug Manuel Randevu</h1>
+    <script>
+        // Test script to check if elements exist
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            
+            setTimeout(function() {
+                const manuelBtn = document.querySelector('.randevu-manuel-btn');
+                console.log('Manuel button:', manuelBtn);
+                
+                const confirmBtn = document.querySelector('.manuel-confirm-btn');
+                console.log('Confirm button:', confirmBtn);
+                
+                const input = document.getElementById('manuel-randevu-input');
+                console.log('Input element:', input);
+                
+                const container = document.querySelector('.manuel-input-container');
+                console.log('Container:', container);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+</script>

@@ -1,0 +1,70 @@
+Plak Kontrolü
+
+
+RUTİN KONTROLLER
+
+Önceki seans kaçıncı plağa kadar vermişiz?
+
+Kaçıncı plaktayız?
+
+Mevcut kaçıncı plakta hastamız?
+
+Kaç plak vereceğiz?
+
+Verdiğimiz plaklarda IPR var mı?
+
+Plak adaptasyonu hangi dişlerde eksik?
+
+Eksik ataşmanlar neler?
+
+Hangi lastikleri takıyor?
+
+Lastikleri kaç saat takması söylenmiş?
+
+Mevcut kaçıncı plakta hastamız?
+
+Kaç plak vereceğiz?
+
+MOTİVASYON
+
+Lastik Kullanımında aksama var mı? Ortalama kaç saat takıyor?
+
+Plak kullanımında aksama var mı? Ortalama kaç saat takıyor?
+
+Plakların temizliği 1-10 arası skorla
+
+Ağız Hijyeni 1-10 arası skorla
+
+Lastik bölümünde Üç büyük buton olacak 1) SAĞ 2) SOL 3) ÖN bunlardan bir veya birden fazlasına tıklayabileceğiz. Her birinin SAğ ve sol butonlarının altında TÜR başlığı ile 3 adet alt buton olacak bunlar 1)Sınıf II 2) Sınıf III 3) Cross yazacak. Bunların altında da SÜRE başlığı altında 1)24 saat 2) 12 saat ve 3) 8 saat şeklinde üç adet saat çıkacak. Önde de Tür başlığı altında iki adet alt buton olacak 1) 13-33 oblik 2) 23-43 oblik. Yazacak bunların altında da süre başlığı altında yine 1)24 saat 2) 12 saat ve 3) 8 saat şeklinde alt butonlar olacak. Bunların tıklanmasına göre de raporda cümle oluşturulacak.
+
+
+
+
+
+Kullanım Uyumu
+
+Hasta günde ortalama kaç saat takıyor?
+
+Plak takıp çıkarırken zorluk yaşıyor mu?
+
+İleriye Hazırlık
+
+Sonraki plak setleri hazır mı?
+
+Kaçıncı plağa kadar hastada mevcut?
+
+Ağız İçi Kontroller
+
+Attachment’lar sağlam mı, kırık/çıkık var mı?
+
+Dişlerde düzensizlik, boşluk, irritasyon var mı?
+
+Planlama Soruları (Size Rapor)
+
+“Hocam, plak iyi oturuyor / oturmuyor.”
+
+“Attachment düşmüş / yok.”
+
+“Hasta günde 15–16 saat takmış, eksik kalmış.”
+
+“Sonraki plakları hazır değil.”

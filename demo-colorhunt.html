@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorHunt Dark Mode Demo</title>
+    <script>
+    (function(){
+      try{
+        var s=localStorage.getItem('theme');
+        var prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var t=s||(prefersDark?'dark':'light');
+        if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+      }catch(e){}
+    })();
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 24px;
+            background: var(--surface, #ffffff);
+            border-radius: 12px;
+            border: 1px solid var(--border, #e5e7eb);
+            box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.1));
+            color: var(--text-primary, #1f2937);
+        }
+        
+        .demo-section {
+            margin-bottom: 32px;
+            padding: 20px;
+            background: var(--surface, #f9fafb);
+            border-radius: 12px;
+            border: 1px solid var(--border, #e5e7eb);
+            box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.1));
+        }
+        
+        .demo-section h3 {
+            color: var(--text-primary, #1f2937);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary, #0c8ce9);
+            font-size: 1.25rem;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+        
+        /* Alert Components */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid;
+            font-size: 14px;
+            line-height: 1.5;
+            background: var(--surface, #f9fafb);
+            border: 1px solid var(--border, #e5e7eb);
+            color: var(--text-primary, #1f2937);
+        }
+        
+        .alert-success {
+            background: rgba(22,163,74,.12);
+            border-color: rgba(22,163,74,.35);
+            color: #16a34a;
+        }
+        
+        .alert-warning {
+            background: rgba(245,158,11,.12);
+            border-color: rgba(245,158,11,.35);
+            color: #f59e0b;
+        }
+        
+        .alert-danger {
+            background: rgba(220,38,38,.12);
+            border-color: rgba(220,38,38,.35);
+            color: #dc2626;
+        }
+        
+        /* Dark mode overrides for alerts */
+        [data-theme="dark"] .alert-success { color: var(--success-text, #4ade80); }
+        [data-theme="dark"] .alert-warning { color: var(--warning-text, #fbbf24); }
+        [data-theme="dark"] .alert-danger { color: var(--danger-text, #f87171); }
+        
+        /* Table Component */
+        .demo-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border, #e5e7eb);
+        }
+        
+        .demo-table th,
+        .demo-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border, #e5e7eb);
+            color: var(--text-primary, #1f2937);
+        }
+        
+        .demo-table th {
+            background: var(--surface-2, #f3f4f6);
+            font-weight: 600;
+            color: var(--text-primary, #1f2937);
+        }
+        
+        .demo-table tbody tr:nth-child(even) {
+            background: var(--surface-3, rgba(0,0,0,.02));
+        }
+        
+        .demo-table tbody tr:hover {
+            background: var(--surface-2, #f9fafb);
+        }
+        
+        /* Footer Component */
+        .demo-footer {
+            background: var(--surface-2, #f3f4f6);
+            padding: 24px;
+            text-align: center;
+            border-radius: 12px;
+            margin-top: 24px;
+            border: 1px solid var(--border, #e5e7eb);
+        }
+        
+        /* Form Components */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-primary, #1f2937);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            background: var(--input-bg, white);
+            color: var(--input-text, #1f2937);
+            border: 1px solid var(--border, #d1d5db);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .form-control::placeholder {
+            color: var(--placeholder, #9ca3af);
+        }
+        
+        .form-control:focus {
+            outline: 2px solid color-mix(in oklab, var(--primary, #0c8ce9) 55%, transparent);
+            outline-offset: 2px;
+            border-color: var(--primary-hover, var(--primary, #0c8ce9));
+        }
+        
+        /* Card Component */
+        .card {
+            background: var(--surface-2, #f9fafb);
+            border: 1px solid var(--border, #e5e7eb);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow, 0 1px 3px rgba(0,0,0,0.1));
+        }
+        
+        .card-title {
+            color: var(--text-primary, #1f2937);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .card-text {
+            color: var(--text-secondary, #4b5563);
+            line-height: 1.5;
+        }
+        
+        /* Link styling */
+        .demo-link {
+            color: var(--link, #0c8ce9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        
+        .demo-link:hover {
+            color: var(--link-hover, #0969da);
+        }
+        
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .badge-success { 
+            background: rgba(22,163,74,.12); 
+            color: #16a34a; 
+        }
+        .badge-warning { 
+            background: rgba(245,158,11,.12); 
+            color: #f59e0b; 
+        }
+        .badge-danger { 
+            background: rgba(220,38,38,.12); 
+            color: #dc2626; 
+        }
+        .badge-info { 
+            background: rgba(33,73,138,.12); 
+            color: #21498A; 
+        }
+        
+        [data-theme="dark"] .badge-success { color: var(--success-text, #4ade80); }
+        [data-theme="dark"] .badge-warning { color: var(--warning-text, #fbbf24); }
+        [data-theme="dark"] .badge-danger { color: var(--danger-text, #f87171); }
+        [data-theme="dark"] .badge-info { color: var(--info-text, #60a5fa); }
+        
+        /* Theme info */
+        .theme-info {
+            background: var(--surface-3, rgba(0,0,0,.02));
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--border, #e5e7eb);
+            margin-bottom: 24px;
+        }
+        
+        .color-swatch {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 8px;
+            vertical-align: middle;
+            border: 1px solid var(--border, #e5e7eb);
+        }
+        
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .palette-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary, #4b5563);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header with theme toggle -->
+        <header>
+            <div class="header-content">
+                <h1 style="color: var(--text-primary, #1f2937);">ColorHunt Dark Mode Demo</h1>
+                <button id="theme-toggle" class="btn btn-outline" aria-label="Tema">🌗</button>
+            </div>
+        </header>
+
+        <!-- Theme Information -->
+        <div class="theme-info">
+            <h4 style="color: var(--text-primary, #1f2937); margin-bottom: 12px;">ColorHunt Palette</h4>
+            <div class="palette-grid">
+                <div class="palette-item">
+                    <span class="color-swatch" style="background: #272121;"></span>Base BG: #272121
+                </div>
+                <div class="palette-item">
+                    <span class="color-swatch" style="background: #363333;"></span>Surface: #363333
+                </div>
+                <div class="palette-item">
+                    <span class="color-swatch" style="background: #E16428;"></span>Primary: #E16428
+                </div>
+                <div class="palette-item">
+                    <span class="color-swatch" style="background: #F6E9E9;"></span>Text Light: #F6E9E9
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards and Links Section -->
+        <div class="demo-section">
+            <h3>Cards & Links</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="card">
+                    <div class="card-title">Patient Information</div>
+                    <div class="card-text">
+                        This is a sample card component with ColorHunt palette. 
+                        <a href="#" class="demo-link">Click this link</a> to see the orange hover effect.
+                        Visit our <a href="#" class="demo-link">documentation</a> for more details.
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Treatment Status</div>
+                    <div class="card-text">
+                        Current treatment progress with warm brown-orange theme. 
+                        <a href="#" class="demo-link">Detailed reports</a> available in the system.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button Examples -->
+        <div class="demo-section">
+            <h3>Button Examples</h3>
+            <div class="demo-grid">
+                <button class="btn btn-primary">Primary Button</button>
+                <button class="btn btn-secondary">Secondary Button</button>
+                <button class="btn btn-outline">Outline Button</button>
+            </div>
+            <p style="color: var(--text-secondary, #6b7280); margin-top: 12px; font-size: 14px;">
+                Primary button uses #E16428 orange, outline has rgba(225,100,40,.12) hover effect
+            </p>
+        </div>
+
+        <!-- Form Elements -->
+        <div class="demo-section">
+            <h3>Form Elements</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-group">
+                    <label for="demo-input">Patient Name:</label>
+                    <input type="text" id="demo-input" class="form-control" placeholder="Enter patient name...">
+                </div>
+                <div class="form-group">
+                    <label for="demo-select">Treatment Type:</label>
+                    <select id="demo-select" class="form-control">
+                        <option value="">Select treatment...</option>
+                        <option value="clear">Clear Aligners</option>
+                        <option value="braces">Traditional Braces</option>
+                        <option value="retainer">Retainer</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="demo-textarea">Treatment Notes:</label>
+                <textarea id="demo-textarea" class="form-control" rows="3" placeholder="Enter treatment notes and observations..."></textarea>
+            </div>
+            <p style="color: var(--text-secondary, #6b7280); font-size: 14px; margin-top: 8px;">
+                Focus states use color-mix with 55% primary opacity for outline
+            </p>
+        </div>
+
+        <!-- Alert Examples -->
+        <div class="demo-section">
+            <h3>Alert Examples</h3>
+            <div class="alert alert-success">
+                <strong>Success!</strong> Treatment completed successfully. Patient is ready for the next phase of orthodontic care.
+            </div>
+            <div class="alert alert-warning">
+                <strong>Warning!</strong> Patient missed the last appointment. Please reschedule as soon as possible to maintain treatment timeline.
+            </div>
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Treatment plan needs immediate revision due to unexpected complications during the procedure.
+            </div>
+        </div>
+
+        <!-- Table Example -->
+        <div class="demo-section">
+            <h3>Patient Data Table</h3>
+            <table class="demo-table">
+                <thead>
+                    <tr>
+                        <th>Patient Name</th>
+                        <th>Treatment Type</th>
+                        <th>Progress</th>
+                        <th>Status</th>
+                        <th>Next Appointment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ahmet Yılmaz</td>
+                        <td>Clear Aligners</td>
+                        <td>75%</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td>Nov 15, 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Elif Demir</td>
+                        <td>Traditional Braces</td>
+                        <td>45%</td>
+                        <td><span class="badge badge-warning">Pending</span></td>
+                        <td>Nov 20, 2024</td>
+                    </tr>
+                    <tr>
+                        <td>Can Özkan</td>
+                        <td>Retainer</td>
+                        <td>100%</td>
+                        <td><span class="badge badge-info">Completed</span></td>
+                        <td>Follow-up</td>
+                    </tr>
+                    <tr>
+                        <td>Zeynep Kaya</td>
+                        <td>Clear Aligners</td>
+                        <td>20%</td>
+                        <td><span class="badge badge-danger">Overdue</span></td>
+                        <td>Reschedule</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <footer class="demo-footer">
+            <div style="color: var(--text-secondary, #6b7280); font-size: 14px;">
+                <p style="margin: 0 0 8px 0;">© 2024 Orthodontic Patient Form System</p>
+                <p style="margin: 0 0 8px 0;">
+                    <strong>Theme Status:</strong> 
+                    <span style="color: var(--primary, #0c8ce9); font-weight: 600;" id="theme-status">Detecting...</span>
+                </p>
+                <small>Toggle between light and dark modes using the 🌗 button. Dark mode uses ColorHunt palette with warm browns and orange accents.</small>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded',function(){
+      // Theme toggle functionality
+      var b=document.getElementById('theme-toggle');
+      var statusEl = document.getElementById('theme-status');
+      
+      function updateThemeStatus() {
+        var dark = document.documentElement.getAttribute('data-theme')==='dark';
+        statusEl.textContent = dark ? 'Dark Mode (ColorHunt Palette)' : 'Light Mode';
+        statusEl.style.color = dark ? 'var(--primary)' : 'var(--primary-600, #0969da)';
+      }
+      
+      if(b) {
+        updateThemeStatus();
+        
+        b.addEventListener('click',function(){
+          var dark=document.documentElement.getAttribute('data-theme')==='dark';
+          if(dark){ 
+            document.documentElement.removeAttribute('data-theme'); 
+            localStorage.setItem('theme','light'); 
+          }
+          else{ 
+            document.documentElement.setAttribute('data-theme','dark'); 
+            localStorage.setItem('theme','dark'); 
+          }
+          updateThemeStatus();
+        });
+      }
+      
+      // Demonstrate form interactions
+      var inputs = document.querySelectorAll('.form-control');
+      inputs.forEach(function(input) {
+        input.addEventListener('focus', function() {
+          this.style.transform = 'scale(1.01)';
+        });
+        input.addEventListener('blur', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+      
+      // Demonstrate button hover effects
+      var buttons = document.querySelectorAll('.btn');
+      buttons.forEach(function(btn) {
+        btn.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-1px)';
+        });
+        btn.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+    </script>
+</body>
+</html>
