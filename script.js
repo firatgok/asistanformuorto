@@ -469,7 +469,7 @@ function calculateLastikConsumption() {
             // Mevcut lastikleri say
             if (elasticSelections['sag'] && elasticSelections['sag'].types) {
                 Object.keys(elasticSelections['sag'].types).forEach(type => {
-                    if (elasticSelections['sag'].types[type] && elasticSelections['sag'].types[type].selected) {
+                    if (elasticSelections['sag'].types[type] && elasticSelections['sag'].types[type].selected && elasticSelections['sag'].types[type].duration) {
                         sagCount++;
                     }
                 });
@@ -478,7 +478,7 @@ function calculateLastikConsumption() {
             // Sonraki seans seçimlerini say
             if (nextElasticSelections['sag-next'].types) {
                 Object.keys(nextElasticSelections['sag-next'].types).forEach(type => {
-                    if (nextElasticSelections['sag-next'].types[type] && nextElasticSelections['sag-next'].types[type].selected) {
+                    if (nextElasticSelections['sag-next'].types[type] && nextElasticSelections['sag-next'].types[type].selected && nextElasticSelections['sag-next'].types[type].duration) {
                         sagCount++;
                     }
                 });
@@ -492,7 +492,7 @@ function calculateLastikConsumption() {
             // Mevcut lastikleri say
             if (elasticSelections['sol'] && elasticSelections['sol'].types) {
                 Object.keys(elasticSelections['sol'].types).forEach(type => {
-                    if (elasticSelections['sol'].types[type] && elasticSelections['sol'].types[type].selected) {
+                    if (elasticSelections['sol'].types[type] && elasticSelections['sol'].types[type].selected && elasticSelections['sol'].types[type].duration) {
                         solCount++;
                     }
                 });
@@ -501,7 +501,7 @@ function calculateLastikConsumption() {
             // Sonraki seans seçimlerini say
             if (nextElasticSelections['sol-next'].types) {
                 Object.keys(nextElasticSelections['sol-next'].types).forEach(type => {
-                    if (nextElasticSelections['sol-next'].types[type] && nextElasticSelections['sol-next'].types[type].selected) {
+                    if (nextElasticSelections['sol-next'].types[type] && nextElasticSelections['sol-next'].types[type].selected && nextElasticSelections['sol-next'].types[type].duration) {
                         solCount++;
                     }
                 });
@@ -619,6 +619,7 @@ function updateLastikCalculationDisplay() {
         answers['lastik-calculation'] = {
             totalNeeded: calculation.totalNeeded,
             weeks: calculation.weeks,
+            totalDays: calculation.totalDays,
             dailyUsage: calculation.dailyUsage,
             details: calculation.details,
             breakdown: calculation.breakdown
