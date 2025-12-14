@@ -2297,8 +2297,22 @@ function selectElasticOption(parent, type, value, buttonElement) {
     // Değeri kaydet
     if (parent.includes('-next')) {
         nextElasticSelections[parent][type] = value;
+        
+        // Auto-activate parent when selecting ÖN tur/sure (sonraki seans)
+        if (parent === 'on-next' && !nextElasticSelections[parent].active) {
+            nextElasticSelections[parent].active = true;
+            const mainBtn = document.querySelector(`[data-direction="${parent}"].elastic-main-btn`);
+            if (mainBtn) mainBtn.classList.add('active');
+        }
     } else {
         elasticSelections[parent][type] = value;
+        
+        // Auto-activate parent when selecting ÖN tur/sure (mevcut seans)
+        if (parent === 'on' && !elasticSelections[parent].active) {
+            elasticSelections[parent].active = true;
+            const mainBtn = document.querySelector(`[data-direction="${parent}"].elastic-main-btn`);
+            if (mainBtn) mainBtn.classList.add('active');
+        }
     }
     
     updateElasticReport();
