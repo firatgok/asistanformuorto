@@ -2684,6 +2684,28 @@
                                 </div>
                             </div>
                             
+                            <!-- Minivida Seçimi -->
+                            <div class="minivida-selection">
+                                <button type="button" class="minivida-main-btn" onclick="toggleMinividaInput()">
+                                    Minivida
+                                </button>
+                                <div id="minivida-input-container" class="minivida-input-container" style="display: none;">
+                                    <div class="minivida-teeth-range">
+                                        <label>Diş Aralığı:</label>
+                                        <div class="teeth-input-fields">
+                                            <input type="number" id="minivida-tooth-x" class="tooth-input" placeholder="X" min="11" max="48">
+                                            <span class="input-separator">ve</span>
+                                            <input type="number" id="minivida-tooth-y" class="tooth-input" placeholder="Y" min="11" max="48">
+                                            <span class="input-label">nolu dişler arası</span>
+                                        </div>
+                                    </div>
+                                    <div class="minivida-buttons">
+                                        <button type="button" class="confirm-btn" onclick="applyMinividaRange()">Onayla</button>
+                                        <button type="button" class="cancel-btn" onclick="cancelMinividaInput()">İptal</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <!-- İşlem Seçimi -->
                             <div class="procedure-selection">
                                 <h4>2. İşlem Seçimi</h4>

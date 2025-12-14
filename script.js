@@ -5871,10 +5871,76 @@ function initializeSpacingListeners() {
     }
 }
 
+// Minivida Işlemleri
+function toggleMinividaInput() {
+    const container = document.getElementById('minivida-input-container');
+    if (container.style.display === 'none' || container.style.display === '') {
+        container.style.display = 'block';
+        document.getElementById('minivida-tooth-x').focus();
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+function applyMinividaRange() {
+    const toothX = document.getElementById('minivida-tooth-x').value;
+    const toothY = document.getElementById('minivida-tooth-y').value;
+    
+    if (!toothX || !toothY) {
+        alert('Lütfen her iki diş numarasını girin!');
+        return;
+    }
+    
+    const xNum = parseInt(toothX);
+    const yNum = parseInt(toothY);
+    
+    if (isNaN(xNum) || isNaN(yNum) || xNum < 11 || xNum > 48 || yNum < 11 || yNum > 48) {
+        alert('Lütfen geçerli diş numaraları girin (11-48)!');
+        return;
+    }
+    
+    if (xNum === yNum) {
+        alert('Farklı diş numaraları seçmelisiniz!');
+        return;
+    }
+    
+    // Minivida işlemi ekleme
+    const procedureText = `${xNum} ve ${yNum} nolu dişler arası minivida işlemi`;
+    
+    // multiProcedureList objesine ekle
+    const procedureId = Date.now();
+    multiProcedureList.push({
+        id: procedureId,
+        type: 'minivida',
+        procedureText: procedureText
+    });
+    
+    // UI'ı güncelle
+    updateMultiProcedureListDisplay();
+    
+    // Input'u temizle ve kapat
+    document.getElementById('minivida-tooth-x').value = '';
+    document.getElementById('minivida-tooth-y').value = '';
+    document.getElementById('minivida-input-container').style.display = 'none';
+    
+    // Rapor butonunu etkinleştir
+    updateMultiProcedureSendButton();
+}
+
+function cancelMinividaInput() {
+    document.getElementById('minivida-tooth-x').value = '';
+    document.getElementById('minivida-tooth-y').value = '';
+    document.getElementById('minivida-input-container').style.display = 'none';
+}
+
 // Export için global olarak ayarla
 window.openSpacingPopup = openSpacingPopup;
 window.closeSpacingPopup = closeSpacingPopup;
 window.clearSpacingInput = clearSpacingInput;
 window.saveSpacingMeasurement = saveSpacingMeasurement;
 window.clearAllSpacingMeasurements = clearAllSpacingMeasurements;
+window.toggleMinividaInput = toggleMinividaInput;
+window.applyMinividaRange = applyMinividaRange;
+window.cancelMinividaInput = cancelMinividaInput;
+
 

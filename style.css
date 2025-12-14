@@ -5972,6 +5972,141 @@ input::placeholder, textarea::placeholder {
     font-weight: 600;
 }
 
+/* Minivida Selection Styles */
+.minivida-selection {
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+}
+
+.minivida-main-btn {
+    background: #10B981 !important;
+    border: 2px solid #059669 !important;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.minivida-main-btn:hover {
+    background: #059669 !important;
+    transform: translateY(-2px);
+}
+
+.minivida-input-container {
+    margin-top: 15px;
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+}
+
+.minivida-teeth-range {
+    margin-bottom: 15px;
+}
+
+.minivida-teeth-range label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--gray-700);
+    font-size: 14px;
+}
+
+.teeth-input-fields {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tooth-input {
+    width: 80px;
+    padding: 8px 10px;
+    border: 2px solid var(--gray-300);
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.tooth-input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input-separator {
+    font-weight: 600;
+    color: var(--gray-700);
+}
+
+.input-label {
+    color: var(--gray-700);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.minivida-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.minivida-buttons .confirm-btn,
+.minivida-buttons .cancel-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.minivida-buttons .confirm-btn {
+    background: #3B82F6;
+    color: white;
+}
+
+.minivida-buttons .confirm-btn:hover {
+    background: #2563EB;
+}
+
+.minivida-buttons .cancel-btn {
+    background: var(--gray-300);
+    color: var(--gray-700);
+}
+
+.minivida-buttons .cancel-btn:hover {
+    background: var(--gray-400);
+}
+
+[data-theme="dark"] .minivida-selection {
+    background: var(--gray-900);
+    border-color: var(--gray-700);
+}
+
+[data-theme="dark"] .minivida-input-container {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+}
+
+[data-theme="dark"] .tooth-input {
+    background: var(--gray-700);
+    border-color: var(--gray-600);
+    color: white;
+}
+
+[data-theme="dark"] .minivida-teeth-range label,
+[data-theme="dark"] .input-separator,
+[data-theme="dark"] .input-label {
+    color: var(--gray-200);
+}
+
 .procedure-selection {
     margin: 20px 0;
     padding: 15px;
