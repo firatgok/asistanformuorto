@@ -1303,6 +1303,7 @@
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Zeynep">Zeynep</button>
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Rabia">Rabia</button>
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Özlem">Özlem</button>
+                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Hilal">Hilal</button>
                                 <button type="button" class="toggle-manual-btn" onclick="toggleManualAsistanInput('tel')">Manuel Giriş</button>
                                 <button type="button" class="clear-btn" data-question="tel-asistan">Sıfırla</button>
                             </div>
@@ -1447,6 +1448,60 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Yatay Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'yatay')">Yatay Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-yatay" data-animal="kartal" onclick="selectAnimal('tel', 'sag', 'yatay', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-yatay" data-animal="goril" onclick="selectAnimal('tel', 'sag', 'yatay', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-yatay" data-animal="ferret" onclick="selectAnimal('tel', 'sag', 'yatay', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-yatay" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sag', 'yatay', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sag-yatay-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'yatay', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'yatay', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'yatay', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Üçgen Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'ucgen')">Üçgen Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-ucgen" data-animal="kartal" onclick="selectAnimal('tel', 'sag', 'ucgen', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-ucgen" data-animal="goril" onclick="selectAnimal('tel', 'sag', 'ucgen', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-ucgen" data-animal="ferret" onclick="selectAnimal('tel', 'sag', 'ucgen', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-ucgen" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sag', 'ucgen', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sag-ucgen-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'ucgen', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'ucgen', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'ucgen', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Box Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sag', 'box')">Box Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-box" data-animal="kartal" onclick="selectAnimal('tel', 'sag', 'box', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-box" data-animal="goril" onclick="selectAnimal('tel', 'sag', 'box', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-box" data-animal="ferret" onclick="selectAnimal('tel', 'sag', 'box', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sag-box" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sag', 'box', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sag-box-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'box', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'box', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sag', 'box', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -1512,6 +1567,60 @@
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 24)">24 Saat</button>
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 12)">12 Saat</button>
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Yatay Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'yatay')">Yatay Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-yatay" data-animal="kartal" onclick="selectAnimal('tel', 'sol', 'yatay', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-yatay" data-animal="goril" onclick="selectAnimal('tel', 'sol', 'yatay', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-yatay" data-animal="ferret" onclick="selectAnimal('tel', 'sol', 'yatay', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-yatay" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sol', 'yatay', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sol-yatay-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'yatay', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'yatay', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'yatay', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Üçgen Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'ucgen')">Üçgen Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-ucgen" data-animal="kartal" onclick="selectAnimal('tel', 'sol', 'ucgen', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-ucgen" data-animal="goril" onclick="selectAnimal('tel', 'sol', 'ucgen', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-ucgen" data-animal="ferret" onclick="selectAnimal('tel', 'sol', 'ucgen', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-ucgen" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sol', 'ucgen', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sol-ucgen-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'ucgen', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'ucgen', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'ucgen', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Box Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel', 'sol', 'box')">Box Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-box" data-animal="kartal" onclick="selectAnimal('tel', 'sol', 'box', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-box" data-animal="goril" onclick="selectAnimal('tel', 'sol', 'box', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-box" data-animal="ferret" onclick="selectAnimal('tel', 'sol', 'box', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-sol-box" data-animal="kaplumbaga" onclick="selectAnimal('tel', 'sol', 'box', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-sol-box-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'box', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'box', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel', 'sol', 'box', 8)">8 Saat</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1648,6 +1757,60 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Yatay Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'yatay')">Yatay Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-yatay" data-animal="kartal" onclick="selectAnimal('tel-next', 'sag', 'yatay', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-yatay" data-animal="goril" onclick="selectAnimal('tel-next', 'sag', 'yatay', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-yatay" data-animal="ferret" onclick="selectAnimal('tel-next', 'sag', 'yatay', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-yatay" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sag', 'yatay', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sag-yatay-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'yatay', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'yatay', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'yatay', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Üçgen Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'ucgen')">Üçgen Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-ucgen" data-animal="kartal" onclick="selectAnimal('tel-next', 'sag', 'ucgen', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-ucgen" data-animal="goril" onclick="selectAnimal('tel-next', 'sag', 'ucgen', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-ucgen" data-animal="ferret" onclick="selectAnimal('tel-next', 'sag', 'ucgen', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-ucgen" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sag', 'ucgen', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sag-ucgen-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'ucgen', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'ucgen', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'ucgen', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Box Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sag', 'box')">Box Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-box" data-animal="kartal" onclick="selectAnimal('tel-next', 'sag', 'box', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-box" data-animal="goril" onclick="selectAnimal('tel-next', 'sag', 'box', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-box" data-animal="ferret" onclick="selectAnimal('tel-next', 'sag', 'box', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sag-box" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sag', 'box', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sag-box-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'box', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'box', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sag', 'box', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -1721,6 +1884,60 @@
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 24)">24 Saat</button>
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 12)">12 Saat</button>
                                                 <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'cross', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Yatay Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'yatay')">Yatay Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-yatay" data-animal="kartal" onclick="selectAnimal('tel-next', 'sol', 'yatay', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-yatay" data-animal="goril" onclick="selectAnimal('tel-next', 'sol', 'yatay', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-yatay" data-animal="ferret" onclick="selectAnimal('tel-next', 'sol', 'yatay', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-yatay" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sol', 'yatay', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sol-yatay-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'yatay', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'yatay', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'yatay', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Üçgen Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'ucgen')">Üçgen Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-ucgen" data-animal="kartal" onclick="selectAnimal('tel-next', 'sol', 'ucgen', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-ucgen" data-animal="goril" onclick="selectAnimal('tel-next', 'sol', 'ucgen', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-ucgen" data-animal="ferret" onclick="selectAnimal('tel-next', 'sol', 'ucgen', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-ucgen" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sol', 'ucgen', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sol-ucgen-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'ucgen', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'ucgen', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'ucgen', 8)">8 Saat</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Box Lastik -->
+                                    <div class="elastic-type-item">
+                                        <div class="elastic-type-header">
+                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'sol', 'box')">Box Lastik</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-box" data-animal="kartal" onclick="selectAnimal('tel-next', 'sol', 'box', 'kartal')" title="Kartal">🦅</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-box" data-animal="goril" onclick="selectAnimal('tel-next', 'sol', 'box', 'goril')" title="Goril">🦍</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-box" data-animal="ferret" onclick="selectAnimal('tel-next', 'sol', 'box', 'ferret')" title="ferret">🐿️</button>
+                                            <button type="button" class="animal-btn" data-animal-key="tel-next-sol-box" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'sol', 'box', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
+                                        </div>
+                                        <div id="tel-next-sol-box-hours" class="elastic-hours-container" style="display: none;">
+                                            <div class="elastic-hours-buttons">
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'box', 24)">24 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'box', 12)">12 Saat</button>
+                                                <button type="button" class="elastic-hour-btn" onclick="selectElasticHours('tel-next', 'sol', 'box', 8)">8 Saat</button>
                                             </div>
                                         </div>
                                     </div>
