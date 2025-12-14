@@ -94,6 +94,13 @@ let elasticSelections = {
             cross: { selected: false, duration: null }
         }
     },
+    orta: {
+        active: false,
+        types: {
+            oblik1333: { selected: false, duration: null },
+            oblik2343: { selected: false, duration: null }
+        }
+    },
     on: { active: false, tur: null, sure: null }
 };
 
@@ -115,6 +122,14 @@ let nextElasticSelections = {
             sinif2: { selected: false, duration: null },
             sinif3: { selected: false, duration: null },
             cross: { selected: false, duration: null }
+        }
+    },
+    'orta-next': {
+        active: false,
+        sameAsNow: false,
+        types: {
+            oblik1333: { selected: false, duration: null },
+            oblik2343: { selected: false, duration: null }
         }
     },
     'on-next': { active: false, sameAsNow: false, tur: null, sure: null }
@@ -4599,21 +4614,31 @@ function calculateElasticNeed() {
         }
     }
     
-    // Orta seçilen lastikleri say
-    if (nextElasticSelections['on-next']) {
-        const ortaElastics = nextElasticSelections['on-next'];
+    // Orta taraf seçilen lastikleri say
+    if (nextElasticSelections['orta-next']) {
+        const ortaElastics = nextElasticSelections['orta-next'];
         let ortaCount = 0;
         
         // "Aynı lastiklere devam" seçili mi kontrol et
-        if (ortaElastics.sameAsNow && elasticSelections.on && elasticSelections.on.tur && elasticSelections.on.sure) {
-            ortaCount = 1;
-        } else if (ortaElastics.tur && ortaElastics.sure) {
-            ortaCount = 1;
+        if (ortaElastics.sameAsNow && elasticSelections.orta && elasticSelections.orta.types) {
+            const ortaTypes = ['oblik1333', 'oblik2343'];
+            ortaTypes.forEach(type => {
+                if (elasticSelections.orta.types[type] && elasticSelections.orta.types[type].selected && elasticSelections.orta.types[type].duration) {
+                    ortaCount++;
+                }
+            });
+        } else if (ortaElastics.types) {
+            // Manuel seçimleri kontrol et
+            for (const type in ortaElastics.types) {
+                if (ortaElastics.types[type].selected && ortaElastics.types[type].duration) {
+                    ortaCount++;
+                }
+            }
         }
         
         if (ortaCount > 0) {
             totalElasticsPerDay += ortaCount;
-            details.push(`Orta: ${ortaCount}/gün`);
+            details.push(`Ön: ${ortaCount}/gün`);
         }
     }
     
