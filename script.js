@@ -3542,7 +3542,7 @@ function confirmManualDuration(tabType) {
     const assistant = document.getElementById(tabType + '-manual-assistant').value;
     let durationText = '';
     if (doctor1) durationText += doctor1 + 'dk rd';
-    if (doctor2) durationText += (durationText ? ', ' : '') + doctor2 + 'dk rd';
+    if (doctor2) durationText += (durationText ? ', ' : '') + doctor2 + 'dk rutin';
     if (assistant) durationText += (durationText ? ', ' : '') + assistant + 'dk ar';
     if (tabType === 'tel' && durationText) {
         telAnswers['randevu-suresi'] = durationText;
@@ -4549,7 +4549,7 @@ function calculateElasticNeed() {
         
         // "Aynı lastiklere devam" seçili mi kontrol et
         if (sagElastics.sameAsNow && elasticSelections.sag && elasticSelections.sag.types) {
-            const sagTypes = ['sinif2', 'sinif3', 'cross'];
+            const sagTypes = ['sinif2', 'sinif3', 'cross', 'yatay', 'ucgen', 'box'];
             sagTypes.forEach(type => {
                 if (elasticSelections.sag.types[type] && elasticSelections.sag.types[type].selected && elasticSelections.sag.types[type].duration) {
                     sagCount++;
@@ -4577,7 +4577,7 @@ function calculateElasticNeed() {
         
         // "Aynı lastiklere devam" seçili mi kontrol et
         if (solElastics.sameAsNow && elasticSelections.sol && elasticSelections.sol.types) {
-            const solTypes = ['sinif2', 'sinif3', 'cross'];
+            const solTypes = ['sinif2', 'sinif3', 'cross', 'yatay', 'ucgen', 'box'];
             solTypes.forEach(type => {
                 if (elasticSelections.sol.types[type] && elasticSelections.sol.types[type].selected && elasticSelections.sol.types[type].duration) {
                     solCount++;
