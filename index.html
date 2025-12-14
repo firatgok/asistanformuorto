@@ -767,7 +767,6 @@
                                 <!-- SAĞ Lastik Bölümü -->
                                 <div class="elastic-direction-block">
                                     <button type="button" class="elastic-main-btn next-session" data-direction="sag-next">SAĞ</button>
-                                    <button type="button" class="same-elastic-btn" data-direction="sag-next">AYNI LASTİKLERLE DEVAM</button>
                                     <!-- Sağ Lastik Seçenekleri -->
                                     <div class="elastic-sub-container" id="sag-next-options" style="display: none;">
                                         <!-- Sınıf II Lastik -->
@@ -832,7 +831,6 @@
                                 <!-- SOL Lastik Bölümü -->
                                 <div class="elastic-direction-block">
                                     <button type="button" class="elastic-main-btn next-session" data-direction="sol-next">SOL</button>
-                                    <button type="button" class="same-elastic-btn" data-direction="sol-next">AYNI LASTİKLERLE DEVAM</button>
                                     <!-- Sol Lastik Seçenekleri -->
                                     <div class="elastic-sub-container" id="sol-next-options" style="display: none;">
                                         <!-- Sınıf II Lastik -->
@@ -897,7 +895,6 @@
                                 <!-- ÖN Lastik Bölümü -->
                                 <div class="elastic-direction-block">
                                     <button type="button" class="elastic-main-btn next-session" data-direction="on-next">ÖN</button>
-                                    <button type="button" class="same-elastic-btn" data-direction="on-next">AYNI LASTİKLERLE DEVAM</button>
                                     <!-- Ön Lastik Seçenekleri -->
                                     <div class="elastic-sub-container" id="on-next-options" style="display: none;">
                                         <div class="elastic-sub-group">
@@ -1695,12 +1692,6 @@
                                     </button>
                                 </div>
                                 <div id="tel-next-sag-section" class="elastic-subsection" style="display: none;">
-                                    <!-- Aynı lastiklere devam seçeneği -->
-                                    <div class="continue-elastic-container">
-                                        <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'sag')">
-                                            ⟳ Aynı lastiklere devam
-                                        </button>
-                                    </div>
                                     
                                     <!-- Sınıf II -->
                                     <div class="elastic-type-item">
@@ -1824,12 +1815,6 @@
                                     </button>
                                 </div>
                                 <div id="tel-next-sol-section" class="elastic-subsection" style="display: none;">
-                                    <!-- Aynı lastiklere devam seçeneği -->
-                                    <div class="continue-elastic-container">
-                                        <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'sol')">
-                                            ⟳ Aynı lastiklere devam
-                                        </button>
-                                    </div>
                                     
                                     <!-- Sınıf II -->
                                     <div class="elastic-type-item">
@@ -1959,15 +1944,9 @@
                                         <button type="button" class="continue-elastic-btn" onclick="continueCurrentElastics('tel', 'orta')">
                                             ⟳ Aynı lastiklere devam
                                         </button>
-                                    </div>
+                                <div id="tel-next-orta-section" class="elastic-subsection" style="display: none;">
                                     
-                                    <!-- 13-33 Oblik -->
-                                    <div class="elastic-type-item">
-                                        <div class="elastic-type-header">
-                                            <button type="button" class="elastic-type-btn" onclick="selectElasticType('tel-next', 'orta', 'oblik1333')">13-33 Oblik</button>
-                                            <button type="button" class="photo-btn" onclick="openImageModal('on-oblik')" title="Ön Oblik Lastik nasıl takılır?">📷</button>
-                                            <button type="button" class="animal-btn" data-animal-key="tel-next-orta-oblik1333" data-animal="kartal" onclick="selectAnimal('tel-next', 'orta', 'oblik1333', 'kartal')" title="Kartal">🦅</button>
-                                            <button type="button" class="animal-btn" data-animal-key="tel-next-orta-oblik1333" data-animal="goril" onclick="selectAnimal('tel-next', 'orta', 'oblik1333', 'goril')" title="Goril">🦍</button>
+                                    <!-- 13-33 Oblik -->="button" class="animal-btn" data-animal-key="tel-next-orta-oblik1333" data-animal="goril" onclick="selectAnimal('tel-next', 'orta', 'oblik1333', 'goril')" title="Goril">🦍</button>
                                             <button type="button" class="animal-btn" data-animal-key="tel-next-orta-oblik1333" data-animal="ferret" onclick="selectAnimal('tel-next', 'orta', 'oblik1333', 'ferret')" title="ferret">🐿️</button>
                                             <button type="button" class="animal-btn" data-animal-key="tel-next-orta-oblik1333" data-animal="kaplumbaga" onclick="selectAnimal('tel-next', 'orta', 'oblik1333', 'kaplumbaga')" title="Kaplumbağa">🐢</button>
                                         </div>
