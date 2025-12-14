@@ -2142,6 +2142,13 @@ function toggleElasticType(parent, elasticType, buttonElement) {
     
     // Sonraki seans için
     if (parent.includes('-next')) {
+        // Ana seçimi aktif et (eğer değilse)
+        if (!nextElasticSelections[parent].active) {
+            nextElasticSelections[parent].active = true;
+            const mainBtn = buttonElement.closest('.elastic-direction-block')?.querySelector('.elastic-main-btn');
+            if (mainBtn) mainBtn.classList.add('active');
+        }
+        
         const isCurrentlySelected = nextElasticSelections[parent].types[elasticType].selected;
         
         if (isCurrentlySelected) {
@@ -2161,6 +2168,13 @@ function toggleElasticType(parent, elasticType, buttonElement) {
         }
     } else {
         // Mevcut sistem
+        // Ana seçimi aktif et (eğer değilse)
+        if (!elasticSelections[parent].active) {
+            elasticSelections[parent].active = true;
+            const mainBtn = buttonElement.closest('.elastic-direction-block')?.querySelector('.elastic-main-btn');
+            if (mainBtn) mainBtn.classList.add('active');
+        }
+        
         const isCurrentlySelected = elasticSelections[parent].types[elasticType].selected;
         
         if (isCurrentlySelected) {
