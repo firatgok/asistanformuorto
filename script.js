@@ -5964,14 +5964,17 @@ function applyMinividaRange() {
     // İşlem seçimi butonlarını aktif et
     updateProcedureButtonsState();
     
-    // Kullanıcıya bilgi ver
-    alert(`${xNum}-${yNum} arasındaki minivida seçildi. Şimdi diş seçin ve işlem seçin.`);
+    // Mesajı göster
+    const messageEl = document.getElementById('minivida-message');
+    messageEl.textContent = `${xNum}-${yNum} arasındaki minivida seçildi. Şimdi diş seçin ve işlem seçin.`;
+    messageEl.style.display = 'block';
 }
 
 function cancelMinividaInput() {
     document.getElementById('minivida-tooth-x').value = '';
     document.getElementById('minivida-tooth-y').value = '';
     document.getElementById('minivida-input-container').style.display = 'none';
+    document.getElementById('minivida-message').style.display = 'none';
 }
 
 // Minivida seçimi temizle
