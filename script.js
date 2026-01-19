@@ -1410,6 +1410,10 @@ function clearAllSeffafSelections() {
     // Clear motivasyon sorularını da answers'dan sil
     clearMotivasyonAnswers();
     
+    // LocalStorage'dan da temizle
+    localStorage.removeItem('ortodontiFormData');
+    console.log('🗑️ Tüm veriler ve cache temizlendi');
+    
     // Update output
     updateSeffafOutput();
 }
@@ -1439,6 +1443,10 @@ function clearAllTelSelections() {
     scoreButtons.forEach(btn => {
         btn.classList.remove('selected');
     });
+    
+    // LocalStorage'dan da temizle
+    localStorage.removeItem('ortodontiFormData');
+    console.log('🗑️ Tüm veriler ve cache temizlendi');
     
     // Update output
     updateTelOutput();
