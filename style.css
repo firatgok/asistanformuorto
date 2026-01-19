@@ -5981,6 +5981,12 @@ input::placeholder, textarea::placeholder {
     border: 1px solid var(--gray-200);
 }
 
+.minivida-buttons-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .minivida-main-btn {
     background: #10B981 !important;
     border: 2px solid #059669 !important;
@@ -5998,7 +6004,32 @@ input::placeholder, textarea::placeholder {
     transform: translateY(-2px);
 }
 
+.power-arm-btn {
+    background: #F59E0B !important;
+    border: 2px solid #D97706 !important;
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.power-arm-btn:hover {
+    background: #D97706 !important;
+    transform: translateY(-2px);
+}
+
 .minivida-input-container {
+    margin-top: 15px;
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+}
+
+.power-arm-input-container {
     margin-top: 15px;
     padding: 12px;
     background: white;
@@ -6010,7 +6041,19 @@ input::placeholder, textarea::placeholder {
     margin-bottom: 15px;
 }
 
+.power-arm-teeth-range {
+    margin-bottom: 15px;
+}
+
 .minivida-teeth-range label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--gray-700);
+    font-size: 14px;
+}
+
+.power-arm-teeth-range label {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;

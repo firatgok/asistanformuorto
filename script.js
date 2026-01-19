@@ -74,7 +74,8 @@ let multiToothSelection = {
     selectedTeeth: [],
     procedures: [],
     sentToReport: [],  // Rapora gönderilen işlemler
-    minividaRange: null  // Seçilen minivida aralığı (örn: {x: 23, y: 24})
+    minividaRange: null,  // Seçilen minivida aralığı (örn: {x: 23, y: 24})
+    powerArm: null  // Power Arm için seçilen diş
 };
 
 let elasticSelections = {
@@ -5174,6 +5175,7 @@ function updateProcedureButtonsState() {
 function clearMultiToothSelection() {
     multiToothSelection.selectedTeeth = [];
     multiToothSelection.minividaRange = null;  // Minivida seçimini de temizle
+    multiToothSelection.powerArm = null;  // Power Arm seçimini de temizle
     
     // Tüm seçili butonları temizle
     document.querySelectorAll('.tooth-btn-fdi.multi-select.selected').forEach(btn => {
@@ -5199,8 +5201,39 @@ function addMultiToothProcedure(procedureType) {
     
     let procedureText = '';
     
-    if (multiToothSelection.minividaRange) {
-        // Minivida seçili ise
+    if (multiToothSelection.minividaRange && multiToothSelection.powerArm) {
+        // Minivida ve Power Arm seçili ise
+        const minividaX = multiToothSelection.minividaRange.x;
+        const minividaY = multiToothSelection.minividaRange.y;
+        const powerArmTooth = multiToothSelection.powerArm;
+        
+        if (procedureType === 'memory-chain') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan memory chain takıldı`;
+        } else if (procedureType === 'chain-yenileme') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan chain yenilendi`;
+        } else if (procedureType === 'ligatur') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan 8 ligatür takıldı`;
+        } else if (procedureType === 'open-coil') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan open coil takıldı`;
+        } else if (procedureType === 'koruyucu-boru') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan koruyucu boru takıldı`;
+        } else if (procedureType === 'close-coil') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan close coil takıldı`;
+        } else if (procedureType === 'tel-kompozit') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan tel kompozitle kaplandı`;
+        } else if (procedureType === 'power-bar') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan power bar takıldı`;
+        } else if (procedureType === 'lays-back') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan lays back takıldı`;
+        } else if (procedureType === 'lays-back-aktivasyon') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan lays back aktive edildi`;
+        } else if (procedureType === 'coil-aktivasyon') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan coil aktive edildi`;
+        } else if (procedureType === 'loop-aktivasyon') {
+            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan loop aktive edildi`;
+        }
+    } else if (multiToothSelection.minividaRange) {
+        // Sadece minivida seçili ise
         const minividaX = multiToothSelection.minividaRange.x;
         const minividaY = multiToothSelection.minividaRange.y;
         const selectedTooth = multiToothSelection.selectedTeeth[0];
@@ -6036,6 +6069,50 @@ function clearMinividaSelection() {
     multiToothSelection.minividaRange = null;
 }
 
+// Power Arm Fonksiyonları
+function togglePowerArmInput() {
+    const container = document.getElementById('power-arm-input-container');
+    if (container.style.display === 'none' || container.style.display === '') {
+        container.style.display = 'block';
+        document.getElementById('power-arm-tooth').focus();
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+function applyPowerArm() {
+    const toothStr = document.getElementById('power-arm-tooth').value;
+    
+    if (!toothStr) {
+        alert('Lütfen diş numarasını girin!');
+        return;
+    }
+    
+    const toothNum = parseInt(toothStr);
+    
+    if (isNaN(toothNum) || toothNum < 11 || toothNum > 48) {
+        alert('Lütfen geçerli diş numarası girin (11-48)!');
+        return;
+    }
+    
+    // Power Arm seçimini state'e kaydet
+    multiToothSelection.powerArm = toothNum;
+    
+    // Input'u temizle ve kapat
+    document.getElementById('power-arm-tooth').value = '';
+    document.getElementById('power-arm-input-container').style.display = 'none';
+    
+    // Mesajı göster
+    const messageEl = document.getElementById('minivida-message');
+    messageEl.textContent = `${toothNum} nolu diş Power Arm olarak seçildi.`;
+    messageEl.style.display = 'block';
+}
+
+function cancelPowerArmInput() {
+    document.getElementById('power-arm-tooth').value = '';
+    document.getElementById('power-arm-input-container').style.display = 'none';
+}
+
 // Export için global olarak ayarla
 window.openSpacingPopup = openSpacingPopup;
 window.closeSpacingPopup = closeSpacingPopup;
@@ -6045,6 +6122,9 @@ window.clearAllSpacingMeasurements = clearAllSpacingMeasurements;
 window.toggleMinividaInput = toggleMinividaInput;
 window.applyMinividaRange = applyMinividaRange;
 window.cancelMinividaInput = cancelMinividaInput;
+window.togglePowerArmInput = togglePowerArmInput;
+window.applyPowerArm = applyPowerArm;
+window.cancelPowerArmInput = cancelPowerArmInput;
 
 
 

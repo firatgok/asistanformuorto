@@ -54,7 +54,7 @@
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="asistan" data-value="Zeynep">Zeynep</button>
                                 <button type="button" class="option-btn" data-question="asistan" data-value="Rabia">Rabia</button>
-                                <button type="button" class="option-btn" data-question="asistan" data-value="Özlem">Özlem</button>
+                                <button type="button" class="option-btn" data-question="asistan" data-value="Liva">Liva</button>
                                 <button type="button" class="option-btn" data-question="asistan" data-value="Hilal">Hilal</button>
                                 <button type="button" class="toggle-manual-btn" onclick="toggleManualAsistanInput()">Manuel Giriş</button>
                                 <button type="button" class="clear-btn" data-question="asistan">Sıfırla</button>
@@ -1300,7 +1300,7 @@
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Zeynep">Zeynep</button>
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Rabia">Rabia</button>
-                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Özlem">Özlem</button>
+                                <button type="button" class="option-btn" data-question="tel-asistan" data-value="Liva">Liva</button>
                                 <button type="button" class="option-btn" data-question="tel-asistan" data-value="Hilal">Hilal</button>
                                 <button type="button" class="toggle-manual-btn" onclick="toggleManualAsistanInput('tel')">Manuel Giriş</button>
                                 <button type="button" class="clear-btn" data-question="tel-asistan">Sıfırla</button>
@@ -2665,9 +2665,14 @@
                             
                             <!-- Minivida Seçimi -->
                             <div class="minivida-selection">
-                                <button type="button" class="minivida-main-btn" onclick="toggleMinividaInput()">
-                                    Minivida
-                                </button>
+                                <div class="minivida-buttons-group">
+                                    <button type="button" class="minivida-main-btn" onclick="toggleMinividaInput()">
+                                        Minivida
+                                    </button>
+                                    <button type="button" class="power-arm-btn" onclick="togglePowerArmInput()">
+                                        Power Arm
+                                    </button>
+                                </div>
                                 <div id="minivida-input-container" class="minivida-input-container" style="display: none;">
                                     <div class="minivida-teeth-range">
                                         <label>Diş Aralığı:</label>
@@ -2681,6 +2686,19 @@
                                     <div class="minivida-buttons">
                                         <button type="button" class="confirm-btn" onclick="applyMinividaRange()">Onayla</button>
                                         <button type="button" class="cancel-btn" onclick="cancelMinividaInput()">İptal</button>
+                                    </div>
+                                </div>
+                                <div id="power-arm-input-container" class="power-arm-input-container" style="display: none;">
+                                    <div class="power-arm-teeth-range">
+                                        <label>Diş Seçimi:</label>
+                                        <div class="teeth-input-fields">
+                                            <input type="number" id="power-arm-tooth" class="tooth-input" placeholder="Diş No" min="11" max="48">
+                                            <span class="input-label">nolu diş</span>
+                                        </div>
+                                    </div>
+                                    <div class="power-arm-buttons">
+                                        <button type="button" class="confirm-btn" onclick="applyPowerArm()">Onayla</button>
+                                        <button type="button" class="cancel-btn" onclick="cancelPowerArmInput()">İptal</button>
                                     </div>
                                 </div>
                                 <div id="minivida-message" class="minivida-message" style="display: none;"></div>
