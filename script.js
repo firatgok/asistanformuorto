@@ -6298,7 +6298,7 @@ function restoreFormDataFromLocalStorage() {
             
             return true;
         } else {
-            console.log('ℹ️ LocalStorage'da kaydedilmiş veri bulunamadı');
+            console.log('ℹ️ LocalStorage\'da kaydedilmiş veri bulunamadı');
         }
     } catch (e) {
         console.error('❌ LocalStorage geri yükleme başarısız:', e.message);
