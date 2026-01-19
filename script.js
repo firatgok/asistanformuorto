@@ -5,6 +5,7 @@ let spacingList = [];
 let elasticList = [];
 let spacingMeasurements = {};
 let elasticParameters = {};
+let selectedInterdentalSpaces = new Set();
 
 // Mevcut takılı teller seçimleri
 let currentWires = {
@@ -1825,7 +1826,7 @@ function loadSavedFontSizes() {
 document.addEventListener('DOMContentLoaded', loadSavedFontSizes);
 
 // FDI Dental Chart Functionality
-let selectedInterdentalSpaces = new Set();
+// selectedInterdentalSpaces is now defined at the top of the file
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeToothSelection();
@@ -6256,10 +6257,18 @@ function saveFormDataToLocalStorage() {
             currentProcedureSelection: currentProcedureSelection || {},
             multiToothSelection: multiToothSelection || {},
             elasticSelections: elasticSelections || {},
+            nextElasticSelections: nextElasticSelections || {},
             spacingMeasurements: spacingMeasurements || {},
             spacingList: spacingList || [],
             elasticParameters: elasticParameters || {},
             elasticList: elasticList || [],
+            elasticNeedCalculation: elasticNeedCalculation || {},
+            selectedSokum: selectedSokum || null,
+            minividaRemovals: minividaRemovals || [],
+            yediDahilSelection: yediDahilSelection || {},
+            plannedProceduresText: plannedProceduresText || '',
+            fullArchBends: fullArchBends || {},
+            selectedInterdentalSpaces: Array.from(selectedInterdentalSpaces || []),
             timestamp: new Date().toISOString()
         };
         
@@ -6294,10 +6303,18 @@ function restoreFormDataFromLocalStorage() {
             currentProcedureSelection = formData.currentProcedureSelection || {};
             multiToothSelection = formData.multiToothSelection || {};
             elasticSelections = formData.elasticSelections || {};
+            nextElasticSelections = formData.nextElasticSelections || {};
             spacingMeasurements = formData.spacingMeasurements || {};
             spacingList = formData.spacingList || [];
             elasticParameters = formData.elasticParameters || {};
             elasticList = formData.elasticList || [];
+            elasticNeedCalculation = formData.elasticNeedCalculation || {};
+            selectedSokum = formData.selectedSokum || null;
+            minividaRemovals = formData.minividaRemovals || [];
+            yediDahilSelection = formData.yediDahilSelection || {};
+            plannedProceduresText = formData.plannedProceduresText || '';
+            fullArchBends = formData.fullArchBends || {};
+            selectedInterdentalSpaces = new Set(formData.selectedInterdentalSpaces || []);
             
             console.log('✅ Form verileri geri yüklendi - Kayıt tarihi:', formData.timestamp);
             
