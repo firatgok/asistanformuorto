@@ -2690,10 +2690,12 @@
                                 </div>
                                 <div id="power-arm-input-container" class="power-arm-input-container" style="display: none;">
                                     <div class="power-arm-teeth-range">
-                                        <label>Diş Seçimi:</label>
+                                        <label>Diş Aralığı:</label>
                                         <div class="teeth-input-fields">
-                                            <input type="number" id="power-arm-tooth" class="tooth-input" placeholder="Diş No" min="11" max="48">
-                                            <span class="input-label">nolu diş</span>
+                                            <input type="number" id="power-arm-tooth-x" class="tooth-input" placeholder="X" min="11" max="48">
+                                            <span class="input-separator">ve</span>
+                                            <input type="number" id="power-arm-tooth-y" class="tooth-input" placeholder="Y" min="11" max="48">
+                                            <span class="input-label">nolu dişler arası</span>
                                         </div>
                                     </div>
                                     <div class="power-arm-buttons">
@@ -2702,6 +2704,7 @@
                                     </div>
                                 </div>
                                 <div id="minivida-message" class="minivida-message" style="display: none;"></div>
+                                <div id="power-arm-message" class="minivida-message" style="display: none;"></div>
                             </div>
                             
                             <!-- İşlem Seçimi -->

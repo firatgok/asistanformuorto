@@ -5154,9 +5154,22 @@ function updateProcedureButtonsState() {
     const laysBackBtn = document.getElementById('lays-back-btn');
     const laysBackAktivasyonBtn = document.getElementById('lays-back-aktivasyon-btn');
     
-    // Minivida seçiliyse 1 diş yeterli, değilse 2+ diş gerekli
-    const requiredTeeth = multiToothSelection.minividaRange ? 1 : 2;
-    const canPerformProcedure = multiToothSelection.selectedTeeth.length >= requiredTeeth;
+    // Kontrol: 
+    // - Minivida + Power Arm seçili ise → diş seçilmeden de işlem yapılabilir
+    // - Minivida veya Power Arm seçili ise → 1 diş gerekli
+    // - Hiçbiri seçili değilse → 2+ diş gerekli
+    let canPerformProcedure = false;
+    
+    if (multiToothSelection.minividaRange && multiToothSelection.powerArm) {
+        // Minivida + Power Arm → diş seçilmesine gerek yok
+        canPerformProcedure = true;
+    } else if (multiToothSelection.minividaRange || multiToothSelection.powerArm) {
+        // Sadece minivida veya sadece power arm → 1 diş gerekli
+        canPerformProcedure = multiToothSelection.selectedTeeth.length >= 1;
+    } else {
+        // Hiçbiri seçili değil → 2+ diş gerekli
+        canPerformProcedure = multiToothSelection.selectedTeeth.length >= 2;
+    }
     
     if (memoryChainBtn) memoryChainBtn.disabled = !canPerformProcedure;
     if (chainYenilemeBtn) chainYenilemeBtn.disabled = !canPerformProcedure;
@@ -5187,11 +5200,19 @@ function clearMultiToothSelection() {
 }
 
 function addMultiToothProcedure(procedureType) {
-    // Eğer minivida seçiliyse 1+ diş, değilse 2+ diş gerekli
-    const requiredTeeth = multiToothSelection.minividaRange ? 1 : 2;
+    // Minivida + Power Arm ise diş seçmez bile işlem yapabilir
+    // Minivida veya Power Arm vardı diş seçili yoksa, sadece 1 seçiliyse diş şart
+    let requiredTeeth = 2;
+    if ((multiToothSelection.minividaRange && multiToothSelection.powerArm) || 
+        (multiToothSelection.minividaRange || multiToothSelection.powerArm)) {
+        requiredTeeth = 1;
+    }
     
-    if (multiToothSelection.selectedTeeth.length < requiredTeeth) {
-        if (multiToothSelection.minividaRange) {
+    // Minivida + Power Arm kombinasyonu seçiliyse diş seçmek zorunlu değil
+    if (multiToothSelection.minividaRange && multiToothSelection.powerArm) {
+        // Diş seçimi zorunlu değil, işlem yapabilir
+    } else if (multiToothSelection.selectedTeeth.length < requiredTeeth) {
+        if (multiToothSelection.minividaRange || multiToothSelection.powerArm) {
             alert('En az 1 diş seçmelisiniz!');
         } else {
             alert('En az 2 diş seçmelisiniz!');
@@ -5205,32 +5226,95 @@ function addMultiToothProcedure(procedureType) {
         // Minivida ve Power Arm seçili ise
         const minividaX = multiToothSelection.minividaRange.x;
         const minividaY = multiToothSelection.minividaRange.y;
-        const powerArmTooth = multiToothSelection.powerArm;
+        const powerArmX = multiToothSelection.powerArm.x;
+        const powerArmY = multiToothSelection.powerArm.y;
+        const selectedTooth = multiToothSelection.selectedTeeth[0];
+        
+        // Eğer diş seçilmişse
+        if (selectedTooth) {
+            if (procedureType === 'memory-chain') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan memory chain takıldı`;
+            } else if (procedureType === 'chain-yenileme') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan chain yenilendi`;
+            } else if (procedureType === 'ligatur') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan 8 ligatür takıldı`;
+            } else if (procedureType === 'open-coil') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan open coil takıldı`;
+            } else if (procedureType === 'koruyucu-boru') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan koruyucu boru takıldı`;
+            } else if (procedureType === 'close-coil') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan close coil takıldı`;
+            } else if (procedureType === 'tel-kompozit') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan tel kompozitle kaplandı`;
+            } else if (procedureType === 'power-bar') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan power bar takıldı`;
+            } else if (procedureType === 'lays-back') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan lays back takıldı`;
+            } else if (procedureType === 'lays-back-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan lays back aktive edildi`;
+            } else if (procedureType === 'coil-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan coil aktive edildi`;
+            } else if (procedureType === 'loop-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan loop aktive edildi`;
+            }
+        } else {
+            // Diş seçilmemişse (sadece minivida + power arm)
+            if (procedureType === 'memory-chain') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan memory chain takıldı`;
+            } else if (procedureType === 'chain-yenileme') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan chain yenilendi`;
+            } else if (procedureType === 'ligatur') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan 8 ligatür takıldı`;
+            } else if (procedureType === 'open-coil') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan open coil takıldı`;
+            } else if (procedureType === 'koruyucu-boru') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan koruyucu boru takıldı`;
+            } else if (procedureType === 'close-coil') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan close coil takıldı`;
+            } else if (procedureType === 'tel-kompozit') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan tel kompozitle kaplandı`;
+            } else if (procedureType === 'power-bar') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan power bar takıldı`;
+            } else if (procedureType === 'lays-back') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan lays back takıldı`;
+            } else if (procedureType === 'lays-back-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan lays back aktive edildi`;
+            } else if (procedureType === 'coil-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan coil aktive edildi`;
+            } else if (procedureType === 'loop-aktivasyon') {
+                procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmX}-${powerArmY} arasındaki power arm'ya uzanan loop aktive edildi`;
+            }
+        }
+    } else if (multiToothSelection.powerArm) {
+        // Sadece Power Arm seçili ise
+        const powerArmX = multiToothSelection.powerArm.x;
+        const powerArmY = multiToothSelection.powerArm.y;
+        const selectedTooth = multiToothSelection.selectedTeeth[0];
         
         if (procedureType === 'memory-chain') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan memory chain takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan memory chain takıldı`;
         } else if (procedureType === 'chain-yenileme') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan chain yenilendi`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan chain yenilendi`;
         } else if (procedureType === 'ligatur') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan 8 ligatür takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan 8 ligatür takıldı`;
         } else if (procedureType === 'open-coil') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan open coil takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan open coil takıldı`;
         } else if (procedureType === 'koruyucu-boru') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan koruyucu boru takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan koruyucu boru takıldı`;
         } else if (procedureType === 'close-coil') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan close coil takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan close coil takıldı`;
         } else if (procedureType === 'tel-kompozit') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan tel kompozitle kaplandı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan tel kompozitle kaplandı`;
         } else if (procedureType === 'power-bar') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan power bar takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan power bar takıldı`;
         } else if (procedureType === 'lays-back') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan lays back takıldı`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan lays back takıldı`;
         } else if (procedureType === 'lays-back-aktivasyon') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan lays back aktive edildi`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan lays back aktive edildi`;
         } else if (procedureType === 'coil-aktivasyon') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan coil aktive edildi`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan coil aktive edildi`;
         } else if (procedureType === 'loop-aktivasyon') {
-            procedureText = `${minividaX}-${minividaY} arasındaki minividadan ${powerArmTooth} nolu power arm dişe uzanan loop aktive edildi`;
+            procedureText = `${powerArmX}-${powerArmY} arasındaki power arm'dan ${selectedTooth} nolu dişe uzanan loop aktive edildi`;
         }
     } else if (multiToothSelection.minividaRange) {
         // Sadece minivida seçili ise
@@ -6074,37 +6158,48 @@ function togglePowerArmInput() {
     const container = document.getElementById('power-arm-input-container');
     if (container.style.display === 'none' || container.style.display === '') {
         container.style.display = 'block';
-        document.getElementById('power-arm-tooth').focus();
+        document.getElementById('power-arm-tooth-x').focus();
     } else {
         container.style.display = 'none';
     }
 }
 
 function applyPowerArm() {
-    const toothStr = document.getElementById('power-arm-tooth').value;
+    const toothX = document.getElementById('power-arm-tooth-x').value;
+    const toothY = document.getElementById('power-arm-tooth-y').value;
     
-    if (!toothStr) {
-        alert('Lütfen diş numarasını girin!');
+    if (!toothX || !toothY) {
+        alert('Lütfen her iki diş numarasını girin!');
         return;
     }
     
-    const toothNum = parseInt(toothStr);
+    const xNum = parseInt(toothX);
+    const yNum = parseInt(toothY);
     
-    if (isNaN(toothNum) || toothNum < 11 || toothNum > 48) {
-        alert('Lütfen geçerli diş numarası girin (11-48)!');
+    if (isNaN(xNum) || isNaN(yNum) || xNum < 11 || xNum > 48 || yNum < 11 || yNum > 48) {
+        alert('Lütfen geçerli diş numaraları girin (11-48)!');
         return;
     }
     
-    // Power Arm seçimini state'e kaydet
-    multiToothSelection.powerArm = toothNum;
+    if (xNum === yNum) {
+        alert('Farklı diş numaraları seçmelisiniz!');
+        return;
+    }
+    
+    // Power Arm aralığını state'e kaydet
+    multiToothSelection.powerArm = {
+        x: xNum,
+        y: yNum
+    };
     
     // Input'u temizle ve kapat
-    document.getElementById('power-arm-tooth').value = '';
+    document.getElementById('power-arm-tooth-x').value = '';
+    document.getElementById('power-arm-tooth-y').value = '';
     document.getElementById('power-arm-input-container').style.display = 'none';
     
     // Mesajı göster
-    const messageEl = document.getElementById('minivida-message');
-    messageEl.textContent = `${toothNum} nolu diş Power Arm olarak seçildi.`;
+    const messageEl = document.getElementById('power-arm-message');
+    messageEl.textContent = `${xNum}-${yNum} arasındaki power arm seçildi.`;
     messageEl.style.display = 'block';
 }
 
