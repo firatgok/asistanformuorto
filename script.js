@@ -1,6 +1,10 @@
 // Global variables
 let answers = {};
 let telAnswers = {};
+let spacingList = [];
+let elasticList = [];
+let spacingMeasurements = {};
+let elasticParameters = {};
 
 // Mevcut takılı teller seçimleri
 let currentWires = {
@@ -5928,7 +5932,6 @@ window.resetFrezSelections = resetFrezSelections;
 // ===== DİŞLER ARASI BOŞLUK ÖLÇÜMÜ FONKSİYONLARI =====
 
 // Global dişler arası boşluk ölçümleri storage
-let spacingMeasurements = {};
 let currentSpacingPosition = null;
 
 // Dişler arası boşluk popup'ını aç
@@ -6224,6 +6227,133 @@ window.togglePowerArmInput = togglePowerArmInput;
 window.applyPowerArm = applyPowerArm;
 window.cancelPowerArmInput = cancelPowerArmInput;
 
+// ===== OTOMATIK KAYDETME SİSTEMİ (4 SANIYE) =====
+let lastSaveTime = 0;
+let saveInProgress = false;
 
+// Tüm verileri localStorage'a kaydet
+function saveFormDataToLocalStorage() {
+    if (saveInProgress) return;
+    
+    saveInProgress = true;
+    
+    try {
+        const formData = {
+            answers: answers || {},
+            telAnswers: telAnswers || {},
+            currentWires: currentWires || {},
+            wireBends: wireBends || {},
+            interbendData: interbendData || {},
+            telProcedures: telProcedures || {},
+            currentProcedureSelection: currentProcedureSelection || {},
+            multiToothSelection: multiToothSelection || {},
+            elasticSelections: elasticSelections || {},
+            spacingMeasurements: spacingMeasurements || {},
+            spacingList: spacingList || [],
+            elasticParameters: elasticParameters || {},
+            elasticList: elasticList || [],
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('ortodontiFormData', JSON.stringify(formData));
+        console.log('✅ Form verileri kaydedildi:', new Date().toLocaleTimeString(), 'Toplam:', Object.keys(formData).length, 'alan');
+        
+        // Başarı notification'ı göster
+        showSaveNotification();
+        lastSaveTime = Date.now();
+        
+    } catch (e) {
+        console.error('❌ LocalStorage kaydı başarısız:', e.message);
+    } finally {
+        saveInProgress = false;
+    }
+}
 
+// LocalStorage'dan verileri geri yükle
+function restoreFormDataFromLocalStorage() {
+    try {
+        const savedData = localStorage.getItem('ortodontiFormData');
+        if (savedData) {
+            const formData = JSON.parse(savedData);
+            
+            // Tüm verileri global değişkenlere geri yükle
+            answers = formData.answers || {};
+            telAnswers = formData.telAnswers || {};
+            currentWires = formData.currentWires || {};
+            wireBends = formData.wireBends || {};
+            interbendData = formData.interbendData || {};
+            telProcedures = formData.telProcedures || {};
+            currentProcedureSelection = formData.currentProcedureSelection || {};
+            multiToothSelection = formData.multiToothSelection || {};
+            elasticSelections = formData.elasticSelections || {};
+            spacingMeasurements = formData.spacingMeasurements || {};
+            spacingList = formData.spacingList || [];
+            elasticParameters = formData.elasticParameters || {};
+            elasticList = formData.elasticList || [];
+            
+            console.log('✅ Form verileri geri yüklendi - Kayıt tarihi:', formData.timestamp);
+            
+            // UI'ı güncelle
+            updateAllOutputs();
+            
+            return true;
+        } else {
+            console.log('ℹ️ LocalStorage'da kaydedilmiş veri bulunamadı');
+        }
+    } catch (e) {
+        console.error('❌ LocalStorage geri yükleme başarısız:', e.message);
+    }
+    
+    return false;
+}
 
+// Başarı notification'ı göster
+function showSaveNotification() {
+    const notification = document.getElementById('save-notification');
+    if (notification) {
+        notification.style.display = 'flex';
+        
+        // 2 saniye sonra gizle
+        setTimeout(function() {
+            notification.style.display = 'none';
+        }, 2000);
+    }
+}
+
+// Tüm UI outputlarını güncelle
+function updateAllOutputs() {
+    try {
+        // Şeffaf Plak sekmesi
+        if (typeof updateToothOutput === 'function') {
+            updateToothOutput('adaptasyon');
+            updateToothOutput('atasmanlar');
+        }
+        
+        // Tel sekmesi
+        if (typeof updateWireSelection === 'function') {
+            updateWireSelection();
+        }
+        if (typeof updateSelectedTeethDisplay === 'function') {
+            updateSelectedTeethDisplay();
+        }
+    } catch (e) {
+        console.error('UI güncelleme hatası:', e);
+    }
+}
+
+// Sayfa yüklendiğinde otomatik geri yükleme
+window.addEventListener('load', function() {
+    console.log('Sayfa yüklendi - Form verileri kontrol ediliyor...');
+    
+    // Eğer localStorage'da veri varsa geri yükle
+    restoreFormDataFromLocalStorage();
+    
+    // 4 saniyede bir otomatik kaydet başlat
+    setInterval(function() {
+        saveFormDataToLocalStorage();
+    }, 4000);
+});
+
+window.saveFormDataToLocalStorage = saveFormDataToLocalStorage;
+window.restoreFormDataFromLocalStorage = restoreFormDataFromLocalStorage;
+window.showSaveNotification = showSaveNotification;
