@@ -6197,6 +6197,9 @@ function applyPowerArm() {
     document.getElementById('power-arm-tooth-y').value = '';
     document.getElementById('power-arm-input-container').style.display = 'none';
     
+    // İşlem seçimi butonlarını aktif et
+    updateProcedureButtonsState();
+    
     // Mesajı göster
     const messageEl = document.getElementById('power-arm-message');
     messageEl.textContent = `${xNum}-${yNum} arasındaki power arm seçildi.`;
