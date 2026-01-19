@@ -5405,8 +5405,8 @@ function addMultiToothProcedure(procedureType) {
     // Listeyi güncelle
     updateProcedureList();
     
-    // Seçimi temizle
-    clearToothSelection();
+    // Seçimi temizle (yalnızca multiTooth seçimini)
+    multiToothSelection.selectedTeeth = [];
     
     // Rapora gönder butonunu aktif et
     updateSendToReportButtonState();
@@ -5474,9 +5474,9 @@ function clearMultiProcedures() {
     
     multiToothSelection.procedures = [];
     multiToothSelection.sentToReport = [];  // Rapora gönderilenleri de temizle
+    multiToothSelection.selectedTeeth = [];  // Seçilen dişleri de temizle
     updateProcedureList();
     updateSendToReportButtonState();
-    clearToothSelection();
     updateTelOutput();  // Raporu güncelle
 }
 
