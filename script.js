@@ -338,6 +338,23 @@ function updateNumberDisplay() {
     } else if (plakGunDisplay) {
         plakGunDisplay.textContent = '--';
     }
+    
+    // Plak durum kutusu güncelle
+    updatePlakStatusBox();
+}
+
+// Plak durum kutusunu güncelle
+function updatePlakStatusBox() {
+    const statusMevcutPlak = document.getElementById('status-mevcut-plak');
+    const statusPlakGun = document.getElementById('status-plak-gun');
+    
+    if (statusMevcutPlak) {
+        statusMevcutPlak.textContent = numberInputs['mevcut-plak'] || '--';
+    }
+    
+    if (statusPlakGun) {
+        statusPlakGun.textContent = numberInputs['plak-gun'] || '--';
+    }
 }
 
 function updateSeffafOutput() {
@@ -762,10 +779,8 @@ function generateSeffafReport(answers) {
                         case 'cross': typeText = 'Cross'; break;
                     }
                     
-                    // Hayvan seçimini DOM'dan al
-                    const animalKey = 'seffaf-sag-' + type;
-                    const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                    const animalText = selectedAnimal ? selectedAnimal.title : '';
+                    // Hayvan seçimini veri yapısından al
+                    const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                     
                     let text = `${typeText} lastik ${typeData.duration}`;
                     if (animalText) text += ` (${animalText})`;
@@ -796,10 +811,8 @@ function generateSeffafReport(answers) {
                         case 'cross': typeText = 'Cross'; break;
                     }
                     
-                    // Hayvan seçimini DOM'dan al
-                    const animalKey = 'seffaf-sol-' + type;
-                    const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                    const animalText = selectedAnimal ? selectedAnimal.title : '';
+                    // Hayvan seçimini veri yapısından al
+                    const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                     
                     let text = `${typeText} lastik ${typeData.duration}`;
                     if (animalText) text += ` (${animalText})`;
@@ -856,10 +869,8 @@ function generateSeffafReport(answers) {
                                 case 'cross': typeText = 'Cross'; break;
                             }
                             
-                            // Hayvan seçimini DOM'dan al (mevcut lastik için)
-                            const animalKey = 'seffaf-sag-' + type;
-                            const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                            const animalText = selectedAnimal ? selectedAnimal.title : '';
+                            // Hayvan seçimini mevcut lastik verisinden al
+                            const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                             
                             let text = `${typeText} lastik ${typeData.duration}`;
                             if (animalText) text += ` (${animalText})`;
@@ -888,10 +899,8 @@ function generateSeffafReport(answers) {
                             case 'cross': typeText = 'Cross'; break;
                         }
                         
-                        // Hayvan seçimini DOM'dan al (next-session için - HTML'deki sıralama: seffaf-next-sag-sinif2)
-                        const animalKey = 'seffaf-next-sag-' + type;
-                        const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                        const animalText = selectedAnimal ? selectedAnimal.title : '';
+                        // Hayvan seçimini veri yapısından al
+                        const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                         
                         let text = `${typeText} lastik ${typeData.duration}`;
                         if (animalText) text += ` (${animalText})`;
@@ -928,10 +937,8 @@ function generateSeffafReport(answers) {
                                 case 'cross': typeText = 'Cross'; break;
                             }
                             
-                            // Hayvan seçimini DOM'dan al (mevcut lastik için)
-                            const animalKey = 'seffaf-sol-' + type;
-                            const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                            const animalText = selectedAnimal ? selectedAnimal.title : '';
+                            // Hayvan seçimini mevcut lastik verisinden al
+                            const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                             
                             let text = `${typeText} lastik ${typeData.duration}`;
                             if (animalText) text += ` (${animalText})`;
@@ -960,10 +967,8 @@ function generateSeffafReport(answers) {
                             case 'cross': typeText = 'Cross'; break;
                         }
                         
-                        // Hayvan seçimini DOM'dan al (next-session için - HTML'deki sıralama: seffaf-next-sol-sinif2)
-                        const animalKey = 'seffaf-next-sol-' + type;
-                        const selectedAnimal = document.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-                        const animalText = selectedAnimal ? selectedAnimal.title : '';
+                        // Hayvan seçimini veri yapısından al
+                        const animalText = typeData.animal ? getAnimalName(typeData.animal) : '';
                         
                         let text = `${typeText} lastik ${typeData.duration}`;
                         if (animalText) text += ` (${animalText})`;
@@ -1360,6 +1365,50 @@ function clearOutput(elementId) {
     }
 }
 
+// Reset all data and clear browser cache
+function resetData() {
+    // Kullanıcıya onay sorusu
+    const confirmation = confirm('Tüm kaydedilmiş veriler silinecek ve sayfa yenilenecek. Emin misiniz?');
+    
+    if (confirmation) {
+        // Önce tüm output'ları temizle
+        const seffafOutput = document.getElementById('seffaf-output');
+        const telOutput = document.getElementById('tel-output');
+        if (seffafOutput) seffafOutput.value = '';
+        if (telOutput) telOutput.value = '';
+        
+        // Plak durum kutusunu temizle
+        const statusMevcutPlak = document.getElementById('status-mevcut-plak');
+        const statusPlakGun = document.getElementById('status-plak-gun');
+        if (statusMevcutPlak) statusMevcutPlak.textContent = '--';
+        if (statusPlakGun) statusPlakGun.textContent = '--';
+        
+        // Number inputs'u sıfırla
+        numberInputs = {
+            'onceki-seans': '',
+            'mevcut-plak': '',
+            'plak-gun': '',
+            'verilecek-plak': ''
+        };
+        
+        // Tüm seçimleri temizle
+        if (typeof clearAllSeffafSelections === 'function') {
+            clearAllSeffafSelections();
+        }
+        if (typeof clearAllTelSelections === 'function') {
+            clearAllTelSelections();
+        }
+        
+        // LocalStorage'ı temizle
+        localStorage.clear();
+        
+        // Kısa bir gecikme ile sayfayı yeniden yükle
+        setTimeout(function() {
+            window.location.reload(true);
+        }, 100);
+    }
+}
+
 function clearAllSeffafSelections() {
     // Clear all checkboxes in şeffaf plak tab
     const seffafTab = document.getElementById('seffaf-plak');
@@ -1411,9 +1460,9 @@ function clearAllSeffafSelections() {
     // Clear motivasyon sorularını da answers'dan sil
     clearMotivasyonAnswers();
     
-    // LocalStorage'dan da temizle
-    localStorage.removeItem('ortodontiFormData');
-    console.log('🗑️ Tüm veriler ve cache temizlendi');
+    // NOT: LocalStorage'ı burada temizleme - sadece resetData fonksiyonunda temizlensin
+    // localStorage.removeItem('ortodontiFormData'); // KALDIRILDI
+    console.log('🗑️ Şeffaf plak verileri temizlendi (localStorage korundu)');
     
     // Update output
     updateSeffafOutput();
@@ -1445,9 +1494,9 @@ function clearAllTelSelections() {
         btn.classList.remove('selected');
     });
     
-    // LocalStorage'dan da temizle
-    localStorage.removeItem('ortodontiFormData');
-    console.log('🗑️ Tüm veriler ve cache temizlendi');
+    // NOT: LocalStorage'ı burada temizleme - sadece resetData fonksiyonunda temizlensin
+    // localStorage.removeItem('ortodontiFormData'); // KALDIRILDI
+    console.log('🗑️ Tel tedavisi verileri temizlendi (localStorage korundu)');
     
     // Update output
     updateTelOutput();
@@ -2874,13 +2923,27 @@ function getTelDirectionElastics(section, direction) {
         const dir = elasticTypeMatch[2]; // 'sag', 'sol', 'orta'
         const elasticType = elasticTypeMatch[3]; // 'sinif2', 'sinif3', 'cross', etc.
         
-        const animalKey = tabType + '-' + dir + '-' + elasticType;
-        
-        // Hayvan seçimi
-        const selectedAnimal = section.querySelector('.animal-btn.selected[data-animal-key="' + animalKey + '"]');
-        const animalText = selectedAnimal ? selectedAnimal.title : '';
+        // Hayvan seçimini veri yapısından al
+        let animalText = '';
+        if (tabType === 'tel-next') {
+            const directionKey = dir + '-next';
+            if (nextElasticSelections[directionKey] && 
+                nextElasticSelections[directionKey].types && 
+                nextElasticSelections[directionKey].types[elasticType] &&
+                nextElasticSelections[directionKey].types[elasticType].animal) {
+                animalText = getAnimalName(nextElasticSelections[directionKey].types[elasticType].animal);
+            }
+        } else if (tabType === 'tel') {
+            if (elasticSelections[dir] && 
+                elasticSelections[dir].types && 
+                elasticSelections[dir].types[elasticType] &&
+                elasticSelections[dir].types[elasticType].animal) {
+                animalText = getAnimalName(elasticSelections[dir].types[elasticType].animal);
+            }
+        }
         
         // Saat seçimi
+        const animalKey = tabType + '-' + dir + '-' + elasticType;
         const hoursContainer = section.querySelector('#' + animalKey + '-hours');
         let hoursText = '';
         if (hoursContainer && hoursContainer.style.display !== 'none') {
@@ -4742,12 +4805,58 @@ function selectAnimal(tabType, direction, elasticType, animal) {
         if (hoursContainer) hoursContainer.style.display = 'block';
     }
     
+    // Hayvan seçimini elasticSelections veya nextElasticSelections'a kaydet
+    if (tabType === 'tel-next' || tabType === 'seffaf-next') {
+        const directionKey = direction + '-next';
+        if (!nextElasticSelections[directionKey]) {
+            nextElasticSelections[directionKey] = {
+                active: true,
+                types: {}
+            };
+        }
+        if (!nextElasticSelections[directionKey].types[elasticType]) {
+            nextElasticSelections[directionKey].types[elasticType] = {
+                selected: true,
+                duration: null,
+                animal: null
+            };
+        }
+        nextElasticSelections[directionKey].types[elasticType].animal = animal;
+    } else if (tabType === 'tel' || tabType === 'seffaf') {
+        // Mevcut lastikler için elasticSelections'ı güncelle
+        if (!elasticSelections[direction]) {
+            elasticSelections[direction] = {
+                active: true,
+                types: {}
+            };
+        }
+        if (!elasticSelections[direction].types[elasticType]) {
+            elasticSelections[direction].types[elasticType] = {
+                selected: true,
+                duration: null,
+                animal: null
+            };
+        }
+        elasticSelections[direction].types[elasticType].animal = animal;
+    }
+    
     // Hem tel hem şeffaf plak için rapor güncellemesi
     if (tabType === 'tel' || tabType === 'tel-next') {
         updateTelOutput();
     } else if (tabType === 'seffaf' || tabType === 'seffaf-next') {
         updateSeffafOutput();
     }
+}
+
+// Hayvan kodundan hayvan ismini döndür
+function getAnimalName(animalCode) {
+    const animalNames = {
+        'kartal': 'Kartal',
+        'goril': 'Goril',
+        'ferret': 'Ferret',
+        'kaplumbaga': 'Kaplumbağa'
+    };
+    return animalNames[animalCode] || animalCode;
 }
 
 function selectElasticHours(tabType, direction, elasticType, hours) {
@@ -6250,6 +6359,11 @@ function saveFormDataToLocalStorage() {
         const formData = {
             answers: answers || {},
             telAnswers: telAnswers || {},
+            numberInputs: numberInputs || {},
+            frezIslemleri: {
+                selectedTeeth: Array.from(frezIslemleri.selectedTeeth || []),
+                operations: frezIslemleri.operations || {}
+            },
             currentWires: currentWires || {},
             wireBends: wireBends || {},
             interbendData: interbendData || {},
@@ -6296,6 +6410,14 @@ function restoreFormDataFromLocalStorage() {
             // Tüm verileri global değişkenlere geri yükle
             answers = formData.answers || {};
             telAnswers = formData.telAnswers || {};
+            numberInputs = formData.numberInputs || {};
+            
+            // Frez işlemleri geri yükle
+            if (formData.frezIslemleri) {
+                frezIslemleri.selectedTeeth = new Set(formData.frezIslemleri.selectedTeeth || []);
+                frezIslemleri.operations = formData.frezIslemleri.operations || {};
+            }
+            
             currentWires = formData.currentWires || {};
             wireBends = formData.wireBends || {};
             interbendData = formData.interbendData || {};
@@ -6348,6 +6470,17 @@ function showSaveNotification() {
 // Tüm UI outputlarını güncelle
 function updateAllOutputs() {
     try {
+        // ÖNCE butonları restore et
+        // Adaptasyon ve ataşman butonlarını restore et
+        restoreToothSelections();
+        
+        // Frez işlemleri butonlarını restore et
+        restoreFrezSelections();
+        
+        // Lastik hayvan seçimlerini restore et
+        restoreElasticAnimalSelections();
+        
+        // SONRA outputları güncelle
         // Şeffaf Plak sekmesi
         if (typeof updateToothOutput === 'function') {
             updateToothOutput('adaptasyon');
@@ -6361,9 +6494,137 @@ function updateAllOutputs() {
         if (typeof updateSelectedTeethDisplay === 'function') {
             updateSelectedTeethDisplay();
         }
+        
+        // Plak durum kutusunu güncelle
+        if (typeof updatePlakStatusBox === 'function') {
+            updatePlakStatusBox();
+        }
+        
+        // Number displays'ı güncelle
+        if (typeof updateNumberDisplays === 'function') {
+            updateNumberDisplays();
+        }
     } catch (e) {
         console.error('UI güncelleme hatası:', e);
     }
+}
+
+// Diş seçimlerini restore et (adaptasyon ve ataşmanlar)
+function restoreToothSelections() {
+    console.log('🔄 restoreToothSelections çağrıldı');
+    console.log('  answers:', answers);
+    
+    // Adaptasyon dişlerini restore et
+    if (answers['adaptasyon']) {
+        const adaptasyonText = answers['adaptasyon'];
+        console.log('  Adaptasyon text:', adaptasyonText);
+        const match = adaptasyonText.match(/(\d+)/g);
+        if (match) {
+            console.log('  Restore edilecek adaptasyon dişleri:', match);
+            match.forEach(tooth => {
+                const btn = document.querySelector(`.tooth-btn-fdi[data-question="adaptasyon"][data-tooth="${tooth}"]`);
+                if (btn) {
+                    btn.classList.add('selected');
+                    console.log('    ✅ Diş', tooth, 'restore edildi');
+                } else {
+                    console.log('    ❌ Diş', tooth, 'için buton bulunamadı');
+                }
+            });
+        }
+    } else {
+        console.log('  ℹ️ Adaptasyon verisi yok');
+    }
+    
+    // Ataşman dişlerini restore et
+    if (answers['atasmanlar']) {
+        const atasmanText = answers['atasmanlar'];
+        console.log('  Ataşman text:', atasmanText);
+        const match = atasmanText.match(/(\d+)/g);
+        if (match) {
+            console.log('  Restore edilecek ataşman dişleri:', match);
+            match.forEach(tooth => {
+                const btn = document.querySelector(`.tooth-btn-fdi[data-question="atasmanlar"][data-tooth="${tooth}"]`);
+                if (btn) {
+                    btn.classList.add('selected');
+                    console.log('    ✅ Diş', tooth, 'restore edildi');
+                } else {
+                    console.log('    ❌ Diş', tooth, 'için buton bulunamadı');
+                }
+            });
+        }
+    } else {
+        console.log('  ℹ️ Ataşman verisi yok');
+    }
+}
+
+// Frez işlemleri seçimlerini restore et
+function restoreFrezSelections() {
+    console.log('🔄 restoreFrezSelections çağrıldı');
+    console.log('  frezIslemleri:', frezIslemleri);
+    
+    if (frezIslemleri.selectedTeeth && frezIslemleri.selectedTeeth.size > 0) {
+        console.log('  Restore edilecek frez dişleri:', Array.from(frezIslemleri.selectedTeeth));
+        frezIslemleri.selectedTeeth.forEach(tooth => {
+            const btn = document.querySelector(`#frez-islem-chart .frez-tooth[data-tooth="${tooth}"]`);
+            if (btn) {
+                btn.classList.add('frez-selected');
+                console.log('    ✅ Frez diş', tooth, 'restore edildi');
+            } else {
+                console.log('    ❌ Frez diş', tooth, 'için buton bulunamadı');
+            }
+        });
+        
+        // "İşlem Seç" butonunu etkinleştir
+        const openPopupBtn = document.getElementById('open-frez-popup-btn');
+        if (openPopupBtn) {
+            openPopupBtn.disabled = false;
+            console.log('  ✅ İşlem Seç butonu etkinleştirildi');
+        }
+    } else {
+        console.log('  ℹ️ Frez işlemi verisi yok');
+    }
+}
+
+// Lastik hayvan seçimlerini restore et
+function restoreElasticAnimalSelections() {
+    console.log('🔄 restoreElasticAnimalSelections çağrıldı');
+    
+    // Mevcut lastikler (elasticSelections)
+    Object.keys(elasticSelections).forEach(direction => {
+        if (elasticSelections[direction] && elasticSelections[direction].types) {
+            Object.keys(elasticSelections[direction].types).forEach(elasticType => {
+                const typeData = elasticSelections[direction].types[elasticType];
+                if (typeData && typeData.animal) {
+                    const tabType = 'seffaf'; // veya 'tel' - her ikisi de aynı hayvan butonlarını kullanıyor
+                    const animalKey = tabType + '-' + direction + '-' + elasticType;
+                    const selectedBtn = document.querySelector('.animal-btn[data-animal-key="' + animalKey + '"][data-animal="' + typeData.animal + '"]');
+                    if (selectedBtn) {
+                        selectedBtn.classList.add('selected');
+                        console.log('  ✅ Mevcut lastik hayvan restore edildi:', direction, elasticType, typeData.animal);
+                    }
+                }
+            });
+        }
+    });
+    
+    // Sonraki seans lastikleri (nextElasticSelections)
+    Object.keys(nextElasticSelections).forEach(directionKey => {
+        if (nextElasticSelections[directionKey] && nextElasticSelections[directionKey].types) {
+            const direction = directionKey.replace('-next', '');
+            Object.keys(nextElasticSelections[directionKey].types).forEach(elasticType => {
+                const typeData = nextElasticSelections[directionKey].types[elasticType];
+                if (typeData && typeData.animal) {
+                    const tabType = 'seffaf-next'; // veya 'tel-next'
+                    const animalKey = tabType + '-' + direction + '-' + elasticType;
+                    const selectedBtn = document.querySelector('.animal-btn[data-animal-key="' + animalKey + '"][data-animal="' + typeData.animal + '"]');
+                    if (selectedBtn) {
+                        selectedBtn.classList.add('selected');
+                        console.log('  ✅ Sonraki lastik hayvan restore edildi:', directionKey, elasticType, typeData.animal);
+                    }
+                }
+            });
+        }
+    });
 }
 
 // Sayfa yüklendiğinde otomatik geri yükleme

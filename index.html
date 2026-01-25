@@ -1279,10 +1279,27 @@
                                          oninput="updateSeffafSpecialNote()"></textarea>
                             </div>
                             
+                            <!-- Plak Durum Bilgisi -->
+                            <div class="plak-status-container">
+                                <div class="plak-status-box plak-status-red">
+                                    <div class="plak-status-item">
+                                        <span class="plak-status-label">Mevcut Plak</span>
+                                        <span class="plak-status-value" id="status-mevcut-plak">--</span>
+                                    </div>
+                                </div>
+                                <div class="plak-status-box plak-status-green">
+                                    <div class="plak-status-item">
+                                        <span class="plak-status-label">Günü</span>
+                                        <span class="plak-status-value" id="status-plak-gun">--</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
                             <textarea id="seffaf-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
                             <div class="output-buttons">
                                 <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
                                 <button class="clear-btn" onclick="clearOutput('seffaf-output')">🗑️ Temizle</button>
+                                <button class="reset-btn" onclick="resetData()">🔄 Verileri Sıfırla</button>
                             </div>
                         </div>
                     </div>
@@ -2813,6 +2830,7 @@
                             <div class="output-buttons">
                                 <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>
                                 <button class="clear-btn" onclick="clearOutput('tel-output')">🗑️ Temizle</button>
+                                <button class="reset-btn" onclick="resetData()">🔄 Verileri Sıfırla</button>
                             </div>
                         </div>
                     </div>

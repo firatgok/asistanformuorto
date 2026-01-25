@@ -2129,6 +2129,75 @@ header h1 {
     min-height: 0;
 }
 
+/* Plak Durum Kutusu */
+.plak-status-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.plak-status-box {
+    flex: 1;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: pulse-border 2s ease-in-out infinite;
+}
+
+.plak-status-red {
+    background: linear-gradient(135deg, #e53935, #c62828);
+    border: 3px solid #b71c1c;
+}
+
+.plak-status-green {
+    background: linear-gradient(135deg, #43a047, #2e7d32);
+    border: 3px solid #1b5e20;
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.plak-status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.plak-status-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.plak-status-value {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    min-width: 50px;
+    text-align: center;
+}
+
+/* Dark theme için */
+[data-theme="dark"] .plak-status-red {
+    background: linear-gradient(135deg, #ef5350, #e53935);
+    border-color: #c62828;
+}
+
+[data-theme="dark"] .plak-status-green {
+    background: linear-gradient(135deg, #66bb6a, #43a047);
+    border-color: #2e7d32;
+}
+
 #seffaf-output,
 #tel-output {
     width: 100%;
@@ -2244,6 +2313,50 @@ header h1 {
 .clear-btn:active {
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+}
+
+/* Reset Data Button */
+.reset-btn {
+    background: linear-gradient(135deg, #d32f2f, #c62828);
+    color: white;
+    border: 2px solid #b71c1c;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    flex: 1;
+    min-width: 150px;
+}
+
+.reset-btn:hover {
+    background: linear-gradient(135deg, #c62828, #b71c1c);
+    border-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.reset-btn:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Dark theme reset button */
+[data-theme="dark"] .reset-btn {
+    background: linear-gradient(135deg, #ef5350, #e53935);
+    border-color: #d32f2f;
+}
+
+[data-theme="dark"] .reset-btn:hover {
+    background: linear-gradient(135deg, #e53935, #d32f2f);
+    border-color: #ef5350;
 }
 
 /* FDI Tooth Chart Styles */
