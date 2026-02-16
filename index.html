@@ -53,7 +53,7 @@
                     <button class="nav-item" data-target="kac-plak">Kaç Plak</button>
                     <button class="nav-item" data-target="lastik-ihtiyaci">Lastik İhtiyacı</button>
                     <button class="nav-item" data-target="disler-arasi">Boşluk Ölçümü</button>
-                    <button class="nav-item" data-target="ipr-sayisi">IPR Sayısı</button>
+                    <button class="nav-item" data-target="ipr-sayisi">Sonraki seans IPR</button>
                     <button class="nav-item" data-target="randevu-suresi">Randevu Süresi</button>
                 </nav>
                 
@@ -1312,9 +1312,10 @@
                                 </div>
                             </div>
                             
-                            <textarea id="seffaf-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
+                            <div id="seffaf-output" class="output-display" data-placeholder="İşaretlediğiniz kriterler burada görünecek..."></div>
                             <div class="output-buttons">
                                 <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
+                                <button class="fullscreen-btn" onclick="openFullscreenReport('seffaf-output')">🖥️ Tam Ekran</button>
                                 <button class="reset-btn" onclick="resetData()">🔄 Verileri Sıfırla</button>
                             </div>
                         </div>
@@ -2862,9 +2863,10 @@
                                          oninput="updateTelSpecialNote()"></textarea>
                             </div>
                             
-                            <textarea id="tel-output" readonly placeholder="İşaretlediğiniz kriterler burada görünecek..."></textarea>
+                            <div id="tel-output" class="output-display" data-placeholder="İşaretlediğiniz kriterler burada görünecek..."></div>
                             <div class="output-buttons">
                                 <button class="copy-btn" onclick="copyToClipboard('tel-output')">📋 Kopyala</button>
+                                <button class="fullscreen-btn" onclick="openFullscreenReport('tel-output')">🖥️ Tam Ekran</button>
                                 <button class="reset-btn" onclick="resetData()">🔄 Verileri Sıfırla</button>
                             </div>
                         </div>
@@ -2873,9 +2875,9 @@
                 
                 <!-- Alt Navigasyon - Tel -->
                 <nav class="sticky-nav-bottom" id="sticky-nav-tel-bottom">
-                    <button class="nav-item" data-target="tel-mevcut-teller">Mevcut Teller / Büküm</button>
-                    <button class="nav-item" data-target="tel-sonraki-seans">Sonraki Seans</button>
-                    <button class="nav-item" data-target="tel-dis-islem">Diş/Arası İşlem</button>
+                    <button class="nav-item" data-target="tel-mevcut-teller">Takılan Teller/Bükümler</button>
+                    <button class="nav-item" data-target="tel-sonraki-seans">Sonraki Seans Yapılacaklar</button>
+                    <button class="nav-item" data-target="tel-dis-islem">Diş/Arası Rutin Dışı İşlem</button>
                     <button class="nav-item" data-target="tel-coklu-dis">Çoklu Diş İşlemleri</button>
                     </nav>
                 </div>
@@ -3229,6 +3231,21 @@
             <div class="bend-popup-footer">
                 <button class="popup-clear-btn" onclick="clearInterbendSelection()">Temizle</button>
                 <button class="popup-close-btn" onclick="closeInterbendPopup()">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tam Ekran Rapor Modal -->
+    <div id="fullscreen-modal" class="fullscreen-modal">
+        <div class="fullscreen-modal-content">
+            <div class="fullscreen-modal-header">
+                <h2>Değerlendirme Raporu</h2>
+                <button class="fullscreen-close-btn" onclick="closeFullscreenReport()">✕</button>
+            </div>
+            <div class="fullscreen-modal-body" id="fullscreen-report-content"></div>
+            <div class="fullscreen-modal-footer">
+                <button class="copy-btn" onclick="copyFullscreenReport()">📋 Kopyala</button>
+                <button class="fullscreen-close-btn-footer" onclick="closeFullscreenReport()">Kapat</button>
             </div>
         </div>
     </div>
