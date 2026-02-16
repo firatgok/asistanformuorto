@@ -89,7 +89,10 @@ let elasticSelections = {
         types: {
             sinif2: { selected: false, duration: null },
             sinif3: { selected: false, duration: null },
-            cross: { selected: false, duration: null }
+            cross: { selected: false, duration: null },
+            yatay: { selected: false, duration: null },
+            ucgen: { selected: false, duration: null },
+            box: { selected: false, duration: null }
         }
     },
     sol: { 
@@ -97,7 +100,10 @@ let elasticSelections = {
         types: {
             sinif2: { selected: false, duration: null },
             sinif3: { selected: false, duration: null },
-            cross: { selected: false, duration: null }
+            cross: { selected: false, duration: null },
+            yatay: { selected: false, duration: null },
+            ucgen: { selected: false, duration: null },
+            box: { selected: false, duration: null }
         }
     },
     orta: {
@@ -118,7 +124,10 @@ let nextElasticSelections = {
         types: {
             sinif2: { selected: false, duration: null },
             sinif3: { selected: false, duration: null },
-            cross: { selected: false, duration: null }
+            cross: { selected: false, duration: null },
+            yatay: { selected: false, duration: null },
+            ucgen: { selected: false, duration: null },
+            box: { selected: false, duration: null }
         }
     },
     'sol-next': { 
@@ -127,7 +136,10 @@ let nextElasticSelections = {
         types: {
             sinif2: { selected: false, duration: null },
             sinif3: { selected: false, duration: null },
-            cross: { selected: false, duration: null }
+            cross: { selected: false, duration: null },
+            yatay: { selected: false, duration: null },
+            ucgen: { selected: false, duration: null },
+            box: { selected: false, duration: null }
         }
     },
     'orta-next': {
@@ -460,14 +472,17 @@ function updateSeffafOutput() {
     const output = generateSeffafReport(answers);
     outputElement.value = output;
     
-    // Update lastik calculation
-    updateLastikCalculationDisplay();
+    // Update lastik calculation - sadece elastic report'tan çağrılmamışsa
+    // (updateElasticReport zaten çağırıyor, çift çağrıyı önle)
+    // updateLastikCalculationDisplay();
 }
 
 // Lastik Calculation Functions
 function calculateLastikConsumption() {
     // Randevu kaç hafta sonra?
     const randevuText = answers['sonraki-randevu'];
+    console.log('calculateLastikConsumption - randevuText:', randevuText);
+    
     if (!randevuText) {
         return { error: 'Önce randevu tarihini belirleyin' };
     }
@@ -480,6 +495,8 @@ function calculateLastikConsumption() {
     
     const weeks = parseInt(weekMatch[1]);
     const days = weeks * 7;
+    
+    console.log('calculateLastikConsumption - weeks:', weeks, 'days:', days);
     
     // Sonraki seans lastik seçimlerini kontrol et
     let sagCount = 0;
@@ -550,6 +567,8 @@ function calculateLastikConsumption() {
     // Toplam günlük kullanım
     const dailyUsage = sagCount + solCount + onCount;
     
+    console.log('calculateLastikConsumption - sagCount:', sagCount, 'solCount:', solCount, 'onCount:', onCount, 'dailyUsage:', dailyUsage);
+    
     if (dailyUsage === 0) {
         return { error: 'Sonraki seans için lastik seçimi yapın' };
     }
@@ -562,6 +581,8 @@ function calculateLastikConsumption() {
     if (sagCount > 0) details.push(`Sağ: ${sagCount}/gün`);
     if (solCount > 0) details.push(`Sol: ${solCount}/gün`);
     if (onCount > 0) details.push(`Ön: ${onCount}/gün`);
+    
+    console.log('calculateLastikConsumption - SUCCESS - totalNeeded:', totalNeeded, 'details:', details);
     
     return {
         success: true,
@@ -2491,6 +2512,9 @@ function updateElasticReport() {
         delete answers['sonraki-lastik'];
     }
     
+    // Lastik hesaplamasını güncelle (raporda göstermek için)
+    updateLastikCalculationDisplay();
+    
     // Şeffaf plak sekmesi rapor güncellemesi
     updateSeffafOutput();
 }
@@ -3306,15 +3330,20 @@ function updateDurationResult() {
     } else if (method === 'manual') {
         // Use manual input - calculate total from assistant and doctor durations
         const assistantDuration = parseInt(document.getElementById('manual-assistant-duration').value) || 0;
-        const doctorDuration = parseInt(document.getElementById('manual-doctor-duration').value) || 0;
-        const totalDuration = assistantDuration + doctorDuration;
+        const doctor1Duration = parseInt(document.getElementById('manual-doctor1-duration').value) || 0;
+        const doctor2Duration = parseInt(document.getElementById('manual-doctor2-duration').value) || 0;
+        const totalDuration = assistantDuration + doctor1Duration + doctor2Duration;
         
         if (totalDuration > 0) {
             let durationText = '';
             if (assistantDuration > 0) durationText += `${assistantDuration}dk AR`;
-            if (doctorDuration > 0) {
+            if (doctor1Duration > 0) {
                 if (durationText) durationText += ', ';
-                durationText += `${doctorDuration}dk RD`;
+                durationText += `${doctor1Duration}dk rd`;
+            }
+            if (doctor2Duration > 0) {
+                if (durationText) durationText += ', ';
+                durationText += `${doctor2Duration}dk rutin`;
             }
             resultDisplay.textContent = `Manuel: ${durationText}`;
             answers['randevu-duration'] = totalDuration;
@@ -3337,7 +3366,8 @@ function initializeDurationMethod() {
     const methodButtons = document.querySelectorAll('.duration-method-btn');
     const manualContainer = document.querySelector('.duration-input-container');
     const assistantInput = document.getElementById('manual-assistant-duration');
-    const doctorInput = document.getElementById('manual-doctor-duration');
+    const doctor1Input = document.getElementById('manual-doctor1-duration');
+    const doctor2Input = document.getElementById('manual-doctor2-duration');
     
     methodButtons.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -3359,7 +3389,8 @@ function initializeDurationMethod() {
                 // Hide manual input
                 if (manualContainer) manualContainer.style.display = 'none';
                 if (assistantInput) assistantInput.value = '';
-                if (doctorInput) doctorInput.value = '';
+                if (doctor1Input) doctor1Input.value = '';
+                if (doctor2Input) doctor2Input.value = '';
             }
             
             // Update result display
@@ -3385,17 +3416,34 @@ function initializeDurationMethod() {
         });
     }
     
-    if (doctorInput) {
-        doctorInput.addEventListener('input', function() {
+    if (doctor1Input) {
+        doctor1Input.addEventListener('input', function() {
             updateDurationResult();
         });
         
-        doctorInput.addEventListener('change', function() {
+        doctor1Input.addEventListener('change', function() {
             updateDurationResult();
         });
         
         // Prevent negative values
-        doctorInput.addEventListener('keydown', function(e) {
+        doctor1Input.addEventListener('keydown', function(e) {
+            if (e.key === '-' || e.key === '+') {
+                e.preventDefault();
+            }
+        });
+    }
+    
+    if (doctor2Input) {
+        doctor2Input.addEventListener('input', function() {
+            updateDurationResult();
+        });
+        
+        doctor2Input.addEventListener('change', function() {
+            updateDurationResult();
+        });
+        
+        // Prevent negative values
+        doctor2Input.addEventListener('keydown', function(e) {
             if (e.key === '-' || e.key === '+') {
                 e.preventDefault();
             }
@@ -4744,7 +4792,7 @@ function calculateElasticNeed() {
         
         if (ortaCount > 0) {
             totalElasticsPerDay += ortaCount;
-            details.push(`Ön: ${ortaCount}/gün`);
+            details.push(`Orta: ${ortaCount}/gün`);
         }
     }
     
@@ -6643,3 +6691,69 @@ window.addEventListener('load', function() {
 window.saveFormDataToLocalStorage = saveFormDataToLocalStorage;
 window.restoreFormDataFromLocalStorage = restoreFormDataFromLocalStorage;
 window.showSaveNotification = showSaveNotification;
+
+// ===== STICKY NAVIGATION FUNCTIONS =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Sticky navigation butonlarına tıklama eventi ekle
+    const navButtons = document.querySelectorAll('.nav-item');
+    
+    navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                // Smooth scroll ile ilgili bölüme git
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Kısa bir vurgu efekti
+                targetElement.style.transition = 'all 0.3s ease';
+                targetElement.style.backgroundColor = 'var(--primary-50)';
+                targetElement.style.boxShadow = '0 0 0 3px var(--primary-200)';
+                
+                setTimeout(() => {
+                    targetElement.style.backgroundColor = '';
+                    targetElement.style.boxShadow = '';
+                }, 1000);
+            }
+        });
+    });
+    
+    // Tab değiştiğinde navigasyonları göster/gizle
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            
+            // Tüm navigasyonları gizle
+            document.querySelectorAll('.sticky-nav, .sticky-nav-bottom').forEach(nav => {
+                nav.style.display = 'none';
+            });
+            
+            // İlgili tab'ın navigasyonlarını göster
+            if (tabName === 'seffaf-plak') {
+                const topNav = document.getElementById('sticky-nav-plak-top');
+                const bottomNav = document.getElementById('sticky-nav-plak-bottom');
+                if (topNav) topNav.style.display = 'flex';
+                if (bottomNav) bottomNav.style.display = 'flex';
+            } else if (tabName === 'tel-tedavisi') {
+                const topNav = document.getElementById('sticky-nav-tel-top');
+                const bottomNav = document.getElementById('sticky-nav-tel-bottom');
+                if (topNav) topNav.style.display = 'flex';
+                if (bottomNav) bottomNav.style.display = 'flex';
+            }
+        });
+    });
+    
+    // Sayfa yüklendiğinde aktif tab'ın navigasyonunu göster
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab && activeTab.id === 'seffaf-plak') {
+        const topNav = document.getElementById('sticky-nav-plak-top');
+        const bottomNav = document.getElementById('sticky-nav-plak-bottom');
+        if (topNav) topNav.style.display = 'flex';
+        if (bottomNav) bottomNav.style.display = 'flex';
+    }
+});

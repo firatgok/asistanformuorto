@@ -45,10 +45,22 @@
 
             <!-- Şeffaf Plak Tab -->
             <div id="seffaf-plak" class="tab-content active">
+                <!-- Üst Navigasyon -->
+                <nav class="sticky-nav" id="sticky-nav-plak-top">
+                    <button class="nav-item" data-target="onceki-seans">Önceki Seans</button>
+                    <button class="nav-item" data-target="mevcut-plak">Mevcut Plak</button>
+                    <button class="nav-item" data-target="mevcut-gun">Mevcut Gün</button>
+                    <button class="nav-item" data-target="kac-plak">Kaç Plak</button>
+                    <button class="nav-item" data-target="lastik-ihtiyaci">Lastik İhtiyacı</button>
+                    <button class="nav-item" data-target="disler-arasi">Boşluk Ölçümü</button>
+                    <button class="nav-item" data-target="ipr-sayisi">IPR Sayısı</button>
+                    <button class="nav-item" data-target="randevu-suresi">Randevu Süresi</button>
+                </nav>
+                
                 <div class="form-container">
                     <div class="form-left">
                         <!-- Asistan Seçimi -->
-                        <div class="question-group">
+                        <div class="question-group" id="asistan-section">
                             <div class="question-header">
                                 <h4>Kontrolü yapan asistan</h4>
                                 <div class="selected-display">
@@ -73,12 +85,12 @@
                             </div>
                         </div>
                         
-                        <h3>RUTİN KONTROLLER</h3>
+                        <h3 id="rutin-kontroller">RUTİN KONTROLLER</h3>
                         
 
                         
                         <!-- Önceki seans kaçıncı plağa kadar vermişiz -->
-                        <div class="question-group">
+                        <div class="question-group" id="onceki-seans">
                             <div class="question-header">
                                 <h4>Önceki seans kaçıncı plağa kadar vermişiz?</h4>
                                 <div class="selected-number-display">
@@ -104,7 +116,7 @@
                         </div>
 
                         <!-- Mevcut kaçıncı plakta hastamız -->
-                        <div class="question-group">
+                        <div class="question-group" id="mevcut-plak">
                             <div class="question-header">
                                 <h4>Mevcut kaçıncı plakta hastamız?</h4>
                                 <div class="selected-number-display">
@@ -130,7 +142,7 @@
                         </div>
 
                         <!-- Mevcut plağın kaçıncı gününde -->
-                        <div class="question-group">
+                        <div class="question-group" id="mevcut-gun">
                             <div class="question-header">
                                 <h4>Mevcut plağın kaçıncı gününde?</h4>
                                 <div class="selected-number-display">
@@ -156,7 +168,7 @@
                         </div>
 
                         <!-- Kaç plak vereceğiz -->
-                        <div class="question-group">
+                        <div class="question-group" id="kac-plak">
                             <div class="question-header">
                                 <h4>Kaç plak vereceğiz?</h4>
                                 <div class="selected-number-display">
@@ -210,7 +222,7 @@
                         </div>
 
                         <!-- Lastik Hesaplama -->
-                        <div class="question-group">
+                        <div class="question-group" id="lastik-ihtiyaci">
                             <h4>Lastik İhtiyacı</h4>
                             <div class="lastik-calculation-display">
                                 <div id="lastik-calculation-result">Lastik hesaplaması için sonraki seans lastiklerini seçin</div>
@@ -218,7 +230,7 @@
                         </div>
 
                         <!-- Dişler Arası Boşluk Ölçümü -->
-                        <div class="question-group">
+                        <div class="question-group" id="disler-arasi">
                             <div class="question-header">
                                 <h4>Dişler Arası Boşluk Ölçümü (mm)</h4>
                                 <div class="selected-spacing-display">
@@ -419,7 +431,7 @@
                         </div>
 
                         <!-- IPR Sayısı -->
-                        <div class="question-group">
+                        <div class="question-group" id="ipr-sayisi">
                             <h4>Bir sonraki seans kaç adet IPR yapılacak?</h4>
                             <div class="ipr-count-container">
                                 <div class="ipr-input-group">
@@ -437,7 +449,7 @@
                         </div>
 
                         <!-- Randevu Süresi -->
-                        <div class="question-group">
+                        <div class="question-group" id="randevu-suresi">
                             <h4>Bir sonraki randevu süresi?</h4>
                             <div class="duration-method-buttons">
                                 <button type="button" class="duration-method-btn option-btn" data-method="auto">IPR'den Otomatik Al</button>
@@ -451,8 +463,13 @@
                                     <span class="duration-unit">dakika</span>
                                 </div>
                                 <div class="duration-input-group">
-                                    <label>Doktor Süresi:</label>
-                                    <input type="number" id="manual-doctor-duration" placeholder="Dakika" min="5" max="120" maxlength="3">
+                                    <label>Doktor 1 Süresi:</label>
+                                    <input type="number" id="manual-doctor1-duration" placeholder="Dakika" min="5" max="120" maxlength="3">
+                                    <span class="duration-unit">dakika</span>
+                                </div>
+                                <div class="duration-input-group">
+                                    <label>Doktor 2 Süresi:</label>
+                                    <input type="number" id="manual-doctor2-duration" placeholder="Dakika" min="5" max="120" maxlength="3">
                                     <span class="duration-unit">dakika</span>
                                 </div>
                             </div>
@@ -462,7 +479,7 @@
                         </div>
 
                         <!-- IPR Seçimi -->
-                        <div class="question-group">
+                        <div class="question-group" id="bu-seans-ipr">
                             <div class="question-header">
                                 <h4>Bu seans IPR (Stripping) yapılacak bölgeler</h4>
                                 <div class="selected-teeth-display">
@@ -572,7 +589,7 @@
 
 
                         <!-- Lastik Takma Durumu Kontrolü -->
-                        <div class="question-group">
+                        <div class="question-group" id="lastik-takti">
                             <h4>Hastamız şu an lastiklerini taktı mı?</h4>
                             <div class="elastic-status-container">
                                 <button type="button" class="option-btn elastic-status-btn" data-status="evet" onclick="selectElasticStatus('seffaf', 'evet')">Evet</button>
@@ -584,7 +601,7 @@
                         </div>
 
                         <!-- Mevcut Lastik Bölümü -->
-                        <div class="question-group">
+                        <div class="question-group" id="mevcut-lastik">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <h4 style="margin: 0;">MEVCUT LASTİK KULLANIMI</h4>
                                 <button type="button" class="reset-icon-btn" onclick="resetCurrentElastics('seffaf')" title="Sıfırla">
@@ -930,7 +947,7 @@
                         </div>
 
                         <!-- Plak adaptasyonu -->
-                        <div class="question-group">
+                        <div class="question-group" id="plak-adaptasyon">
                             <h4>Plak adaptasyonu hangi dişlerde eksik?</h4>
                             <div class="fdi-chart-container">
                                 <div class="fdi-tooth-chart" id="adaptation-chart">
@@ -993,7 +1010,7 @@
                         </div>
 
                         <!-- Her seans frezle yapılacak işlemler -->
-                        <div class="question-group">
+                        <div class="question-group" id="frez-islem">
                             <h4>Her seans, Her plakta frezle yapılacak işlemler</h4>
                             <div class="fdi-chart-container">
                                 <div class="fdi-tooth-chart" id="frez-islem-chart">
@@ -1061,7 +1078,7 @@
                         </div>
 
                         <!-- Eksik ataşmanlar -->
-                        <div class="question-group">
+                        <div class="question-group" id="eksik-atasmanlar">
                             <h4>Eksik ataşmanlar neler?</h4>
                             <div class="fdi-chart-container">
                                 <div class="fdi-tooth-chart" id="attachment-chart">
@@ -1126,7 +1143,7 @@
                         <h3 class="section-title">MOTİVASYON VE UYUM DEĞERLENDİRMESİ</h3>
 
                         <!-- Lastik aksama -->
-                        <div class="question-group">
+                        <div class="question-group" id="lastik-kullanim">
                             <h4>Lastik kullanımında aksama var mı?</h4>
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="lastik-aksama" data-value="Lastik kullanımı düzenli">Düzenli</button>
@@ -1148,7 +1165,7 @@
                         </div>
 
                         <!-- Plak aksama -->
-                        <div class="question-group">
+                        <div class="question-group" id="plak-kullanim">
                             <h4>Plak kullanımında aksama var mı?</h4>
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="plak-aksama" data-value="Plak kullanımı düzenli">Düzenli</button>
@@ -1204,7 +1221,7 @@
                         </div>
 
                         <!-- Sakız İhtiyacı -->
-                        <div class="question-group">
+                        <div class="question-group" id="sakiz">
                             <h4>Sakız ihtiyacı var mı?</h4>
                             <div class="button-group">
                                 <button type="button" class="option-btn" data-question="sakiz-ihtiyac" data-value="Sakız ihtiyacı: Var">Var</button>
@@ -1304,14 +1321,34 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Alt Navigasyon - Şeffaf Plak -->
+                <nav class="sticky-nav-bottom" id="sticky-nav-plak-bottom">
+                    <button class="nav-item" data-target="bu-seans-ipr">Bu Seans IPR</button>
+                    <button class="nav-item" data-target="mevcut-lastik">Mevcut Lastik</button>
+                    <button class="nav-item" data-target="plak-adaptasyon">Plak Adaptasyon</button>
+                    <button class="nav-item" data-target="frez-islem">Frez İşlem</button>
+                    <button class="nav-item" data-target="eksik-atasmanlar">Eksik Ataşmanlar</button>
+                    <button class="nav-item" data-target="lastik-kullanim">Lastik Kullanım</button>
+                    <button class="nav-item" data-target="plak-kullanim">Plak Kullanım</button>
+                    <button class="nav-item" data-target="sakiz">Sakız</button>
+                </nav>
             </div>
 
             <!-- Tel Tedavisi Tab -->
             <div id="tel-tedavisi" class="tab-content">
+                <!-- Üst Navigasyon - Tel -->
+                <nav class="sticky-nav" id="sticky-nav-tel-top">
+                    <button class="nav-item" data-target="tel-asistan-section">Asistan</button>
+                    <button class="nav-item" data-target="tel-randevu">Randevu</button>
+                    <button class="nav-item" data-target="tel-mevcut-lastik">Mevcut Lastik</button>
+                    <button class="nav-item" data-target="tel-lastik-ihtiyaci">Lastik İhtiyacı</button>
+                </nav>
+                
                 <div class="form-container">
                     <div class="form-left">
                         <!-- Asistan Seçimi - Tel -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-asistan-section">
                             <div class="question-header">
                                 <h4>Kontrolü yapan asistan</h4>
                                 <div class="selected-display">
@@ -1336,7 +1373,7 @@
                             </div>
                         </div>
                         
-                        <h3>Randevu Planlama</h3>
+                        <h3 id="tel-randevu">Randevu Planlama</h3>
                         <div class="question-group">
                             <div class="question-title">Bir sonraki randevu kaç hafta sonra?</div>
                             <div class="button-group">
@@ -1395,7 +1432,7 @@
                             </div>
                         </div>
                         
-                        <div class="question-group">
+                        <div class="question-group" id="tel-mevcut-lastik">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <h3 class="section-title" style="margin: 0;">MEVCUT LASTİK KULLANIMI</h3>
                                 <button type="button" class="reset-icon-btn" onclick="resetCurrentElastics('tel')" title="Sıfırla">
@@ -2004,7 +2041,7 @@
                         </div>
                         
                         <!-- Lastik Hesaplama -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-lastik-ihtiyaci">
                             <h4>Lastik İhtiyacı</h4>
                             <div class="lastik-calculation-display">
                                 <div id="tel-lastik-calculation-result">Lastik hesaplaması için sonraki seans lastiklerini seçin</div>
@@ -2012,7 +2049,7 @@
                         </div>
                         
                         <!-- Bu Seans Takılan Teller Bölümü -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-mevcut-teller">
                             <h3 class="section-title">BU SEANS TAKILAN TELLER</h3>
                             
                             <!-- Alt Çene -->
@@ -2430,7 +2467,7 @@
                         </div>
 
                         <!-- Diş Arası ve Dişlere Rutin Dışı Uygulamalar -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-dis-islem">
                             <h3 class="section-title">DİŞ ARASI VE DİŞLERE RUTİN DIŞI UYGULAMALAR</h3>
                             
                             <div class="fdi-chart-container">
@@ -2528,7 +2565,7 @@
                         </div>
 
                         <!-- Sonraki Seans Ekstra İşlemler -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-sonraki-seans">
                             <h3 class="section-title">SONRAKİ SEANS YAPILACAK İŞLEMLER</h3>
                             
                             <!-- Söküm Bölümü -->
@@ -2612,7 +2649,7 @@
                         </div>
 
                         <!-- Çoklu Diş Seçimi ve İşlem Listesi -->
-                        <div class="question-group">
+                        <div class="question-group" id="tel-coklu-dis">
                             <h3 class="section-title">ÇOKLU DİŞ İŞLEMLERİ</h3>
                             
                             <!-- Diş Seçim Alanı -->
@@ -2834,6 +2871,15 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Alt Navigasyon - Tel -->
+                <nav class="sticky-nav-bottom" id="sticky-nav-tel-bottom">
+                    <button class="nav-item" data-target="tel-mevcut-teller">Mevcut Teller / Büküm</button>
+                    <button class="nav-item" data-target="tel-sonraki-seans">Sonraki Seans</button>
+                    <button class="nav-item" data-target="tel-dis-islem">Diş/Arası İşlem</button>
+                    <button class="nav-item" data-target="tel-coklu-dis">Çoklu Diş İşlemleri</button>
+                    </nav>
                 </div>
             </div>
         </div>

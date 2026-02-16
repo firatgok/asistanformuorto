@@ -494,12 +494,14 @@ header h1 {
     border-bottom: 2px solid var(--primary-600);
     padding-bottom: 10px;
     transition: all 0.3s ease;
+    scroll-margin-top: 80px;
 }
 
 .section-title {
     color: var(--warning) !important;
     border-bottom: 2px solid var(--warning) !important;
     margin-top: 30px !important;
+    scroll-margin-top: 80px;
 }
 
 /* Question Groups */
@@ -510,6 +512,7 @@ header h1 {
     border-radius: 8px;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
+    scroll-margin-top: 80px;
 }
 
 .question-group h4 {
@@ -1395,7 +1398,7 @@ header h1 {
     color: var(--input-text);
     box-shadow: var(--shadow-sm);
     resize: vertical;
-    min-height: 100px;
+    min-height: 50px;
     line-height: 1.5;
 }
 
@@ -1936,13 +1939,14 @@ header h1 {
 .form-right {
     background: var(--gradient-card);
     padding: 20px;
+    padding-bottom: 100px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     position: sticky;
-    top: 20px;
-    height: calc(100vh - 40px);
-    min-height: calc(100vh - 40px);
-    max-height: calc(100vh - 40px);
+    top: 100px;
+    height: calc(100vh - 120px);
+    min-height: calc(100vh - 120px);
+    max-height: calc(100vh - 120px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -2138,8 +2142,8 @@ header h1 {
 
 .plak-status-box {
     flex: 1;
-    border-radius: 12px;
-    padding: 16px 20px;
+    border-radius: 10px;
+    padding: 8px 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     animation: pulse-border 2s ease-in-out infinite;
 }
@@ -2165,14 +2169,14 @@ header h1 {
 
 .plak-status-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 8px;
 }
 
 .plak-status-label {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 13px;
+    font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -2180,10 +2184,10 @@ header h1 {
 
 .plak-status-value {
     color: white;
-    font-size: 32px;
+    font-size: 20px;
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    min-width: 50px;
+    min-width: 40px;
     text-align: center;
 }
 
@@ -2201,7 +2205,7 @@ header h1 {
 #seffaf-output,
 #tel-output {
     width: 100%;
-    min-height: 220px;
+    min-height: 270px;
     padding: 24px;
     border: 2px solid var(--gray-200);
     border-radius: 16px;
@@ -2246,7 +2250,7 @@ header h1 {
     background: linear-gradient(135deg, var(--success-600), var(--success-500));
     color: white;
     border: 2px solid var(--success-400);
-    padding: 12px 24px;
+    padding: 4px 14px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -2279,6 +2283,7 @@ header h1 {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    margin-bottom: 80px;
     justify-content: flex-start;
     flex-shrink: 0;
 }
@@ -2287,7 +2292,7 @@ header h1 {
     background: linear-gradient(135deg, var(--gray-500), var(--gray-600));
     color: white;
     border: 2px solid var(--gray-400);
-    padding: 12px 24px;
+    padding: 4px 14px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -5992,7 +5997,7 @@ input::placeholder, textarea::placeholder {
 #tel-special-note,
 #seffaf-special-note {
     width: 100%;
-    min-height: 100px;
+    min-height: 50px;
     padding: 12px;
     border: 1px solid var(--gray-300);
     border-radius: 6px;
@@ -7377,3 +7382,114 @@ input::placeholder, textarea::placeholder {
     }
 }
 
+
+/* ===== STICKY NAVIGATION ===== */
+/* Üst Navigasyon Çubuğu */
+.sticky-nav {
+    position: sticky !important;
+    left: 0 !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border);
+    padding: 12px 20px;
+    box-shadow: 0 2px 12px var(--shadow-color);
+    z-index: 9999 !important;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Alt Navigasyon Çubuğu */
+.sticky-nav-bottom {
+    position: sticky !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    margin-left: calc(-50vw + 50%) !important;
+    background: var(--bg-card);
+    border-top: 2px solid var(--border);
+    padding: 12px 20px;
+    box-shadow: 0 -2px 12px var(--shadow-color);
+    z-index: 9999 !important;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.nav-item {
+    background: var(--primary-50);
+    border: 1px solid var(--primary-400);
+    color: var(--primary-700);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nav-item:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-400);
+    color: var(--primary-700);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(36, 224, 237, 0.2);
+}
+
+.nav-item:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Dark mode için sticky nav */
+[data-theme="dark"] .sticky-nav,
+[data-theme="dark"] .sticky-nav-bottom {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+}
+
+[data-theme="dark"] .nav-item {
+    background: var(--gray-600);
+    border-color: var(--primary-500);
+    color: var(--primary-400);
+}
+
+[data-theme="dark"] .nav-item:hover {
+    background: var(--gray-600);
+    border-color: var(--primary-500);
+    color: var(--primary-400);
+    box-shadow: 0 2px 6px rgba(36, 224, 237, 0.3);
+}
+
+/* Responsive - tablet ve mobilde gizle */
+@media (max-width: 900px) {
+    .sticky-nav,
+    .sticky-nav-bottom {
+        display: none;
+    }
+}
+
+/* İçerik için padding ekle (üst ve alt nav için alan) */
+.tab-content {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    position: relative;
+}
+
+.form-container {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    padding-bottom: 80px !important;
+}
