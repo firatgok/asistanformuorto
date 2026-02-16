@@ -2250,7 +2250,7 @@ header h1 {
     background: linear-gradient(135deg, var(--success-600), var(--success-500));
     color: white;
     border: 2px solid var(--success-400);
-    padding: 4px 14px;
+    padding: 8px 17px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -2325,7 +2325,7 @@ header h1 {
     background: linear-gradient(135deg, #d32f2f, #c62828);
     color: white;
     border: 2px solid #b71c1c;
-    padding: 12px 24px;
+    padding: 8px 17px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
