@@ -206,6 +206,36 @@
     color: var(--text-primary);
 }
 
+/* Dark Mode Ana Sayfa Scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--gray-800) !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-500)) !important;
+    border-color: var(--gray-800) !important;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600)) !important;
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-track,
+[data-theme="dark"] html::-webkit-scrollbar-track {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-thumb,
+[data-theme="dark"] html::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-500));
+    border-color: var(--gray-800);
+}
+
+[data-theme="dark"] body::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] html::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+}
+
 /* Dark Mode Card/Section/Nav Styles */
 [data-theme="dark"] .tab-content,
 [data-theme="dark"] .form-left,
@@ -228,9 +258,27 @@
     border: 1px solid var(--border) !important;
 }
 
-[data-theme="dark"] #seffaf-output::placeholder,
-[data-theme="dark"] #tel-output::placeholder {
+/* Dark mode placeholder için */
+[data-theme="dark"] #seffaf-output:empty:before,
+[data-theme="dark"] #tel-output:empty:before {
     color: #B0B0B0 !important;
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] #seffaf-output::-webkit-scrollbar-track,
+[data-theme="dark"] #tel-output::-webkit-scrollbar-track {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] #seffaf-output::-webkit-scrollbar-thumb,
+[data-theme="dark"] #tel-output::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-500));
+    border-color: var(--gray-800);
+}
+
+[data-theme="dark"] #seffaf-output::-webkit-scrollbar-thumb:hover,
+[data-theme="dark"] #tel-output::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
 }
 
 [data-theme="dark"] .output-header {
@@ -285,6 +333,61 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     transition: all 0.3s ease;
+}
+
+/* Ana Sayfa Scrollbar - Tablet Dostu */
+::-webkit-scrollbar {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100) !important;
+    border-radius: 12px !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600)) !important;
+    border-radius: 12px !important;
+    border: 4px solid var(--gray-100) !important;
+    min-height: 80px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700)) !important;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800)) !important;
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+    width: 24px;
+}
+
+body::-webkit-scrollbar-track,
+html::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 12px;
+}
+
+body::-webkit-scrollbar-thumb,
+html::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: 12px;
+    border: 4px solid var(--gray-100);
+    min-height: 80px;
+}
+
+body::-webkit-scrollbar-thumb:hover,
+html::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+}
+
+body::-webkit-scrollbar-thumb:active,
+html::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
 }
 
 /* Container */
@@ -1939,14 +2042,15 @@ header h1 {
 .form-right {
     background: var(--gradient-card);
     padding: 20px;
-    padding-bottom: 100px;
+    padding-bottom: 20px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
     position: sticky;
-    top: 100px;
-    height: calc(100vh - 120px);
-    min-height: calc(100vh - 120px);
-    max-height: calc(100vh - 120px);
+    top: 80px;
+    bottom: 45px;
+    height: calc(100vh - 145px);
+    min-height: calc(100vh - 145px);
+    max-height: calc(100vh - 145px);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -2205,21 +2309,37 @@ header h1 {
 #seffaf-output,
 #tel-output {
     width: 100%;
-    min-height: 270px;
+    min-height: max(200px, 25vh);
+    max-height: 100vh;
     padding: 24px;
     border: 2px solid var(--gray-200);
     border-radius: 16px;
     font-family: var(--font-primary);
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.7;
     background: var(--gradient-surface);
     backdrop-filter: blur(10px);
-    resize: vertical;
     flex: 1;
     position: relative;
     color: var(--gray-700);
     box-shadow: var(--shadow-sm);
     transition: all 0.2s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Placeholder için */
+#seffaf-output:empty:before,
+#tel-output:empty:before {
+    content: attr(data-placeholder);
+    color: var(--gray-400);
+    opacity: 0.7;
 }
 
 #seffaf-output:focus,
@@ -2229,28 +2349,42 @@ header h1 {
     box-shadow: var(--shadow-md), 0 0 0 3px rgba(12, 140, 233, 0.1);
 }
 
-/* Büyük resize handle için özel stil */
-#seffaf-output::-webkit-resizer,
-#tel-output::-webkit-resizer {
-    background: linear-gradient(135deg, transparent 40%, #6c757d 40%, #6c757d 50%, transparent 50%, transparent 60%, #6c757d 60%, #6c757d 70%, transparent 70%);
-    width: 20px;
-    height: 20px;
-    cursor: nw-resize;
+/* Büyük scrollbar - tablet dostu */
+#seffaf-output::-webkit-scrollbar,
+#tel-output::-webkit-scrollbar {
+    width: 24px;
 }
 
-/* Firefox için resize handle */
-@-moz-document url-prefix() {
-    #seffaf-output,
-    #tel-output {
-        resize: vertical;
-    }
+#seffaf-output::-webkit-scrollbar-track,
+#tel-output::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 12px;
+    margin: 5px;
+}
+
+#seffaf-output::-webkit-scrollbar-thumb,
+#tel-output::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: 12px;
+    border: 4px solid var(--gray-100);
+    min-height: 80px;
+}
+
+#seffaf-output::-webkit-scrollbar-thumb:hover,
+#tel-output::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+}
+
+#seffaf-output::-webkit-scrollbar-thumb:active,
+#tel-output::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
 }
 
 .copy-btn {
     background: linear-gradient(135deg, var(--success-600), var(--success-500));
     color: white;
     border: 2px solid var(--success-400);
-    padding: 4px 14px;
+    padding: 8px 17px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -2283,7 +2417,7 @@ header h1 {
     display: flex;
     gap: 10px;
     margin-top: 10px;
-    margin-bottom: 80px;
+    margin-bottom: 0;
     justify-content: flex-start;
     flex-shrink: 0;
 }
@@ -2325,7 +2459,7 @@ header h1 {
     background: linear-gradient(135deg, #d32f2f, #c62828);
     color: white;
     border: 2px solid #b71c1c;
-    padding: 12px 24px;
+    padding: 8px 17px;
     border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
@@ -2353,6 +2487,39 @@ header h1 {
     box-shadow: var(--shadow-sm);
 }
 
+/* Fullscreen Button */
+.fullscreen-btn {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: white;
+    border: 2px solid #0d47a1;
+    padding: 8px 17px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    flex: 1;
+    min-width: 140px;
+}
+
+.fullscreen-btn:hover {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    border-color: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.fullscreen-btn:active {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
 /* Dark theme reset button */
 [data-theme="dark"] .reset-btn {
     background: linear-gradient(135deg, #ef5350, #e53935);
@@ -2362,6 +2529,17 @@ header h1 {
 [data-theme="dark"] .reset-btn:hover {
     background: linear-gradient(135deg, #e53935, #d32f2f);
     border-color: #ef5350;
+}
+
+/* Dark theme fullscreen button */
+[data-theme="dark"] .fullscreen-btn {
+    background: linear-gradient(135deg, #42a5f5, #1e88e5);
+    border-color: #1565c0;
+}
+
+[data-theme="dark"] .fullscreen-btn:hover {
+    background: linear-gradient(135deg, #1e88e5, #1565c0);
+    border-color: #42a5f5;
 }
 
 /* FDI Tooth Chart Styles */
@@ -5998,6 +6176,7 @@ input::placeholder, textarea::placeholder {
 #seffaf-special-note {
     width: 100%;
     min-height: 50px;
+    max-height: 100px;
     padding: 12px;
     border: 1px solid var(--gray-300);
     border-radius: 6px;
@@ -6006,6 +6185,7 @@ input::placeholder, textarea::placeholder {
     resize: vertical;
     transition: border-color 0.2s ease;
     background: white;
+    overflow-y: auto;
 }
 
 #tel-special-note:focus,
@@ -7394,12 +7574,12 @@ input::placeholder, textarea::placeholder {
     margin-left: calc(-50vw + 50%) !important;
     background: var(--bg-card);
     border-bottom: 2px solid var(--border);
-    padding: 12px 20px;
+    padding: 8px 15px;
     box-shadow: 0 2px 12px var(--shadow-color);
     z-index: 9999 !important;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
@@ -7415,13 +7595,13 @@ input::placeholder, textarea::placeholder {
     margin-left: calc(-50vw + 50%) !important;
     background: var(--bg-card);
     border-top: 2px solid var(--border);
-    padding: 12px 20px;
+    padding: 8px 15px;
     box-shadow: 0 -2px 12px var(--shadow-color);
     z-index: 9999 !important;
     display: flex;
     flex-wrap: nowrap;
-    gap: 8px;
-    justify-content: flex-start;
+    gap: 6px;
+    justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
 }
@@ -7430,9 +7610,9 @@ input::placeholder, textarea::placeholder {
     background: var(--primary-50);
     border: 1px solid var(--primary-400);
     color: var(--primary-700);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 13px;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
     text-align: center;
     cursor: pointer;
@@ -7492,4 +7672,256 @@ input::placeholder, textarea::placeholder {
     margin-top: 0 !important;
     margin-left: 0 !important;
     padding-bottom: 80px !important;
+}
+
+/* ===== FULLSCREEN MODAL ===== */
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    animation: fadeIn 0.3s ease;
+}
+
+.fullscreen-modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-modal-content {
+    background: var(--bg-card);
+    width: 95%;
+    height: 95%;
+    max-width: 1200px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+.fullscreen-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 2px solid var(--border);
+    background: var(--gradient-card);
+}
+
+.fullscreen-modal-header h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.fullscreen-close-btn {
+    background: var(--gray-200);
+    border: none;
+    font-size: 28px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-700);
+    transition: all 0.2s ease;
+}
+
+.fullscreen-close-btn:hover {
+    background: var(--gray-300);
+    transform: rotate(90deg);
+}
+
+.fullscreen-modal-body {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    background: var(--bg-primary);
+}
+
+/* Büyük scrollbar - modal için */
+.fullscreen-modal-body::-webkit-scrollbar {
+    width: 24px;
+}
+
+.fullscreen-modal-body::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 12px;
+    margin: 5px;
+}
+
+.fullscreen-modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    border-radius: 12px;
+    border: 4px solid var(--gray-100);
+    min-height: 80px;
+}
+
+.fullscreen-modal-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+}
+
+.fullscreen-modal-body::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+}
+
+.fullscreen-modal-footer {
+    display: flex;
+    gap: 15px;
+    padding: 20px 30px;
+    border-top: 2px solid var(--border);
+    background: var(--gradient-card);
+    justify-content: center;
+}
+
+.fullscreen-close-btn-footer {
+    background: var(--gray-500);
+    color: white;
+    border: 2px solid var(--gray-400);
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    min-width: 150px;
+}
+
+.fullscreen-close-btn-footer:hover {
+    background: var(--gray-600);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.fullscreen-modal-footer .copy-btn {
+    min-width: 150px;
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Dark mode */
+[data-theme="dark"] .fullscreen-modal {
+    background-color: rgba(0, 0, 0, 0.98);
+}
+
+[data-theme="dark"] .fullscreen-close-btn {
+    background: var(--gray-700);
+    color: var(--gray-300);
+}
+
+[data-theme="dark"] .fullscreen-close-btn:hover {
+    background: var(--gray-600);
+}
+
+[data-theme="dark"] .fullscreen-modal-body {
+    background: var(--surface-2);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .fullscreen-modal-body::-webkit-scrollbar-track {
+    background: var(--gray-800);
+}
+
+[data-theme="dark"] .fullscreen-modal-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-400), var(--primary-500));
+    border-color: var(--gray-800);
+}
+
+[data-theme="dark"] .fullscreen-modal-body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+}
+
+/* ============================================
+   RESPONSIVE VIEWPORT HEIGHT ADJUSTMENTS
+   ============================================ */
+
+/* Büyük ekranlar (1184px - 956px height): Rapor penceresini büyüt */
+@media (min-height: 956px) and (max-height: 1184px) {
+    #seffaf-output,
+    #tel-output {
+        max-height: 100vh;
+    }
+    
+    #tel-special-note,
+    #seffaf-special-note {
+        max-height: 120px;
+    }
+}
+
+/* Orta ekranlar (790px - 956px height): Rapor penceresini optimize et */
+@media (min-height: 790px) and (max-height: 956px) {
+    #seffaf-output,
+    #tel-output {
+        max-height: 100vh;
+    }
+    
+    #tel-special-note,
+    #seffaf-special-note {
+        max-height: 100px;
+    }
+}
+
+/* Orta-küçük ekranlar (512px - 790px height): Rapor penceresini genişlet */
+@media (min-height: 512px) and (max-height: 790px) {
+    #seffaf-output,
+    #tel-output {
+        max-height: 100vh;
+    }
+    
+    #tel-special-note,
+    #seffaf-special-note {
+        max-height: 80px;
+    }
+}
+
+/* Küçük ekranlar (<512px height): Rapor ve özel notu minimize et */
+@media (max-height: 512px) {
+    #seffaf-output,
+    #tel-output {
+        min-height: 50px;
+        max-height: 30vh;
+    }
+    
+    #tel-special-note,
+    #seffaf-special-note {
+        min-height: 40px;
+        max-height: 60px;
+    }
 }

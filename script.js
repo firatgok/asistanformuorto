@@ -470,7 +470,7 @@ function updateSeffafOutput() {
     }
     
     const output = generateSeffafReport(answers);
-    outputElement.value = output;
+    outputElement.textContent = output;
     
     // Update lastik calculation - sadece elastic report'tan çağrılmamışsa
     // (updateElasticReport zaten çağırıyor, çift çağrıyı önle)
@@ -692,7 +692,7 @@ function updateOutput(checkboxes, outputElement, type) {
         output = generateTelReport(checkedValues);
     }
     
-    outputElement.value = output;
+    outputElement.textContent = output;
 }
 
 function generateSeffafReport(answers) {
@@ -708,8 +708,7 @@ function generateSeffafReport(answers) {
         return '';
     }
 
-    let report = 'ŞEFFAF PLAK TEDAVİSİ KONTROL RAPORU\n';
-    report += '=============================================\n';
+    let report = '';
     
     // Asistan bilgisi en üstte
     if (answers['asistan']) {
@@ -1226,7 +1225,7 @@ function getCurrentDate() {
 
 function copyToClipboard(elementId) {
     const element = document.getElementById(elementId);
-    const text = element.value;
+    const text = element.textContent;
     
     if (text.trim() === '') {
         alert('Kopyalanacak metin bulunmuyor. Lütfen önce değerlendirme kriterlerini işaretleyin.');
@@ -1359,7 +1358,7 @@ function clearToothSelection(questionType) {
 function clearOutput(elementId) {
     const outputElement = document.getElementById(elementId);
     if (outputElement) {
-        outputElement.value = '';
+        outputElement.textContent = '';
         
         // Clear all form selections based on which output we're clearing
         if (elementId === 'seffaf-output') {
@@ -1395,8 +1394,8 @@ function resetData() {
         // Önce tüm output'ları temizle
         const seffafOutput = document.getElementById('seffaf-output');
         const telOutput = document.getElementById('tel-output');
-        if (seffafOutput) seffafOutput.value = '';
-        if (telOutput) telOutput.value = '';
+        if (seffafOutput) seffafOutput.textContent = '';
+        if (telOutput) telOutput.textContent = '';
         
         // Plak durum kutusunu temizle
         const statusMevcutPlak = document.getElementById('status-mevcut-plak');
@@ -2802,7 +2801,7 @@ function updateTelOutput() {
         report += '\n\n─────────────────────────\nÖZEL NOT:\n' + specialNote.value.trim();
     }
     
-    telOutput.value = report;
+    telOutput.textContent = report;
 }
 
 function generateTelElasticReport() {
@@ -6168,9 +6167,17 @@ function clearSpacingInput() {
 // Boşluk ölçümünü kaydet
 function saveSpacingMeasurement() {
     const input = document.getElementById('spacing-input');
-    const value = input.value.trim();
+    let value = input.value.trim();
     
     if (!currentSpacingPosition) return;
+    
+    // Virgülü noktaya çevir (Türkçe klavye desteği)
+    value = value.replace(',', '.');
+    
+    // İki basamaklı sayıları otomatik olarak ondalık formata çevir (örn: 12 → 1.2)
+    if (!value.includes('.') && value.length === 2 && /^\d{2}$/.test(value)) {
+        value = value[0] + '.' + value[1];
+    }
     
     // Validation: Format kontrolü (0.x veya sayı)
     if (value === '') {
@@ -6194,6 +6201,8 @@ function saveSpacingMeasurement() {
 
 // Boşluk değerinin geçerliliğini kontrol et
 function isValidSpacingValue(value) {
+    // Virgülü noktaya çevir
+    value = value.replace(',', '.');
     const num = parseFloat(value);
     return !isNaN(num) && num >= 0 && num <= 2;
 }
@@ -6755,5 +6764,117 @@ document.addEventListener('DOMContentLoaded', function() {
         const bottomNav = document.getElementById('sticky-nav-plak-bottom');
         if (topNav) topNav.style.display = 'flex';
         if (bottomNav) bottomNav.style.display = 'flex';
+    }
+});
+
+// ===== FULLSCREEN MODAL FUNCTIONS =====
+let currentReportElementId = null;
+
+function openFullscreenReport(elementId) {
+    const reportElement = document.getElementById(elementId);
+    const modal = document.getElementById('fullscreen-modal');
+    const modalBody = document.getElementById('fullscreen-report-content');
+    
+    if (!reportElement || !modal || !modalBody) return;
+    
+    const reportText = reportElement.textContent;
+    
+    if (!reportText || reportText.trim() === '') {
+        alert('Görüntülenecek rapor bulunmuyor. Lütfen önce değerlendirme kriterlerini işaretleyin.');
+        return;
+    }
+    
+    currentReportElementId = elementId;
+    modalBody.textContent = reportText;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+}
+
+function closeFullscreenReport() {
+    const modal = document.getElementById('fullscreen-modal');
+    if (!modal) return;
+    
+    modal.classList.remove('active');
+    document.body.style.overflow = ''; // Restore background scroll
+    currentReportElementId = null;
+}
+
+function copyFullscreenReport() {
+    const modalBody = document.getElementById('fullscreen-report-content');
+    if (!modalBody) return;
+    
+    const text = modalBody.textContent;
+    
+    if (!text || text.trim() === '') {
+        alert('Kopyalanacak metin bulunmuyor.');
+        return;
+    }
+    
+    // Modern clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopySuccessFullscreen();
+        }).catch(err => {
+            // Fallback to old method
+            copyWithFallback(text);
+        });
+    } else {
+        copyWithFallback(text);
+    }
+}
+
+function copyWithFallback(text) {
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = text;
+    tempTextarea.style.position = 'fixed';
+    tempTextarea.style.opacity = '0';
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    tempTextarea.setSelectionRange(0, 99999);
+    
+    try {
+        const successful = document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+        
+        if (successful) {
+            showCopySuccessFullscreen();
+        } else {
+            alert('Kopyalama işlemi başarısız oldu.');
+        }
+    } catch (err) {
+        document.body.removeChild(tempTextarea);
+        alert('Kopyalama işlemi başarısız oldu.');
+    }
+}
+
+function showCopySuccessFullscreen() {
+    const footer = document.querySelector('.fullscreen-modal-footer');
+    if (!footer) return;
+    
+    const successMsg = document.createElement('div');
+    successMsg.textContent = '✓ Kopyalandı!';
+    successMsg.style.cssText = 'position: absolute; background: #10b981; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; animation: fadeIn 0.3s ease;';
+    footer.style.position = 'relative';
+    footer.appendChild(successMsg);
+    
+    setTimeout(() => {
+        successMsg.remove();
+    }, 2000);
+}
+
+// ESC tuşu ile modal'ı kapatma
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        const modal = document.getElementById('fullscreen-modal');
+        if (modal && modal.classList.contains('active')) {
+            closeFullscreenReport();
+        }
+    }
+});
+
+// Modal dışına tıklandığında kapatma
+document.getElementById('fullscreen-modal')?.addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeFullscreenReport();
     }
 });
