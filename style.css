@@ -7578,11 +7578,18 @@ input::placeholder, textarea::placeholder {
     box-shadow: 0 2px 12px var(--shadow-color);
     z-index: 9999 !important;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 6px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.sticky-nav::-webkit-scrollbar {
+    display: none;
 }
 
 /* Alt Navigasyon Çubuğu */
@@ -7604,6 +7611,13 @@ input::placeholder, textarea::placeholder {
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.sticky-nav-bottom::-webkit-scrollbar {
+    display: none;
 }
 
 .nav-item {
@@ -7923,5 +7937,207 @@ input::placeholder, textarea::placeholder {
     #seffaf-special-note {
         min-height: 40px;
         max-height: 60px;
+    }
+}
+
+/* ============================================
+   NAVIGATION RESPONSIVE WIDTH ADJUSTMENTS
+   ============================================ */
+
+/* Orta ekranlar (<1200px): Butonları biraz küçült */
+@media (max-width: 1200px) {
+    .nav-item {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+    
+    .sticky-nav,
+    .sticky-nav-bottom {
+        gap: 5px;
+        padding: 6px 12px;
+    }
+}
+
+/* Küçük ekranlar (<900px): Butonları daha da küçült */
+@media (max-width: 900px) {
+    .nav-item {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    
+    .sticky-nav,
+    .sticky-nav-bottom {
+        gap: 4px;
+        padding: 5px 10px;
+    }
+}
+
+/* Çok küçük ekranlar (<700px): Minimum boyut */
+@media (max-width: 700px) {
+    .nav-item {
+        padding: 4px 8px;
+        font-size: 9px;
+    }
+    
+    .sticky-nav,
+    .sticky-nav-bottom {
+        gap: 3px;
+        padding: 4px 8px;
+    }
+}
+
+/* Mobil (<500px): En küçük boyut */
+@media (max-width: 500px) {
+    .nav-item {
+        padding: 3px 6px;
+        font-size: 8px;
+    }
+    
+    .sticky-nav,
+    .sticky-nav-bottom {
+        gap: 2px;
+        padding: 3px 6px;
+    }
+}
+
+/* ============================================
+   RANDEVU SÜRESİ BUTONLARI RESPONSIVE
+   ============================================ */
+
+/* Orta ekranlar (<1022px): Butonları alt alta diz */
+@media (max-width: 1022px) {
+    .duration-method-buttons {
+        flex-direction: column;
+    }
+    
+    .duration-method-btn {
+        flex: none;
+        width: 100%;
+    }
+}
+
+/* Orta ekranlar (<900px) */
+@media (max-width: 900px) {
+    .duration-method-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+}
+
+/* Küçük ekranlar (<700px): Butonları alt alta diz */
+@media (max-width: 700px) {
+    .duration-method-buttons {
+        flex-direction: column;
+    }
+    
+    .duration-method-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+        flex: none;
+        width: 100%;
+    }
+}
+
+/* Çok küçük ekranlar (<500px) */
+@media (max-width: 500px) {
+    .duration-method-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Mobil (<400px) */
+@media (max-width: 400px) {
+    .duration-method-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+/* ============================================
+   TEL TEDAVİSİ RANDEVU BUTONLARI RESPONSIVE
+   ============================================ */
+
+/* Orta ekranlar (<900px) */
+@media (max-width: 900px) {
+    .duration-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+        min-height: 40px;
+        min-width: 90px;
+    }
+    
+    .duration-info {
+        font-size: 11px;
+    }
+}
+
+/* Küçük ekranlar (<700px): Butonları daha küçük yap */
+@media (max-width: 700px) {
+    .duration-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 38px;
+        min-width: 0;
+        flex: 1 1 calc(50% - 5px);
+    }
+    
+    .duration-info {
+        font-size: 10px;
+    }
+}
+
+/* Çok küçük ekranlar (<500px): Tam genişlik */
+@media (max-width: 500px) {
+    .duration-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-height: 36px;
+        flex: 1 1 100%;
+    }
+    
+    .duration-info {
+        font-size: 9px;
+    }
+}
+
+/* Mobil (<400px) */
+@media (max-width: 400px) {
+    .duration-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+        min-height: 34px;
+    }
+    
+    .duration-info {
+        font-size: 8px;
+    }
+}
+
+/* ============================================
+   OPTION BUTONLARI RESPONSIVE
+   ============================================ */
+
+/* Küçük ekranlar (<700px) */
+@media (max-width: 700px) {
+    .option-btn {
+        padding: 12px 18px;
+        font-size: 13px;
+    }
+}
+
+/* Çok küçük ekranlar (<500px) */
+@media (max-width: 500px) {
+    .option-btn {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+}
+
+/* Mobil (<400px) */
+@media (max-width: 400px) {
+    .option-btn {
+        padding: 8px 14px;
+        font-size: 11px;
     }
 }
