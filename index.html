@@ -1290,7 +1290,7 @@
                                 </div>
                                 <textarea id="seffaf-special-note" 
                                          placeholder="Özel notlarınızı buraya yazın..." 
-                                         rows="3" 
+                                         rows="2" 
                                          style="width: 100%; padding: 10px; border: 2px solid var(--gray-300); border-radius: 8px; font-size: 14px; resize: vertical;"
                                          onchange="updateSeffafSpecialNote()"
                                          oninput="updateSeffafSpecialNote()"></textarea>
@@ -1310,12 +1310,12 @@
                                         <span class="plak-status-value" id="status-plak-gun">--</span>
                                     </div>
                                 </div>
+                                <button class="fullscreen-btn" onclick="openFullscreenReport('seffaf-output')">🖥️ Tam Ekran</button>
                             </div>
                             
                             <div id="seffaf-output" class="output-display" data-placeholder="İşaretlediğiniz kriterler burada görünecek..."></div>
                             <div class="output-buttons">
                                 <button class="copy-btn" onclick="copyToClipboard('seffaf-output')">📋 Kopyala</button>
-                                <button class="fullscreen-btn" onclick="openFullscreenReport('seffaf-output')">🖥️ Tam Ekran</button>
                                 <button class="reset-btn" onclick="resetData()">🔄 Sıfırla</button>
                             </div>
                         </div>
@@ -2857,7 +2857,7 @@
                                 </div>
                                 <textarea id="tel-special-note" 
                                          placeholder="Özel notlarınızı buraya yazın..." 
-                                         rows="3" 
+                                         rows="2" 
                                          style="width: 100%; padding: 10px; border: 2px solid var(--gray-300); border-radius: 8px; font-size: 14px; resize: vertical;"
                                          onchange="updateTelSpecialNote()"
                                          oninput="updateTelSpecialNote()"></textarea>

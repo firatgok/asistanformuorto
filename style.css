@@ -2240,14 +2240,16 @@ header h1 {
 /* Plak Durum Kutusu */
 .plak-status-container {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 15px;
+    align-items: stretch;
 }
 
 .plak-status-box {
-    flex: 1;
+    flex: 0 1 auto;
+    min-width: 105px;
     border-radius: 10px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     animation: pulse-border 2s ease-in-out infinite;
 }
@@ -2275,23 +2277,25 @@ header h1 {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
 }
 
 .plak-status-label {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
 }
 
 .plak-status-value {
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    min-width: 40px;
+    min-width: 35px;
     text-align: center;
 }
 
@@ -2487,8 +2491,8 @@ header h1 {
     box-shadow: var(--shadow-sm);
 }
 
-/* Fullscreen Button */
-.fullscreen-btn {
+/* Fullscreen Button - normal (output-buttons içinde) */
+.output-buttons .fullscreen-btn {
     background: linear-gradient(135deg, #1976d2, #1565c0);
     color: white;
     border: 2px solid #0d47a1;
@@ -2508,16 +2512,49 @@ header h1 {
     min-width: 140px;
 }
 
-.fullscreen-btn:hover {
+.output-buttons .fullscreen-btn:hover {
     background: linear-gradient(135deg, #1565c0, #0d47a1);
     border-color: #1976d2;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
-.fullscreen-btn:active {
+.output-buttons .fullscreen-btn:active {
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+}
+
+/* Fullscreen Button - plak-status-container içinde */
+.plak-status-container .fullscreen-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    color: white;
+    border: 2px solid #0d47a1;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    min-width: 110px;
+}
+
+.plak-status-container .fullscreen-btn:hover {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    border-color: #1976d2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.plak-status-container .fullscreen-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Dark theme reset button */
