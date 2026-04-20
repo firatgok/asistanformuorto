@@ -545,17 +545,36 @@ function setMinimumRandevuGun() {
 }
 
 // Hedef plak hesaplama fonksiyonları
+let lastVerilecekPlakBeforeCalculation = null; // Hesaplama öncesi değeri sakla
+
 function toggleHedefPlakInput() {
     const container = document.getElementById('hedef-plak-input-container');
     const input = document.getElementById('hedef-plak-input');
     const sonucDiv = document.getElementById('hedef-plak-sonuc');
     
     if (container.style.display === 'none') {
+        // Açılıyor - mevcut değeri kaydet (sadece ilk açılışta)
+        if (lastVerilecekPlakBeforeCalculation === null) {
+            lastVerilecekPlakBeforeCalculation = numberInputs['verilecek-plak'] || '';
+        }
         container.style.display = 'block';
         input.focus();
         sonucDiv.style.display = 'none';
         sonucDiv.textContent = '';
     } else {
+        // Kapatılıyor - eğer backup varsa geri dön (hesaplama yapılmamışsa)
+        if (lastVerilecekPlakBeforeCalculation !== null) {
+            // Backup var, eski değere geri dön
+            numberInputs['verilecek-plak'] = lastVerilecekPlakBeforeCalculation;
+            const display = document.getElementById('verilecek-plak-display');
+            if (display) {
+                display.textContent = lastVerilecekPlakBeforeCalculation || '--';
+            }
+            // Çıktıyı güncelle
+            updateNumberDisplay();
+            updateSeffafOutput();
+            lastVerilecekPlakBeforeCalculation = null;
+        }
         container.style.display = 'none';
         input.value = '';
         sonucDiv.style.display = 'none';
@@ -663,6 +682,9 @@ function hesaplaHedefPlak() {
     }, 3500);
     
     console.log(`✅ Hedef: ${hedefPlakNo}, Mevcut: ${mevcutPlak}, Toplam verilecek: ${toplamIhtiyac} (Elinde: ${elindekiKullanilmamis}, Yeni: ${verilecekPlak})`);
+    
+    // Hesaplama başarılı - backup'ı temizle (artık geri dönüş yapılmasın)
+    lastVerilecekPlakBeforeCalculation = null;
 }
 
 function updateSeffafOutput() {
