@@ -201,12 +201,14 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeCheckboxListeners() {
     // Initialize option buttons for şeffaf plak (excluding elastic-status-btn which has onclick handler)
     const seffafButtons = document.querySelectorAll('#seffaf-plak .option-btn:not(.elastic-status-btn)');
+    console.log('🎯 Initializing', seffafButtons.length, 'seffaf plak option buttons');
     seffafButtons.forEach(button => {
         button.addEventListener('click', handleOptionButtonClick);
     });
 
     // Initialize option buttons for tel tedavisi (excluding elastic-status-btn which has onclick handler)
     const telButtons = document.querySelectorAll('#tel-tedavisi .option-btn:not(.elastic-status-btn)');
+    console.log('🎯 Initializing', telButtons.length, 'tel tedavisi option buttons');
     telButtons.forEach(button => {
         button.addEventListener('click', handleTelOptionButtonClick);
     });
@@ -219,12 +221,14 @@ function initializeCheckboxListeners() {
     
     // Initialize unified number selectors (new system)
     const unifiedNumberButtons = document.querySelectorAll('.unified-number-selector .number-btn');
+    console.log('🎯 Initializing', unifiedNumberButtons.length, 'unified number buttons');
     unifiedNumberButtons.forEach(button => {
         button.addEventListener('click', handleUnifiedNumberButtonClick);
     });
     
     // Initialize clear buttons
     const clearButtons = document.querySelectorAll('.clear-btn');
+    console.log('🎯 Initializing', clearButtons.length, 'clear buttons');
     clearButtons.forEach(button => {
         button.addEventListener('click', handleClearButtonClick);
     });
@@ -249,6 +253,8 @@ function handleOptionButtonClick(event) {
     const question = button.dataset.question;
     const value = button.dataset.value;
     
+    console.log('🔘 Option button clicked:', question, '=', value);
+    
     // Find all buttons in the same question group
     const questionGroup = button.closest('.question-group');
     const allButtons = questionGroup.querySelectorAll('.option-btn');
@@ -262,6 +268,23 @@ function handleOptionButtonClick(event) {
     // If button was not already selected, add selected class to clicked button
     if (!isAlreadySelected) {
         button.classList.add('selected');
+        console.log('✅ Button selected:', question);
+        
+        // REAL-TIME FIX: Plak değişim sıklığı değiştiğinde hemen answers'ı güncelle
+        if (question === 'plak-degisim') {
+            answers['plak-degisim'] = value;
+            console.log('⚡ Plak değişim sıklığı hemen güncellendi:', value);
+            // Hemen hesaplamayı güncelle
+            updatePlakBitisHesaplama();
+        }
+    } else {
+        console.log('❌ Button deselected:', question);
+        
+        // Deselect durumunda da answers'dan kaldır
+        if (question === 'plak-degisim') {
+            delete answers['plak-degisim'];
+            updatePlakBitisHesaplama();
+        }
     }
     
     // Update the output
@@ -310,6 +333,12 @@ function handleNumberButtonClick(event) {
     
     // Add selected class to clicked button
     button.classList.add('selected');
+    
+    // Update numberInputs object
+    if (question) {
+        numberInputs[question] = value;
+        console.log('Number input updated:', question, '=', value);
+    }
     
     // Update the combined number display
     updateNumberDisplay();
@@ -367,6 +396,273 @@ function updatePlakStatusBox() {
     if (statusPlakGun) {
         statusPlakGun.textContent = numberInputs['plak-gun'] || '--';
     }
+    
+    // Plak bitiş tarihi hesaplamasını güncelle
+    updatePlakBitisHesaplama();
+}
+
+// Plak bitiş tarihi hesaplama
+function updatePlakBitisHesaplama() {
+    const infoDiv = document.getElementById('plak-bitis-info');
+    const placeholderDiv = document.getElementById('plak-bitis-placeholder');
+    const kalanGunMevcutSpan = document.getElementById('kalan-gun-mevcut');
+    const toplamKalanGunSpan = document.getElementById('toplam-kalan-gun');
+    const bitisTarihiSpan = document.getElementById('bitis-tarihi');
+    
+    // Gerekli bilgileri al
+    const mevcutPlak = parseInt(numberInputs['mevcut-plak']) || 0;
+    const mevcutPlakGun = parseInt(numberInputs['plak-gun']) || 0;
+    const verilecekPlak = parseInt(numberInputs['verilecek-plak']) || 0;
+    const plakDegisimText = answers['plak-degisim'] || '';
+    
+    // Değişim gününü çıkar (7 veya 10)
+    let degisimGun = 0;
+    if (plakDegisimText.includes('7')) {
+        degisimGun = 7;
+    } else if (plakDegisimText.includes('10')) {
+        degisimGun = 10;
+    }
+    
+    // Debug için
+    console.log('Plak Bitiş Hesaplama:', {
+        mevcutPlak,
+        mevcutPlakGun,
+        verilecekPlak,
+        degisimGun,
+        plakDegisimText
+    });
+    
+    // Eksik bilgileri tespit et
+    const eksikBilgiler = [];
+    if (!mevcutPlak || mevcutPlak === 0) eksikBilgiler.push('Mevcut plak numarası');
+    if (!mevcutPlakGun || mevcutPlakGun === 0) eksikBilgiler.push('Mevcut plak günü');
+    if (!degisimGun || degisimGun === 0) eksikBilgiler.push('Plak değişim sıklığı (7 veya 10 gün)');
+    if (!verilecekPlak || verilecekPlak === 0) eksikBilgiler.push('Verilecek plak sayısı');
+    
+    // Tüm bilgiler var mı kontrol et
+    if (mevcutPlakGun > 0 && verilecekPlak > 0 && degisimGun > 0) {
+        // Hesaplamalar
+        const mevcutPlakKalanGun = degisimGun - mevcutPlakGun;
+        const verilecekPlaklarToplamGun = verilecekPlak * degisimGun;
+        const toplamKalanGun = mevcutPlakKalanGun + verilecekPlaklarToplamGun;
+        
+        // Bitiş tarihini hesapla
+        const bugun = new Date();
+        const bitisTarihi = new Date(bugun);
+        bitisTarihi.setDate(bitisTarihi.getDate() + toplamKalanGun);
+        
+        // Tarihi formatla (GG/AA/YYYY)
+        const gun = String(bitisTarihi.getDate()).padStart(2, '0');
+        const ay = String(bitisTarihi.getMonth() + 1).padStart(2, '0');
+        const yil = bitisTarihi.getFullYear();
+        const formatliTarih = `${gun}/${ay}/${yil}`;
+        
+        // Bilgileri güncelle
+        if (kalanGunMevcutSpan) kalanGunMevcutSpan.textContent = `${mevcutPlakKalanGun} gün`;
+        if (toplamKalanGunSpan) toplamKalanGunSpan.textContent = `${toplamKalanGun} gün`;
+        if (bitisTarihiSpan) bitisTarihiSpan.textContent = formatliTarih;
+        
+        // Bilgiyi göster, placeholder'ı gizle
+        if (infoDiv) infoDiv.style.display = 'block';
+        if (placeholderDiv) placeholderDiv.style.display = 'none';
+        
+        // Rapor için global değişken (answers'a ekle)
+        answers['plak-bitis-hesaplama'] = {
+            mevcutKalanGun: mevcutPlakKalanGun,
+            toplamKalanGun: toplamKalanGun,
+            bitisTarihi: formatliTarih
+        };
+        
+        // REAL-TIME UPDATE: Eğer kullanıcı "otomatik al" butonunu kullanmışsa, randevu bilgisini otomatik güncelle
+        if (answers['sonraki-randevu'] && answers['sonraki-randevu'].startsWith('min ')) {
+            const yeniRandevuValue = `min ${toplamKalanGun} gün sonra`;
+            answers['sonraki-randevu'] = yeniRandevuValue;
+            console.log(`🔄 Randevu otomatik güncellendi: ${yeniRandevuValue}`);
+        }
+    } else {
+        // Bilgiler eksik, dinamik placeholder göster
+        if (infoDiv) infoDiv.style.display = 'none';
+        if (placeholderDiv) {
+            placeholderDiv.style.display = 'block';
+            
+            // Dinamik mesaj oluştur
+            if (eksikBilgiler.length > 0) {
+                let mesaj = '⏳ Hesaplama için gerekli bilgiler:<br>';
+                eksikBilgiler.forEach(bilgi => {
+                    mesaj += `• <span style="color: #ff9800;">${bilgi}</span><br>`;
+                });
+                placeholderDiv.innerHTML = `<div style="text-align: center; color: #999; padding: 20px; font-size: 13px;">${mesaj}</div>`;
+                console.log('📝 Placeholder güncellendi. Eksik:', eksikBilgiler);
+            }
+        }
+        
+        // Rapor için bilgiyi sil
+        delete answers['plak-bitis-hesaplama'];
+    }
+}
+
+// Minimum randevu gününü otomatik hesaplayan fonksiyon
+function setMinimumRandevuGun() {
+    console.log('⚡ Minimum randevu günü otomatik hesaplanıyor...');
+    
+    // Plak bitiş hesaplama verisi var mı kontrol et
+    if (!answers['plak-bitis-hesaplama']) {
+        alert('⚠️ Önce plak hesaplama bilgilerini doldurun!\n\n• Mevcut plak numarası\n• Mevcut plak günü\n• Plak değişim sıklığı\n• Verilecek plak sayısı');
+        return;
+    }
+    
+    const toplamKalanGun = answers['plak-bitis-hesaplama'].toplamKalanGun;
+    
+    if (!toplamKalanGun || toplamKalanGun === 0) {
+        alert('⚠️ Plak hesaplama yapılmamış. Lütfen gerekli bilgileri girin!');
+        return;
+    }
+    
+    // Randevu değerini ayarla
+    const randevuValue = `min ${toplamKalanGun} gün sonra`;
+    answers['sonraki-randevu'] = randevuValue;
+    
+    // Tüm randevu butonlarındaki selected class'ı kaldır
+    const randevuButtons = document.querySelectorAll('.randevu-btn');
+    randevuButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Çıktıyı güncelle
+    updateSeffafOutput();
+    
+    console.log(`✅ Minimum randevu günü ayarlandı: ${randevuValue}`);
+    
+    // Kullanıcıya bilgi ver
+    const notification = document.createElement('div');
+    notification.style.cssText = 'position: fixed; top: 100px; right: 20px; background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(76,175,80,0.4); z-index: 10000; font-weight: 600; animation: slideIn 0.3s ease;';
+    notification.innerHTML = `⚡ Otomatik ayarlandı: <strong>${randevuValue}</strong>`;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Hedef plak hesaplama fonksiyonları
+function toggleHedefPlakInput() {
+    const container = document.getElementById('hedef-plak-input-container');
+    const input = document.getElementById('hedef-plak-input');
+    const sonucDiv = document.getElementById('hedef-plak-sonuc');
+    
+    if (container.style.display === 'none') {
+        container.style.display = 'block';
+        input.focus();
+        sonucDiv.style.display = 'none';
+        sonucDiv.textContent = '';
+    } else {
+        container.style.display = 'none';
+        input.value = '';
+        sonucDiv.style.display = 'none';
+        sonucDiv.textContent = '';
+    }
+}
+
+function hesaplaHedefPlak() {
+    const hedefPlakNo = parseInt(document.getElementById('hedef-plak-input').value);
+    const sonucDiv = document.getElementById('hedef-plak-sonuc');
+    
+    if (!hedefPlakNo || hedefPlakNo <= 0) {
+        alert('⚠️ Lütfen geçerli bir hedef plak numarası girin!');
+        return;
+    }
+    
+    // Önceki seansta en son hangi plak verilmiş?
+    const oncekiSonPlak = parseInt(numberInputs['onceki-seans']) || 0;
+    
+    if (oncekiSonPlak === 0) {
+        alert('⚠️ Önce "Önceki seansta kaçıncı plağa kadar vermişiz?" bilgisini girin!');
+        return;
+    }
+    
+    // Mevcut plak numarası (hastanın şu an kullandığı)
+    const mevcutPlak = parseInt(numberInputs['mevcut-plak']) || 0;
+    
+    if (mevcutPlak === 0) {
+        alert('⚠️ Önce "Mevcut kaçıncı plakta hastamız?" bilgisini girin!');
+        return;
+    }
+    
+    // Hedef plak numarası, mevcut plaktan küçük veya eşit olamaz
+    if (hedefPlakNo <= mevcutPlak) {
+        alert(`⚠️ Hedef plak numarası (${hedefPlakNo}), mevcut plak numarasından (${mevcutPlak}) büyük olmalıdır!`);
+        return;
+    }
+    
+    // Hastanın elinde kullanılmamış plak sayısı (önceki seansın kalanı)
+    const elindekiKullanilmamis = oncekiSonPlak - mevcutPlak;
+    
+    // Toplam ihtiyaç (mevcut plaktan sonra hedef plağa kadar)
+    const toplamIhtiyac = hedefPlakNo - mevcutPlak;
+    
+    // Verilecek YENİ plak sayısı (toplam ihtiyaçtan elindekini çıkar)
+    const verilecekPlak = toplamIhtiyac - elindekiKullanilmamis;
+    
+    // Eğer hesaplanan değer 0 veya negatifse - hastanın elinde yeterli plak var
+    if (verilecekPlak <= 0) {
+        const elindekiSonPlak = Math.min(oncekiSonPlak, hedefPlakNo);
+        alert(`ℹ️ Hastanın elinde zaten ${hedefPlakNo}. plağa ulaşması için yeterli plak var!\n\n• Mevcut: ${mevcutPlak}. plak\n• Elinde: ${mevcutPlak + 1}. plaktan ${oncekiSonPlak}. plağa kadar (${elindekiKullanilmamis} adet)\n• Hedef: ${hedefPlakNo}. plak\n\n✅ Yeni plak vermeye gerek yok - elindekilerle devam edebilir!`);
+        return;
+    }
+    
+    console.log('🎯 Hedef plak hesaplama:', {
+        hedefPlakNo,
+        oncekiSonPlak,
+        mevcutPlak,
+        elindekiKullanilmamis,
+        toplamIhtiyac,
+        verilecekPlak
+    });
+    
+    // Sonuç mesajı hazırla
+    let sonucMesaj = `✅ Toplam ${toplamIhtiyac} plak verilmiş olacak (${mevcutPlak + 1}. plaktan ${hedefPlakNo}. plağa kadar)`;
+    if (elindekiKullanilmamis > 0) {
+        sonucMesaj += `\n   • Elinde zaten var: ${elindekiKullanilmamis} plak (${mevcutPlak + 1}-${oncekiSonPlak})`;
+        sonucMesaj += `\n   • Yeni verilecek: ${verilecekPlak} plak (${oncekiSonPlak + 1}-${hedefPlakNo})`;
+    } else {
+        sonucMesaj += `\n   • Tümü yeni verilecek: ${verilecekPlak} plak`;
+    }
+    
+    sonucDiv.textContent = sonucMesaj;
+    sonucDiv.style.display = 'block';
+    
+    // "Kaç plak verilmiş olacak" alanına TOPLAM sayıyı gir (mevcut plaktan hedef plağa kadar)
+    numberInputs['verilecek-plak'] = toplamIhtiyac.toString();
+    
+    // Display'i güncelle
+    const display = document.getElementById('verilecek-plak-display');
+    if (display) {
+        display.textContent = toplamIhtiyac;
+    }
+    
+    // Çıktıyı güncelle (hesaplamalar otomatik çalışacak)
+    updateNumberDisplay();
+    updateSeffafOutput();
+    
+    // Bildirim göster
+    const notification = document.createElement('div');
+    notification.style.cssText = 'position: fixed; top: 100px; right: 20px; background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%); color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(156,39,176,0.4); z-index: 10000; font-weight: 600; animation: slideIn 0.3s ease;';
+    
+    let bildirimMesaj = `🎯 <strong>${toplamIhtiyac} plak</strong> verilmiş olacak`;
+    if (elindekiKullanilmamis > 0) {
+        bildirimMesaj += `<br><small style="font-size: 11px; opacity: 0.9;">Elinde ${elindekiKullanilmamis}, yeni ${verilecekPlak} plak</small>`;
+    }
+    
+    notification.innerHTML = bildirimMesaj;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.transition = 'all 0.3s ease';
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3500);
+    
+    console.log(`✅ Hedef: ${hedefPlakNo}, Mevcut: ${mevcutPlak}, Toplam verilecek: ${toplamIhtiyac} (Elinde: ${elindekiKullanilmamis}, Yeni: ${verilecekPlak})`);
 }
 
 function updateSeffafOutput() {
@@ -471,6 +767,9 @@ function updateSeffafOutput() {
     
     const output = generateSeffafReport(answers);
     outputElement.textContent = output;
+    
+    // Plak bitiş hesaplamasını güncelle (plak-degisim değişebilir)
+    updatePlakBitisHesaplama();
     
     // Update lastik calculation - sadece elastic report'tan çağrılmamışsa
     // (updateElasticReport zaten çağırıyor, çift çağrıyı önle)
@@ -753,6 +1052,14 @@ function generateSeffafReport(answers) {
         
         if (answers['plak-degisim']) {
             report += `• ${answers['plak-degisim']}\n`;
+        }
+        
+        // Plak bitiş tarihi hesaplama bilgilerini ekle
+        if (answers['plak-bitis-hesaplama']) {
+            const hesap = answers['plak-bitis-hesaplama'];
+            report += `  → Mevcut plağın kalan günü: ${hesap.mevcutKalanGun} gün\n`;
+            report += `  → Kaç gün yetecek plak verildi?: ${hesap.toplamKalanGun} gün\n`;
+            report += `  → Plaklar bitecek tarih: ${hesap.bitisTarihi}\n`;
         }
         
         if (answers['sonraki-randevu']) {
@@ -1970,6 +2277,8 @@ function handleUnifiedNumberButtonClick(event) {
     const question = button.dataset.question;
     const value = button.dataset.value;
     
+    console.log('🔢 Number button clicked:', question, '=', value);
+    
     if (!question || !value) return;
     
     // Append digit to current input
@@ -1978,6 +2287,8 @@ function handleUnifiedNumberButtonClick(event) {
     } else if (!numberInputs[question]) {
         numberInputs[question] = value;
     }
+    
+    console.log('📊 numberInputs updated:', question, '→', numberInputs[question]);
     
     // Update display
     updateUnifiedNumberDisplay(question);
