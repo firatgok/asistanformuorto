@@ -1,3 +1,98 @@
+// Anti-Copy Protection
+(function() {
+    'use strict';
+    
+    // Disable right-click
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+    document.addEventListener('keydown', function(e) {
+        if (
+            e.keyCode === 123 || // F12
+            (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+            (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+            (e.ctrlKey && e.keyCode === 85) // Ctrl+U
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    
+    // DevTools detection
+    const devtools = {
+        isOpen: false,
+        orientation: null
+    };
+    
+    const threshold = 160;
+    const emitEvent = (isOpen, orientation) => {
+        window.dispatchEvent(new CustomEvent('devtoolschange', {
+            detail: { isOpen, orientation }
+        }));
+    };
+    
+    setInterval(() => {
+        const widthThreshold = window.outerWidth - window.innerWidth > threshold;
+        const heightThreshold = window.outerHeight - window.innerHeight > threshold;
+        const orientation = widthThreshold ? 'vertical' : 'horizontal';
+        
+        if (!(heightThreshold && widthThreshold) &&
+            ((window.Firebug && window.Firebug.chrome && window.Firebug.chrome.isInitialized) || widthThreshold || heightThreshold)) {
+            if (!devtools.isOpen || devtools.orientation !== orientation) {
+                emitEvent(true, orientation);
+                devtools.isOpen = true;
+                devtools.orientation = orientation;
+                // Redirect or disable functionality
+                document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial;"><h1>Developer tools detected. Please close to continue.</h1></div>';
+            }
+        } else {
+            if (devtools.isOpen) {
+                emitEvent(false, null);
+                devtools.isOpen = false;
+                devtools.orientation = null;
+            }
+        }
+    }, 500);
+    
+    // Disable text selection
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable copy
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable cut
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Disable drag
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // Console.log override (hide console messages)
+    console.log = function() {};
+    console.warn = function() {};
+    console.error = function() {};
+    console.info = function() {};
+    console.debug = function() {};
+    
+    // Copyright notice
+    const copyright = '\n\n© 2024-2026 Ortodonti Form Yazılımı - Tüm Hakları Saklıdır\nYetkisiz kullanım, kopyalama ve dağıtım yasaktır.\n\n';
+    console.log('%c' + copyright, 'color: red; font-weight: bold; font-size: 14px;');
+    
+})();
 // Global variables
 let answers = {};
 let telAnswers = {};
@@ -201,14 +296,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeCheckboxListeners() {
     // Initialize option buttons for şeffaf plak (excluding elastic-status-btn which has onclick handler)
     const seffafButtons = document.querySelectorAll('#seffaf-plak .option-btn:not(.elastic-status-btn)');
-    console.log('🎯 Initializing', seffafButtons.length, 'seffaf plak option buttons');
     seffafButtons.forEach(button => {
         button.addEventListener('click', handleOptionButtonClick);
     });
 
     // Initialize option buttons for tel tedavisi (excluding elastic-status-btn which has onclick handler)
     const telButtons = document.querySelectorAll('#tel-tedavisi .option-btn:not(.elastic-status-btn)');
-    console.log('🎯 Initializing', telButtons.length, 'tel tedavisi option buttons');
     telButtons.forEach(button => {
         button.addEventListener('click', handleTelOptionButtonClick);
     });
@@ -221,14 +314,12 @@ function initializeCheckboxListeners() {
     
     // Initialize unified number selectors (new system)
     const unifiedNumberButtons = document.querySelectorAll('.unified-number-selector .number-btn');
-    console.log('🎯 Initializing', unifiedNumberButtons.length, 'unified number buttons');
     unifiedNumberButtons.forEach(button => {
         button.addEventListener('click', handleUnifiedNumberButtonClick);
     });
     
     // Initialize clear buttons
     const clearButtons = document.querySelectorAll('.clear-btn');
-    console.log('🎯 Initializing', clearButtons.length, 'clear buttons');
     clearButtons.forEach(button => {
         button.addEventListener('click', handleClearButtonClick);
     });
@@ -253,8 +344,6 @@ function handleOptionButtonClick(event) {
     const question = button.dataset.question;
     const value = button.dataset.value;
     
-    console.log('🔘 Option button clicked:', question, '=', value);
-    
     // Find all buttons in the same question group
     const questionGroup = button.closest('.question-group');
     const allButtons = questionGroup.querySelectorAll('.option-btn');
@@ -268,23 +357,6 @@ function handleOptionButtonClick(event) {
     // If button was not already selected, add selected class to clicked button
     if (!isAlreadySelected) {
         button.classList.add('selected');
-        console.log('✅ Button selected:', question);
-        
-        // REAL-TIME FIX: Plak değişim sıklığı değiştiğinde hemen answers'ı güncelle
-        if (question === 'plak-degisim') {
-            answers['plak-degisim'] = value;
-            console.log('⚡ Plak değişim sıklığı hemen güncellendi:', value);
-            // Hemen hesaplamayı güncelle
-            updatePlakBitisHesaplama();
-        }
-    } else {
-        console.log('❌ Button deselected:', question);
-        
-        // Deselect durumunda da answers'dan kaldır
-        if (question === 'plak-degisim') {
-            delete answers['plak-degisim'];
-            updatePlakBitisHesaplama();
-        }
     }
     
     // Update the output
@@ -333,12 +405,6 @@ function handleNumberButtonClick(event) {
     
     // Add selected class to clicked button
     button.classList.add('selected');
-    
-    // Update numberInputs object
-    if (question) {
-        numberInputs[question] = value;
-        console.log('Number input updated:', question, '=', value);
-    }
     
     // Update the combined number display
     updateNumberDisplay();
@@ -396,295 +462,6 @@ function updatePlakStatusBox() {
     if (statusPlakGun) {
         statusPlakGun.textContent = numberInputs['plak-gun'] || '--';
     }
-    
-    // Plak bitiş tarihi hesaplamasını güncelle
-    updatePlakBitisHesaplama();
-}
-
-// Plak bitiş tarihi hesaplama
-function updatePlakBitisHesaplama() {
-    const infoDiv = document.getElementById('plak-bitis-info');
-    const placeholderDiv = document.getElementById('plak-bitis-placeholder');
-    const kalanGunMevcutSpan = document.getElementById('kalan-gun-mevcut');
-    const toplamKalanGunSpan = document.getElementById('toplam-kalan-gun');
-    const bitisTarihiSpan = document.getElementById('bitis-tarihi');
-    
-    // Gerekli bilgileri al
-    const mevcutPlak = parseInt(numberInputs['mevcut-plak']) || 0;
-    const mevcutPlakGun = parseInt(numberInputs['plak-gun']) || 0;
-    const verilecekPlak = parseInt(numberInputs['verilecek-plak']) || 0;
-    const plakDegisimText = answers['plak-degisim'] || '';
-    
-    // Değişim gününü çıkar (7 veya 10)
-    let degisimGun = 0;
-    if (plakDegisimText.includes('7')) {
-        degisimGun = 7;
-    } else if (plakDegisimText.includes('10')) {
-        degisimGun = 10;
-    }
-    
-    // Debug için
-    console.log('Plak Bitiş Hesaplama:', {
-        mevcutPlak,
-        mevcutPlakGun,
-        verilecekPlak,
-        degisimGun,
-        plakDegisimText
-    });
-    
-    // Eksik bilgileri tespit et
-    const eksikBilgiler = [];
-    if (!mevcutPlak || mevcutPlak === 0) eksikBilgiler.push('Mevcut plak numarası');
-    if (!mevcutPlakGun || mevcutPlakGun === 0) eksikBilgiler.push('Mevcut plak günü');
-    if (!degisimGun || degisimGun === 0) eksikBilgiler.push('Plak değişim sıklığı (7 veya 10 gün)');
-    if (!verilecekPlak || verilecekPlak === 0) eksikBilgiler.push('Verilecek plak sayısı');
-    
-    // Tüm bilgiler var mı kontrol et
-    if (mevcutPlakGun > 0 && verilecekPlak > 0 && degisimGun > 0) {
-        // Hesaplamalar
-        const mevcutPlakKalanGun = degisimGun - mevcutPlakGun;
-        const verilecekPlaklarToplamGun = verilecekPlak * degisimGun;
-        const toplamKalanGun = mevcutPlakKalanGun + verilecekPlaklarToplamGun;
-        
-        // Bitiş tarihini hesapla
-        const bugun = new Date();
-        const bitisTarihi = new Date(bugun);
-        bitisTarihi.setDate(bitisTarihi.getDate() + toplamKalanGun);
-        
-        // Tarihi formatla (GG/AA/YYYY)
-        const gun = String(bitisTarihi.getDate()).padStart(2, '0');
-        const ay = String(bitisTarihi.getMonth() + 1).padStart(2, '0');
-        const yil = bitisTarihi.getFullYear();
-        const formatliTarih = `${gun}/${ay}/${yil}`;
-        
-        // Bilgileri güncelle
-        if (kalanGunMevcutSpan) kalanGunMevcutSpan.textContent = `${mevcutPlakKalanGun} gün`;
-        if (toplamKalanGunSpan) toplamKalanGunSpan.textContent = `${toplamKalanGun} gün`;
-        if (bitisTarihiSpan) bitisTarihiSpan.textContent = formatliTarih;
-        
-        // Bilgiyi göster, placeholder'ı gizle
-        if (infoDiv) infoDiv.style.display = 'block';
-        if (placeholderDiv) placeholderDiv.style.display = 'none';
-        
-        // Rapor için global değişken (answers'a ekle)
-        answers['plak-bitis-hesaplama'] = {
-            mevcutKalanGun: mevcutPlakKalanGun,
-            toplamKalanGun: toplamKalanGun,
-            bitisTarihi: formatliTarih
-        };
-        
-        // REAL-TIME UPDATE: Eğer kullanıcı "otomatik al" butonunu kullanmışsa, randevu bilgisini otomatik güncelle
-        if (answers['sonraki-randevu'] && answers['sonraki-randevu'].startsWith('min ')) {
-            const yeniRandevuValue = `min ${toplamKalanGun} gün sonra`;
-            answers['sonraki-randevu'] = yeniRandevuValue;
-            console.log(`🔄 Randevu otomatik güncellendi: ${yeniRandevuValue}`);
-        }
-    } else {
-        // Bilgiler eksik, dinamik placeholder göster
-        if (infoDiv) infoDiv.style.display = 'none';
-        if (placeholderDiv) {
-            placeholderDiv.style.display = 'block';
-            
-            // Dinamik mesaj oluştur
-            if (eksikBilgiler.length > 0) {
-                let mesaj = '⏳ Hesaplama için gerekli bilgiler:<br>';
-                eksikBilgiler.forEach(bilgi => {
-                    mesaj += `• <span style="color: #ff9800;">${bilgi}</span><br>`;
-                });
-                placeholderDiv.innerHTML = `<div style="text-align: center; color: #999; padding: 20px; font-size: 13px;">${mesaj}</div>`;
-                console.log('📝 Placeholder güncellendi. Eksik:', eksikBilgiler);
-            }
-        }
-        
-        // Rapor için bilgiyi sil
-        delete answers['plak-bitis-hesaplama'];
-    }
-}
-
-// Minimum randevu gününü otomatik hesaplayan fonksiyon
-function setMinimumRandevuGun() {
-    console.log('⚡ Minimum randevu günü otomatik hesaplanıyor...');
-    
-    // Plak bitiş hesaplama verisi var mı kontrol et
-    if (!answers['plak-bitis-hesaplama']) {
-        alert('⚠️ Önce plak hesaplama bilgilerini doldurun!\n\n• Mevcut plak numarası\n• Mevcut plak günü\n• Plak değişim sıklığı\n• Verilecek plak sayısı');
-        return;
-    }
-    
-    const toplamKalanGun = answers['plak-bitis-hesaplama'].toplamKalanGun;
-    
-    if (!toplamKalanGun || toplamKalanGun === 0) {
-        alert('⚠️ Plak hesaplama yapılmamış. Lütfen gerekli bilgileri girin!');
-        return;
-    }
-    
-    // Randevu değerini ayarla
-    const randevuValue = `min ${toplamKalanGun} gün sonra`;
-    answers['sonraki-randevu'] = randevuValue;
-    
-    // Tüm randevu butonlarındaki selected class'ı kaldır
-    const randevuButtons = document.querySelectorAll('.randevu-btn');
-    randevuButtons.forEach(btn => btn.classList.remove('selected'));
-    
-    // Çıktıyı güncelle
-    updateSeffafOutput();
-    
-    console.log(`✅ Minimum randevu günü ayarlandı: ${randevuValue}`);
-    
-    // Kullanıcıya bilgi ver
-    const notification = document.createElement('div');
-    notification.style.cssText = 'position: fixed; top: 100px; right: 20px; background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%); color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(76,175,80,0.4); z-index: 10000; font-weight: 600; animation: slideIn 0.3s ease;';
-    notification.innerHTML = `⚡ Otomatik ayarlandı: <strong>${randevuValue}</strong>`;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.style.transition = 'all 0.3s ease';
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(400px)';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// Hedef plak hesaplama fonksiyonları
-let lastVerilecekPlakBeforeCalculation = null; // Hesaplama öncesi değeri sakla
-
-function toggleHedefPlakInput() {
-    const container = document.getElementById('hedef-plak-input-container');
-    const input = document.getElementById('hedef-plak-input');
-    const sonucDiv = document.getElementById('hedef-plak-sonuc');
-    
-    if (container.style.display === 'none') {
-        // Açılıyor - mevcut değeri kaydet (sadece ilk açılışta)
-        if (lastVerilecekPlakBeforeCalculation === null) {
-            lastVerilecekPlakBeforeCalculation = numberInputs['verilecek-plak'] || '';
-        }
-        container.style.display = 'block';
-        input.focus();
-        sonucDiv.style.display = 'none';
-        sonucDiv.textContent = '';
-    } else {
-        // Kapatılıyor - eğer backup varsa geri dön (hesaplama yapılmamışsa)
-        if (lastVerilecekPlakBeforeCalculation !== null) {
-            // Backup var, eski değere geri dön
-            numberInputs['verilecek-plak'] = lastVerilecekPlakBeforeCalculation;
-            const display = document.getElementById('verilecek-plak-display');
-            if (display) {
-                display.textContent = lastVerilecekPlakBeforeCalculation || '--';
-            }
-            // Çıktıyı güncelle
-            updateNumberDisplay();
-            updateSeffafOutput();
-            lastVerilecekPlakBeforeCalculation = null;
-        }
-        container.style.display = 'none';
-        input.value = '';
-        sonucDiv.style.display = 'none';
-        sonucDiv.textContent = '';
-    }
-}
-
-function hesaplaHedefPlak() {
-    const hedefPlakNo = parseInt(document.getElementById('hedef-plak-input').value);
-    const sonucDiv = document.getElementById('hedef-plak-sonuc');
-    
-    if (!hedefPlakNo || hedefPlakNo <= 0) {
-        alert('⚠️ Lütfen geçerli bir hedef plak numarası girin!');
-        return;
-    }
-    
-    // Önceki seansta en son hangi plak verilmiş?
-    const oncekiSonPlak = parseInt(numberInputs['onceki-seans']) || 0;
-    
-    if (oncekiSonPlak === 0) {
-        alert('⚠️ Önce "Önceki seansta kaçıncı plağa kadar vermişiz?" bilgisini girin!');
-        return;
-    }
-    
-    // Mevcut plak numarası (hastanın şu an kullandığı)
-    const mevcutPlak = parseInt(numberInputs['mevcut-plak']) || 0;
-    
-    if (mevcutPlak === 0) {
-        alert('⚠️ Önce "Mevcut kaçıncı plakta hastamız?" bilgisini girin!');
-        return;
-    }
-    
-    // Hedef plak numarası, mevcut plaktan küçük veya eşit olamaz
-    if (hedefPlakNo <= mevcutPlak) {
-        alert(`⚠️ Hedef plak numarası (${hedefPlakNo}), mevcut plak numarasından (${mevcutPlak}) büyük olmalıdır!`);
-        return;
-    }
-    
-    // Hastanın elinde kullanılmamış plak sayısı (önceki seansın kalanı)
-    const elindekiKullanilmamis = oncekiSonPlak - mevcutPlak;
-    
-    // Toplam ihtiyaç (mevcut plaktan sonra hedef plağa kadar)
-    const toplamIhtiyac = hedefPlakNo - mevcutPlak;
-    
-    // Verilecek YENİ plak sayısı (toplam ihtiyaçtan elindekini çıkar)
-    const verilecekPlak = toplamIhtiyac - elindekiKullanilmamis;
-    
-    // Eğer hesaplanan değer 0 veya negatifse - hastanın elinde yeterli plak var
-    if (verilecekPlak <= 0) {
-        const elindekiSonPlak = Math.min(oncekiSonPlak, hedefPlakNo);
-        alert(`ℹ️ Hastanın elinde zaten ${hedefPlakNo}. plağa ulaşması için yeterli plak var!\n\n• Mevcut: ${mevcutPlak}. plak\n• Elinde: ${mevcutPlak + 1}. plaktan ${oncekiSonPlak}. plağa kadar (${elindekiKullanilmamis} adet)\n• Hedef: ${hedefPlakNo}. plak\n\n✅ Yeni plak vermeye gerek yok - elindekilerle devam edebilir!`);
-        return;
-    }
-    
-    console.log('🎯 Hedef plak hesaplama:', {
-        hedefPlakNo,
-        oncekiSonPlak,
-        mevcutPlak,
-        elindekiKullanilmamis,
-        toplamIhtiyac,
-        verilecekPlak
-    });
-    
-    // Sonuç mesajı hazırla
-    let sonucMesaj = `✅ Toplam ${toplamIhtiyac} plak verilmiş olacak (${mevcutPlak + 1}. plaktan ${hedefPlakNo}. plağa kadar)`;
-    if (elindekiKullanilmamis > 0) {
-        sonucMesaj += `\n   • Elinde zaten var: ${elindekiKullanilmamis} plak (${mevcutPlak + 1}-${oncekiSonPlak})`;
-        sonucMesaj += `\n   • Yeni verilecek: ${verilecekPlak} plak (${oncekiSonPlak + 1}-${hedefPlakNo})`;
-    } else {
-        sonucMesaj += `\n   • Tümü yeni verilecek: ${verilecekPlak} plak`;
-    }
-    
-    sonucDiv.textContent = sonucMesaj;
-    sonucDiv.style.display = 'block';
-    
-    // "Kaç plak verilmiş olacak" alanına TOPLAM sayıyı gir (mevcut plaktan hedef plağa kadar)
-    numberInputs['verilecek-plak'] = toplamIhtiyac.toString();
-    
-    // Display'i güncelle
-    const display = document.getElementById('verilecek-plak-display');
-    if (display) {
-        display.textContent = toplamIhtiyac;
-    }
-    
-    // Çıktıyı güncelle (hesaplamalar otomatik çalışacak)
-    updateNumberDisplay();
-    updateSeffafOutput();
-    
-    // Bildirim göster
-    const notification = document.createElement('div');
-    notification.style.cssText = 'position: fixed; top: 100px; right: 20px; background: linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%); color: white; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(156,39,176,0.4); z-index: 10000; font-weight: 600; animation: slideIn 0.3s ease;';
-    
-    let bildirimMesaj = `🎯 <strong>${toplamIhtiyac} plak</strong> verilmiş olacak`;
-    if (elindekiKullanilmamis > 0) {
-        bildirimMesaj += `<br><small style="font-size: 11px; opacity: 0.9;">Elinde ${elindekiKullanilmamis}, yeni ${verilecekPlak} plak</small>`;
-    }
-    
-    notification.innerHTML = bildirimMesaj;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.style.transition = 'all 0.3s ease';
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(400px)';
-        setTimeout(() => notification.remove(), 300);
-    }, 3500);
-    
-    console.log(`✅ Hedef: ${hedefPlakNo}, Mevcut: ${mevcutPlak}, Toplam verilecek: ${toplamIhtiyac} (Elinde: ${elindekiKullanilmamis}, Yeni: ${verilecekPlak})`);
-    
-    // Hesaplama başarılı - backup'ı temizle (artık geri dönüş yapılmasın)
-    lastVerilecekPlakBeforeCalculation = null;
 }
 
 function updateSeffafOutput() {
@@ -789,9 +566,6 @@ function updateSeffafOutput() {
     
     const output = generateSeffafReport(answers);
     outputElement.textContent = output;
-    
-    // Plak bitiş hesaplamasını güncelle (plak-degisim değişebilir)
-    updatePlakBitisHesaplama();
     
     // Update lastik calculation - sadece elastic report'tan çağrılmamışsa
     // (updateElasticReport zaten çağırıyor, çift çağrıyı önle)
@@ -1076,14 +850,6 @@ function generateSeffafReport(answers) {
             report += `• ${answers['plak-degisim']}\n`;
         }
         
-        // Plak bitiş tarihi hesaplama bilgilerini ekle
-        if (answers['plak-bitis-hesaplama']) {
-            const hesap = answers['plak-bitis-hesaplama'];
-            report += `  → Mevcut plağın kalan günü: ${hesap.mevcutKalanGun} gün\n`;
-            report += `  → Kaç gün yetecek plak verildi?: ${hesap.toplamKalanGun} gün\n`;
-            report += `  → Plaklar bitecek tarih: ${hesap.bitisTarihi}\n`;
-        }
-        
         if (answers['sonraki-randevu']) {
             report += `• Bir sonraki randevu ${answers['sonraki-randevu']}\n`;
         }
@@ -1353,30 +1119,6 @@ function generateSeffafReport(answers) {
                 report += `• ${onNextSelection.tur} lastik ${onNextSelection.sure}\n`;
                 report += '\n';
             }
-        }
-        
-        // Lastik ihtiyacını hesapla ve göster
-        const elasticNeed = calculateSeffafElasticNeed();
-        if (elasticNeed && elasticNeed.needs && Object.keys(elasticNeed.needs).length > 0) {
-            report += 'Lastik İhtiyacı:\n';
-            const needItems = [];
-            
-            // Her hayvan türü için ihtiyacı ekle
-            if (elasticNeed.needs.kartal) {
-                needItems.push(elasticNeed.needs.kartal + ' adet Kartal');
-            }
-            if (elasticNeed.needs.goril) {
-                needItems.push(elasticNeed.needs.goril + ' adet Goril');
-            }
-            if (elasticNeed.needs.ferret) {
-                needItems.push(elasticNeed.needs.ferret + ' adet Ferret');
-            }
-            if (elasticNeed.needs.kaplumbaga) {
-                needItems.push(elasticNeed.needs.kaplumbaga + ' adet Kaplumbağa');
-            }
-            
-            report += '• ' + needItems.join(', ') + '\n';
-            report += '\n';
         }
     }
     
@@ -2323,8 +2065,6 @@ function handleUnifiedNumberButtonClick(event) {
     const question = button.dataset.question;
     const value = button.dataset.value;
     
-    console.log('🔢 Number button clicked:', question, '=', value);
-    
     if (!question || !value) return;
     
     // Append digit to current input
@@ -2333,8 +2073,6 @@ function handleUnifiedNumberButtonClick(event) {
     } else if (!numberInputs[question]) {
         numberInputs[question] = value;
     }
-    
-    console.log('📊 numberInputs updated:', question, '→', numberInputs[question]);
     
     // Update display
     updateUnifiedNumberDisplay(question);
@@ -3161,126 +2899,6 @@ function updateTelOutput() {
     telOutput.textContent = report;
 }
 
-// Randevu tarihine kadar kaç gün olduğunu hesapla
-function getDaysUntilAppointment(answersObj) {
-    const randevuText = answersObj['sonraki-randevu'];
-    if (!randevuText) return 0;
-    
-    // "X hafta sonra" formatı
-    const weekMatch = randevuText.match(/(\d+)\s*hafta/);
-    if (weekMatch) {
-        return parseInt(weekMatch[1]) * 7;
-    }
-    
-    // "X gün sonra" veya "min X gün sonra" formatı
-    const dayMatch = randevuText.match(/(\d+)\s*gün/);
-    if (dayMatch) {
-        return parseInt(dayMatch[1]);
-    }
-    
-    return 0;
-}
-
-// Şeffaf plak için lastik ihtiyacını hesapla
-function calculateSeffafElasticNeed() {
-    const days = getDaysUntilAppointment(answers);
-    if (days === 0) return null;
-    
-    const animalCounts = {
-        'kartal': 0,
-        'goril': 0,
-        'ferret': 0,
-        'kaplumbaga': 0
-    };
-    
-    // Sağ taraf
-    if (nextElasticSelections['sag-next'] && nextElasticSelections['sag-next'].active) {
-        Object.keys(nextElasticSelections['sag-next'].types || {}).forEach(type => {
-            const typeData = nextElasticSelections['sag-next'].types[type];
-            if (typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Sol taraf
-    if (nextElasticSelections['sol-next'] && nextElasticSelections['sol-next'].active) {
-        Object.keys(nextElasticSelections['sol-next'].types || {}).forEach(type => {
-            const typeData = nextElasticSelections['sol-next'].types[type];
-            if (typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Ön taraf (on-next)
-    // Ön lastikler için hayvan seçimi yok, sadece tür ve süre var
-    
-    // Toplam ihtiyaçları hesapla (günlük kullanım × gün sayısı)
-    const needs = {};
-    Object.keys(animalCounts).forEach(animal => {
-        if (animalCounts[animal] > 0) {
-            needs[animal] = animalCounts[animal] * days;
-        }
-    });
-    
-    return { needs, days };
-}
-
-// Tel tedavisi için lastik ihtiyacını hesapla
-function calculateTelElasticNeed() {
-    const days = getDaysUntilAppointment(telAnswers);
-    if (days === 0) return null;
-    if (days === 0) return null;
-    
-    const animalCounts = {
-        'kartal': 0,
-        'goril': 0,
-        'ferret': 0,
-        'kaplumbaga': 0
-    };
-    
-    // Sağ taraf
-    if (nextElasticSelections['sag-next'] && nextElasticSelections['sag-next'].active) {
-        Object.keys(nextElasticSelections['sag-next'].types || {}).forEach(type => {
-            const typeData = nextElasticSelections['sag-next'].types[type];
-            if (typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Sol taraf
-    if (nextElasticSelections['sol-next'] && nextElasticSelections['sol-next'].active) {
-        Object.keys(nextElasticSelections['sol-next'].types || {}).forEach(type => {
-            const typeData = nextElasticSelections['sol-next'].types[type];
-            if (typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Orta taraf
-    if (nextElasticSelections['orta-next'] && nextElasticSelections['orta-next'].active) {
-        Object.keys(nextElasticSelections['orta-next'].types || {}).forEach(type => {
-            const typeData = nextElasticSelections['orta-next'].types[type];
-            if (typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Toplam ihtiyaçları hesapla (günlük kullanım × gün sayısı)
-    const needs = {};
-    Object.keys(animalCounts).forEach(animal => {
-        if (animalCounts[animal] > 0) {
-            needs[animal] = animalCounts[animal] * days;
-        }
-    });
-    
-    return { needs, days };
-}
-
 function generateTelElasticReport() {
     let report = '';
     
@@ -3303,20 +2921,6 @@ function generateTelElasticReport() {
         nextElastics.forEach(function(item) {
             report += '• ' + item + '\n';
         });
-        
-        // Lastik ihtiyacı hesapla
-        const elasticNeed = calculateTelElasticNeed();
-        if (elasticNeed && Object.keys(elasticNeed.needs).length > 0) {
-            report += '\nLastik İhtiyacı:\n';
-            const needParts = [];
-            Object.keys(elasticNeed.needs).forEach(animal => {
-                const count = elasticNeed.needs[animal];
-                const animalName = getAnimalName(animal);
-                needParts.push(`${count} adet ${animalName}`);
-            });
-            report += '• ' + needParts.join(', ') + '\n';
-        }
-        
         report += '\n';
     }
     
@@ -3875,23 +3479,6 @@ function initializeDurationMethod() {
                 setTimeout(() => {
                     if (assistantInput) assistantInput.focus();
                 }, 100);
-            } else if (method === 'refinement') {
-                // Show manual input with pre-filled values
-                if (manualContainer) manualContainer.style.display = 'block';
-                if (assistantInput) assistantInput.value = '';
-                if (doctor1Input) doctor1Input.value = '10';
-                if (doctor2Input) doctor2Input.value = '30';
-                
-                // Set special note
-                const specialNoteTextarea = document.getElementById('seffaf-special-note');
-                if (specialNoteTextarea) {
-                    specialNoteTextarea.value = 'Bir sonraki seans refinement için TARAMA, FOTO, SEF, PAN alınacak. Diş arası BOŞLUK ÖLÇÜMÜ yapılacak';
-                    // Trigger the update function
-                    updateSeffafSpecialNote();
-                }
-                
-                // Update result display
-                updateDurationResult();
             } else {
                 // Hide manual input
                 if (manualContainer) manualContainer.style.display = 'none';
@@ -4198,7 +3785,7 @@ function selectDuration(tabType, durationType) {
         'uzun': '30 dakika',
         'kisa-15': '15 dakika',
         'cok-kisa': '10 dakika',
-        'sokum': '40dk rd, 50 dk rutin'
+        'sokum': '40-50 dakika'
     };
     if (tabType === 'tel') {
         telAnswers['randevu-suresi'] = durationTexts[durationType] || durationType;
@@ -5403,75 +4990,6 @@ function selectAnimal(tabType, direction, elasticType, animal) {
     }
 }
 
-// Şeffaf plak için lastik ihtiyacını hesapla
-function calculateSeffafElasticNeed() {
-    // Randevu bilgisini al
-    const randevuText = answers['sonraki-randevu'];
-    if (!randevuText) {
-        return null;
-    }
-    
-    // Gün sayısını hesapla
-    let days = 0;
-    const weekMatch = randevuText.match(/(\d+)\s*hafta/);
-    if (weekMatch) {
-        days = parseInt(weekMatch[1]) * 7;
-    } else {
-        const dayMatch = randevuText.match(/(\d+)\s*gün/);
-        if (dayMatch) {
-            days = parseInt(dayMatch[1]);
-        }
-    }
-    
-    if (days === 0) {
-        return null;
-    }
-    
-    // Hayvan sayılarını topla
-    const animalCounts = {
-        'kartal': 0,
-        'goril': 0,
-        'ferret': 0,
-        'kaplumbaga': 0
-    };
-    
-    // Sağ taraf lastiklerini say
-    if (nextElasticSelections['sag-next'] && nextElasticSelections['sag-next'].active) {
-        const sagTypes = nextElasticSelections['sag-next'].types || {};
-        Object.keys(sagTypes).forEach(type => {
-            const typeData = sagTypes[type];
-            if (typeData && typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Sol taraf lastiklerini say
-    if (nextElasticSelections['sol-next'] && nextElasticSelections['sol-next'].active) {
-        const solTypes = nextElasticSelections['sol-next'].types || {};
-        Object.keys(solTypes).forEach(type => {
-            const typeData = solTypes[type];
-            if (typeData && typeData.selected && typeData.animal) {
-                animalCounts[typeData.animal]++;
-            }
-        });
-    }
-    
-    // Toplam ihtiyaçları hesapla (günlük kullanım × gün sayısı)
-    const needs = {};
-    Object.keys(animalCounts).forEach(animal => {
-        if (animalCounts[animal] > 0) {
-            needs[animal] = animalCounts[animal] * days;
-        }
-    });
-    
-    if (Object.keys(needs).length === 0) {
-        return null;
-    }
-    
-    return { needs: needs, days: days };
-}
-
 // Hayvan kodundan hayvan ismini döndür
 function getAnimalName(animalCode) {
     const animalNames = {
@@ -6670,282 +6188,6 @@ function resetFrezSelections() {
 window.resetCurrentElastics = resetCurrentElastics;
 window.resetNextElastics = resetNextElastics;
 window.resetFrezSelections = resetFrezSelections;
-
-// Mevcut Lastiklerle Devam Fonksiyonu (Şeffaf Plak)
-function copySeffafCurrentToNext() {
-    // Sağ tarafı kopyala
-    if (elasticSelections.sag && elasticSelections.sag.active) {
-        nextElasticSelections['sag-next'].active = true;
-        nextElasticSelections['sag-next'].sameAsNow = false;
-        
-        // Her lastik tipini kopyala
-        Object.keys(elasticSelections.sag.types).forEach(type => {
-            if (elasticSelections.sag.types[type].selected && elasticSelections.sag.types[type].duration) {
-                nextElasticSelections['sag-next'].types[type] = {
-                    selected: true,
-                    duration: elasticSelections.sag.types[type].duration,
-                    animal: elasticSelections.sag.types[type].animal || null
-                };
-            }
-        });
-        
-        // UI'yi güncelle - Sağ butonunu aktif yap
-        const sagNextBtn = document.querySelector('.elastic-main-btn.next-session[data-direction="sag-next"]');
-        if (sagNextBtn) {
-            sagNextBtn.classList.add('active');
-            const container = document.getElementById('sag-next-options');
-            if (container) container.style.display = 'block';
-        }
-        
-        // Her lastik tipi için UI butonlarını aktif yap
-        Object.keys(elasticSelections.sag.types).forEach(type => {
-            if (elasticSelections.sag.types[type].selected && elasticSelections.sag.types[type].duration) {
-                // Tip butonunu aktif yap
-                const typeBtn = document.querySelector('.elastic-type-btn.next-session[data-parent="sag-next"][data-elastic-type="' + type + '"]');
-                if (typeBtn) {
-                    typeBtn.classList.add('selected');
-                    const durationContainer = document.getElementById('sag-next-' + type + '-duration');
-                    if (durationContainer) durationContainer.style.display = 'block';
-                }
-                
-                // Süre butonunu aktif yap
-                const duration = elasticSelections.sag.types[type].duration;
-                const durationBtn = document.querySelector('.elastic-duration-btn.next-session[data-parent="sag-next"][data-elastic-type="' + type + '"][data-duration="' + duration + '"]');
-                if (durationBtn) {
-                    durationBtn.classList.add('selected');
-                }
-                
-                // Hayvan butonunu aktif yap
-                const animal = elasticSelections.sag.types[type].animal;
-                if (animal) {
-                    const animalBtn = document.querySelector('.animal-btn[data-animal-key="seffaf-next-sag-' + type + '"][data-animal="' + animal + '"]');
-                    if (animalBtn) {
-                        animalBtn.classList.add('selected');
-                    }
-                }
-            }
-        });
-    }
-    
-    // Sol tarafı kopyala
-    if (elasticSelections.sol && elasticSelections.sol.active) {
-        nextElasticSelections['sol-next'].active = true;
-        nextElasticSelections['sol-next'].sameAsNow = false;
-        
-        // Her lastik tipini kopyala
-        Object.keys(elasticSelections.sol.types).forEach(type => {
-            if (elasticSelections.sol.types[type].selected && elasticSelections.sol.types[type].duration) {
-                nextElasticSelections['sol-next'].types[type] = {
-                    selected: true,
-                    duration: elasticSelections.sol.types[type].duration,
-                    animal: elasticSelections.sol.types[type].animal || null
-                };
-            }
-        });
-        
-        // UI'yi güncelle - Sol butonunu aktif yap
-        const solNextBtn = document.querySelector('.elastic-main-btn.next-session[data-direction="sol-next"]');
-        if (solNextBtn) {
-            solNextBtn.classList.add('active');
-            const container = document.getElementById('sol-next-options');
-            if (container) container.style.display = 'block';
-        }
-        
-        // Her lastik tipi için UI butonlarını aktif yap
-        Object.keys(elasticSelections.sol.types).forEach(type => {
-            if (elasticSelections.sol.types[type].selected && elasticSelections.sol.types[type].duration) {
-                // Tip butonunu aktif yap
-                const typeBtn = document.querySelector('.elastic-type-btn.next-session[data-parent="sol-next"][data-elastic-type="' + type + '"]');
-                if (typeBtn) {
-                    typeBtn.classList.add('selected');
-                    const durationContainer = document.getElementById('sol-next-' + type + '-duration');
-                    if (durationContainer) durationContainer.style.display = 'block';
-                }
-                
-                // Süre butonunu aktif yap
-                const duration = elasticSelections.sol.types[type].duration;
-                const durationBtn = document.querySelector('.elastic-duration-btn.next-session[data-parent="sol-next"][data-elastic-type="' + type + '"][data-duration="' + duration + '"]');
-                if (durationBtn) {
-                    durationBtn.classList.add('selected');
-                }
-                
-                // Hayvan butonunu aktif yap
-                const animal = elasticSelections.sol.types[type].animal;
-                if (animal) {
-                    const animalBtn = document.querySelector('.animal-btn[data-animal-key="seffaf-next-sol-' + type + '"][data-animal="' + animal + '"]');
-                    if (animalBtn) {
-                        animalBtn.classList.add('selected');
-                    }
-                }
-            }
-        });
-    }
-    
-    // Ön lastikleri kopyala
-    if (elasticSelections.on && elasticSelections.on.active && elasticSelections.on.tur && elasticSelections.on.sure) {
-        nextElasticSelections['on-next'].active = true;
-        nextElasticSelections['on-next'].sameAsNow = false;
-        nextElasticSelections['on-next'].tur = elasticSelections.on.tur;
-        nextElasticSelections['on-next'].sure = elasticSelections.on.sure;
-        
-        // UI'yi güncelle - Ön butonunu ve seçimlerini aktif yap
-        const onNextBtn = document.querySelector('.elastic-main-btn.next-session[data-direction="on-next"]');
-        if (onNextBtn) {
-            onNextBtn.classList.add('active');
-            const container = document.getElementById('on-next-options');
-            if (container) container.style.display = 'block';
-            
-            // Tür ve süre butonlarını aktif yap
-            const turBtn = container.querySelector('.elastic-type-btn[data-elastic-type="' + elasticSelections.on.tur + '"]');
-            if (turBtn) turBtn.classList.add('selected');
-            
-            const sureBtn = container.querySelector('.elastic-duration-btn[data-duration="' + elasticSelections.on.sure + '"]');
-            if (sureBtn) sureBtn.classList.add('selected');
-        }
-    }
-    
-    // Çıktıyı güncelle
-    updateSeffafOutput();
-}
-
-window.copySeffafCurrentToNext = copySeffafCurrentToNext;
-
-// Mevcut Lastiklerle Devam Fonksiyonu (Tel Tedavisi)
-function copyTelCurrentToNext() {
-    const telTab = document.getElementById('tel-tedavisi');
-    if (!telTab) return;
-    
-    // Sağ tarafı kopyala
-    const sagSection = telTab.querySelector('#tel-sag-section');
-    const sagNextSection = telTab.querySelector('#tel-next-sag-section');
-    if (sagSection && sagSection.style.display !== 'none' && sagNextSection) {
-        // Aktif tip butonlarını bul
-        const activeTypes = sagSection.querySelectorAll('.elastic-type-btn.active');
-        activeTypes.forEach(typeBtn => {
-            const onclickAttr = typeBtn.getAttribute('onclick');
-            const match = onclickAttr.match(/'tel',\s*'sag',\s*'([^']+)'/);
-            if (match) {
-                const elasticType = match[1];
-                
-                // Seçimleri nextElasticSelections'a kopyala
-                if (elasticSelections.sag && elasticSelections.sag.types[elasticType]) {
-                    if (!nextElasticSelections['sag-next']) {
-                        nextElasticSelections['sag-next'] = { active: true, types: {} };
-                    }
-                    nextElasticSelections['sag-next'].types[elasticType] = {
-                        selected: true,
-                        duration: elasticSelections.sag.types[elasticType].duration,
-                        animal: elasticSelections.sag.types[elasticType].animal
-                    };
-                    
-                    // UI'yi aktif yap
-                    const nextTypeBtn = sagNextSection.querySelector('.elastic-type-btn[onclick*="\'tel-next\', \'sag\', \'' + elasticType + '\'"]');
-                    if (nextTypeBtn) nextTypeBtn.classList.add('active');
-                    
-                    // Hayvan butonunu seç
-                    if (elasticSelections.sag.types[elasticType].animal) {
-                        selectAnimal('tel-next', 'sag', elasticType, elasticSelections.sag.types[elasticType].animal);
-                    }
-                    
-                    // Saat butonunu seç
-                    if (elasticSelections.sag.types[elasticType].duration) {
-                        selectElasticHours('tel-next', 'sag', elasticType, elasticSelections.sag.types[elasticType].duration);
-                    }
-                }
-            }
-        });
-        
-        // Sağ next bölümünü aç
-        sagNextSection.style.display = 'block';
-        const sagNextBtn = telTab.querySelector('.elastic-main-btn[onclick*="\'tel-next\', \'sag\'"]');
-        if (sagNextBtn) sagNextBtn.classList.add('active');
-    }
-    
-    // Sol tarafı kopyala
-    const solSection = telTab.querySelector('#tel-sol-section');
-    const solNextSection = telTab.querySelector('#tel-next-sol-section');
-    if (solSection && solSection.style.display !== 'none' && solNextSection) {
-        const activeTypes = solSection.querySelectorAll('.elastic-type-btn.active');
-        activeTypes.forEach(typeBtn => {
-            const onclickAttr = typeBtn.getAttribute('onclick');
-            const match = onclickAttr.match(/'tel',\s*'sol',\s*'([^']+)'/);
-            if (match) {
-                const elasticType = match[1];
-                
-                if (elasticSelections.sol && elasticSelections.sol.types[elasticType]) {
-                    if (!nextElasticSelections['sol-next']) {
-                        nextElasticSelections['sol-next'] = { active: true, types: {} };
-                    }
-                    nextElasticSelections['sol-next'].types[elasticType] = {
-                        selected: true,
-                        duration: elasticSelections.sol.types[elasticType].duration,
-                        animal: elasticSelections.sol.types[elasticType].animal
-                    };
-                    
-                    const nextTypeBtn = solNextSection.querySelector('.elastic-type-btn[onclick*="\'tel-next\', \'sol\', \'' + elasticType + '\'"]');
-                    if (nextTypeBtn) nextTypeBtn.classList.add('active');
-                    
-                    if (elasticSelections.sol.types[elasticType].animal) {
-                        selectAnimal('tel-next', 'sol', elasticType, elasticSelections.sol.types[elasticType].animal);
-                    }
-                    
-                    if (elasticSelections.sol.types[elasticType].duration) {
-                        selectElasticHours('tel-next', 'sol', elasticType, elasticSelections.sol.types[elasticType].duration);
-                    }
-                }
-            }
-        });
-        
-        solNextSection.style.display = 'block';
-        const solNextBtn = telTab.querySelector('.elastic-main-btn[onclick*="\'tel-next\', \'sol\'"]');
-        if (solNextBtn) solNextBtn.classList.add('active');
-    }
-    
-    // Orta (Ön) tarafı kopyala
-    const ortaSection = telTab.querySelector('#tel-orta-section');
-    const ortaNextSection = telTab.querySelector('#tel-next-orta-section');
-    if (ortaSection && ortaSection.style.display !== 'none' && ortaNextSection) {
-        const activeTypes = ortaSection.querySelectorAll('.elastic-type-btn.active');
-        activeTypes.forEach(typeBtn => {
-            const onclickAttr = typeBtn.getAttribute('onclick');
-            const match = onclickAttr.match(/'tel',\s*'orta',\s*'([^']+)'/);
-            if (match) {
-                const elasticType = match[1];
-                
-                if (elasticSelections.orta && elasticSelections.orta.types[elasticType]) {
-                    if (!nextElasticSelections['orta-next']) {
-                        nextElasticSelections['orta-next'] = { active: true, types: {} };
-                    }
-                    nextElasticSelections['orta-next'].types[elasticType] = {
-                        selected: true,
-                        duration: elasticSelections.orta.types[elasticType].duration,
-                        animal: elasticSelections.orta.types[elasticType].animal
-                    };
-                    
-                    const nextTypeBtn = ortaNextSection.querySelector('.elastic-type-btn[onclick*="\'tel-next\', \'orta\', \'' + elasticType + '\'"]');
-                    if (nextTypeBtn) nextTypeBtn.classList.add('active');
-                    
-                    if (elasticSelections.orta.types[elasticType].animal) {
-                        selectAnimal('tel-next', 'orta', elasticType, elasticSelections.orta.types[elasticType].animal);
-                    }
-                    
-                    if (elasticSelections.orta.types[elasticType].duration) {
-                        selectElasticHours('tel-next', 'orta', elasticType, elasticSelections.orta.types[elasticType].duration);
-                    }
-                }
-            }
-        });
-        
-        ortaNextSection.style.display = 'block';
-        const ortaNextBtn = telTab.querySelector('.elastic-main-btn[onclick*="\'tel-next\', \'orta\'"]');
-        if (ortaNextBtn) ortaNextBtn.classList.add('active');
-    }
-    
-    // Çıktıyı güncelle
-    updateTelOutput();
-}
-
-window.copyTelCurrentToNext = copyTelCurrentToNext;
 
 // ===== DİŞLER ARASI BOŞLUK ÖLÇÜMÜ FONKSİYONLARI =====
 
