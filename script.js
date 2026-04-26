@@ -3817,7 +3817,7 @@ function updateDurationResult() {
         answers['randevu-duration'] = 30;
         answers['duration-method'] = 'standard';
         answers['duration-source'] = '20dk AR, 10dk RD';
-    } else if (method === 'manual') {
+    } else if (method === 'manual' || method === 'refinement') {
         // Use manual input - calculate total from assistant and doctor durations
         const assistantDuration = parseInt(document.getElementById('manual-assistant-duration').value) || 0;
         const doctor1Duration = parseInt(document.getElementById('manual-doctor1-duration').value) || 0;
@@ -3889,9 +3889,6 @@ function initializeDurationMethod() {
                     // Trigger the update function
                     updateSeffafSpecialNote();
                 }
-                
-                // Update result display
-                updateDurationResult();
             } else {
                 // Hide manual input
                 if (manualContainer) manualContainer.style.display = 'none';
