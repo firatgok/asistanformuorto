@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ortodonti Hasta Formu</title>
-    <meta name="copyright" content="© 2024-2026 Ortodonti Form Yazılımı - Tüm Hakları Saklıdır">
-    <meta name="author" content="Ortodonti Form Yazılımı">
-    <meta name="robots" content="noindex, nofollow">
-    <!-- 
-        Ortodonti Form Yazılımı
-        © 2024-2026 Tüm Hakları Saklıdır
-        Yetkisiz kullanım, kopyalama ve dağıtım yasaktır.
-    -->
     <script>
     (function(){
       try{
@@ -505,6 +497,7 @@
                             <div class="duration-method-buttons">
                                 <button type="button" class="duration-method-btn option-btn" data-method="auto">IPR'den Otomatik Al</button>
                                 <button type="button" class="duration-method-btn option-btn" data-method="standard">Standart Randevu</button>
+                                <button type="button" class="duration-method-btn option-btn" data-method="refinement">Refinement Randevusu</button>
                                 <button type="button" class="duration-method-btn option-btn" data-method="manual">Manuel Gir</button>
                             </div>
                             <div class="duration-input-container" style="display: none;">
@@ -834,6 +827,13 @@
                                 <h4 style="margin: 0;">SONRAKİ SEANSA KADAR LASTİK KULLANIMI</h4>
                                 <button type="button" class="reset-icon-btn" onclick="resetNextElastics('seffaf')" title="Sıfırla">
                                     🔄
+                                </button>
+                            </div>
+                            <!-- Mevcut Lastiklerle Devam Butonu -->
+                            <div style="margin-bottom: 15px;">
+                                <button type="button" class="copy-elastic-btn" onclick="copySeffafCurrentToNext()">
+                                    <span>📋</span>
+                                    <span>Mevcut Lastiklerle Devam</span>
                                 </button>
                             </div>
                             <div class="elastic-main-container">
@@ -1790,6 +1790,14 @@
                                 <h3 class="section-title" style="margin: 0;">SONRAKİ SEANSA KADAR LASTİK KULLANIMI</h3>
                                 <button type="button" class="reset-icon-btn" onclick="resetNextElastics('tel')" title="Sıfırla">
                                     🔄
+                                </button>
+                            </div>
+                            
+                            <!-- Mevcut Lastiklerle Devam Butonu -->
+                            <div style="margin-bottom: 15px;">
+                                <button type="button" class="copy-elastic-btn" onclick="copyTelCurrentToNext()">
+                                    <span>📋</span>
+                                    <span>Mevcut Lastiklerle Devam</span>
                                 </button>
                             </div>
                             
@@ -3306,11 +3314,6 @@
 
     <!-- Debug script - comment out when not debugging -->
     <!-- <script src="debug-order-issue.js"></script> -->
-
-    <!-- Copyright Footer -->
-    <div style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); font-size: 10px; color: rgba(128,128,128,0.3); pointer-events: none; user-select: none; z-index: 999999;">
-        © 2024-2026 Ortodonti Form Yazılımı
-    </div>
 
 </body>
 </html>
